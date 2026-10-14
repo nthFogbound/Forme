@@ -1,1 +1,350 @@
 @import 'tailwindcss';
+
+@font-face {
+  font-family: 'Inter:Bold';
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Inter:Medium';
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Inter:Regular';
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Inter:Semi Bold';
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+  font-style: normal;
+  font-weight: 600;
+}
+
+:root {
+  color: #202522;
+  background: #ffffff;
+  font-family: 'Inter:Regular', Inter, Arial, sans-serif;
+  font-synthesis: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+[role='link'] {
+  cursor: pointer;
+}
+
+[data-name='Shopping action'],
+[data-name='Browse link'],
+[data-name='Add to bag'],
+[data-name='Read article'],
+[data-name='Category card'] {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+[data-name='Shopping action']:hover,
+[data-name='Browse link']:hover,
+[data-name='Read article']:hover {
+  transform: translateY(-2px);
+}
+
+[data-name='Add to bag']:hover {
+  border-color: #245c4d;
+  background: #f4f5f1;
+}
+
+[data-name='Category card']:hover {
+  transform: translateY(-3px);
+}
+
+[role='link']:focus-visible {
+  outline: 2px solid #245c4d;
+  outline-offset: 3px;
+}
+
+@media (max-width: 1100px) {
+  [data-name='Main navigation'],
+  [data-name='Category navigation'] {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+
+  [data-name='Product search'] {
+    width: 300px !important;
+  }
+
+  [data-name='Hero collection'] {
+    height: 540px !important;
+  }
+
+  [data-name='Collection introduction'] {
+    width: 48% !important;
+    padding-left: 40px !important;
+  }
+
+  [data-name='Collection introduction'] > div:nth-child(2) {
+    font-size: 44px !important;
+  }
+
+  [data-name='Product focus'] {
+    gap: 22px !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+
+  [data-name='Category discovery'],
+  [data-name='Featured products'],
+  [data-name='Everyday essentials'],
+  [data-name='Buying guides and journal'],
+  [data-name='Store footer'] {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+
+  [data-name='Product grid'],
+  [data-name='Accessories grid'] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  [data-name='Quiet workspace'] {
+    width: 55% !important;
+  }
+
+  [data-name='Collection story'] {
+    padding: 40px !important;
+  }
+
+  [data-name='Brand names'] {
+    flex-wrap: wrap;
+    gap: 28px 48px;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+
+  [data-name='Footer navigation'] {
+    flex-wrap: wrap;
+    gap: 40px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  [data-name='Store announcement'] {
+    padding: 0 18px;
+    text-align: center;
+  }
+
+  [data-name='Store announcement'] p {
+    white-space: normal !important;
+  }
+
+  [data-name='Main navigation'] {
+    height: 68px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  [data-name='Main navigation'] > p {
+    font-size: 24px !important;
+  }
+
+  [data-name='Product search'] {
+    display: none !important;
+  }
+
+  [data-name='Account actions'] {
+    gap: 16px !important;
+  }
+
+  [data-name='Account actions'] > div:first-child,
+  [data-name='Account actions'] > div:nth-child(2) {
+    display: none !important;
+  }
+
+  [data-name='Category navigation'] {
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  [data-name='Shop destinations'] {
+    gap: 24px !important;
+    overflow: visible !important;
+  }
+
+  [data-name='Editorial destinations'] {
+    display: none !important;
+  }
+
+  [data-name='Hero collection'] {
+    flex-direction: column !important;
+    height: auto !important;
+  }
+
+  [data-name='Collection introduction'] {
+    width: 100% !important;
+    height: auto !important;
+    padding: 48px 24px 36px !important;
+  }
+
+  [data-name='Collection introduction'] > div:nth-child(2) {
+    font-size: 39px !important;
+  }
+
+  [data-name='Collection introduction'] > p {
+    width: 100% !important;
+  }
+
+  [data-name='Collection edition'] {
+    padding-top: 2px !important;
+  }
+
+  [data-name='Hero photography'] {
+    flex: none !important;
+    height: 360px !important;
+    min-height: 360px !important;
+    width: 100% !important;
+  }
+
+  [data-name='Featured collection note'] {
+    bottom: 20px !important;
+    left: 20px !important;
+    max-width: calc(100% - 40px);
+  }
+
+  [data-node-id='2:53'] {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    padding: 28px 24px !important;
+  }
+
+  [data-node-id='2:53'] [data-name='Product focus'] {
+    padding: 0 !important;
+  }
+
+  [data-name='Category discovery'],
+  [data-name='Featured products'],
+  [data-name='Everyday essentials'],
+  [data-name='Buying guides and journal'],
+  [data-name='Store footer'] {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  [data-name='Category discovery'] {
+    padding-top: 52px !important;
+  }
+
+  [data-name='Section heading'] {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  [data-name='Heading'] {
+    white-space: normal !important;
+  }
+
+  [data-name='Heading'] > p:last-child {
+    font-size: 30px !important;
+  }
+
+  [data-name='Category grid'],
+  [data-name='Product grid'],
+  [data-name='Accessories grid'],
+  [data-name='Editorial grid'] {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    gap: 32px !important;
+    overflow: visible !important;
+  }
+
+  [data-name='Category photography'] {
+    height: 220px !important;
+  }
+
+  [data-name='Category tabs'] {
+    max-width: calc(100vw - 48px);
+    overflow-x: auto !important;
+    padding-bottom: 4px;
+  }
+
+  [data-name='Curated workspace collection'] {
+    flex-direction: column !important;
+    height: auto !important;
+  }
+
+  [data-name='Quiet workspace'] {
+    height: 300px !important;
+    width: 100% !important;
+  }
+
+  [data-name='Collection story'] {
+    min-height: 420px;
+    padding: 44px 24px !important;
+    width: 100% !important;
+  }
+
+  [data-name='Collection story'] > div:nth-child(2) {
+    font-size: 37px !important;
+  }
+
+  [data-name='Selected brands'] {
+    padding: 34px 24px !important;
+    text-align: center;
+    white-space: normal !important;
+  }
+
+  [data-name='Brand names'] {
+    gap: 24px 30px;
+  }
+
+  [data-name='Brand names'] p {
+    font-size: 19px !important;
+  }
+
+  [data-name='Footer navigation'] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible !important;
+  }
+
+  [data-name='Brand and product focus'] {
+    grid-column: 1 / -1;
+    width: 100% !important;
+  }
+
+  [data-name='Brand and product focus'] p {
+    max-width: 100%;
+    white-space: normal !important;
+  }
+
+  [data-name='Social and region'] {
+    width: auto !important;
+  }
+
+  [data-name='Legal and payments'] {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 14px;
+  }
+}
