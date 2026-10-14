@@ -1,1 +1,10 @@
-{}
+{
+  "description": "This web application offers a user-friendly landing page with interactive buttons that seamlessly navigate to relevant sections, enhancing user engagement and accessibility.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
