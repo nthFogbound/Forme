@@ -12,8 +12,8 @@ Route::get('/categories/{category}', function (string $category) {
             'description' => 'Powerful cameras, thoughtful design and all-day performance—selected for the way you communicate, create and move.',
             'hero' => '1a9ca.png',
             'products' => [
-                ['brand' => 'APPLE', 'name' => 'iPhone 13 Pro', 'detail' => '128GB · Unlocked · Graphite', 'price' => '$999.00', 'image' => '2d2a2.png'],
-                ['brand' => 'SAMSUNG', 'name' => 'Galaxy S23 Ultra', 'detail' => '256GB · Unlocked · Phantom black', 'price' => '$1,199.00', 'image' => '46886.png'],
+                ['slug' => 'iphone-13-pro', 'brand' => 'APPLE', 'name' => 'iPhone 13 Pro', 'detail' => '128GB · Unlocked · Graphite', 'price' => '$999.00', 'image' => '2d2a2.png'],
+                ['slug' => 'galaxy-s23-ultra', 'brand' => 'SAMSUNG', 'name' => 'Galaxy S23 Ultra', 'detail' => '256GB · Unlocked · Phantom black', 'price' => '$1,199.00', 'image' => '46886.png'],
             ],
         ],
         'laptops' => [
@@ -22,7 +22,7 @@ Route::get('/categories/{category}', function (string $category) {
             'description' => 'Portable performance and beautifully considered hardware for deep work, creative projects and everything between.',
             'hero' => 'ce84b.png',
             'products' => [
-                ['brand' => 'APPLE', 'name' => 'MacBook Pro 14″', 'detail' => 'M1 Pro · 16GB RAM · 512GB SSD', 'price' => '$1,999.00', 'image' => 'b0999.png'],
+                ['slug' => 'macbook-pro-14', 'brand' => 'APPLE', 'name' => 'MacBook Pro 14″', 'detail' => 'M1 Pro · 16GB RAM · 512GB SSD', 'price' => '$1,999.00', 'image' => 'b0999.png'],
             ],
         ],
         'tablets' => [
@@ -31,7 +31,7 @@ Route::get('/categories/{category}', function (string $category) {
             'description' => 'Flexible screens for sketching, streaming, focused work and lighter days away from your desk.',
             'hero' => '0aacd.png',
             'products' => [
-                ['brand' => 'SAMSUNG', 'name' => 'Galaxy Tab S8', 'detail' => '11″ display · 128GB · Wi-Fi', 'price' => '$699.00', 'image' => 'a1a1c.png'],
+                ['slug' => 'galaxy-tab-s8', 'brand' => 'SAMSUNG', 'name' => 'Galaxy Tab S8', 'detail' => '11″ display · 128GB · Wi-Fi', 'price' => '$699.00', 'image' => 'a1a1c.png'],
             ],
         ],
         'mobile-accessories' => [
@@ -40,8 +40,8 @@ Route::get('/categories/{category}', function (string $category) {
             'description' => 'Charging, audio and everyday additions chosen to make your devices more useful wherever the day takes you.',
             'hero' => '745a4.png',
             'products' => [
-                ['brand' => 'BELKIN', 'name' => 'BoostCharge Pro 3-in-1', 'detail' => '15W wireless charging · MagSafe', 'price' => '$149.00', 'image' => '25fc8.png'],
-                ['brand' => 'APPLE', 'name' => 'AirPods Pro', 'detail' => 'Active noise cancellation · USB-C', 'price' => '$249.00', 'image' => '8f66f.png'],
+                ['slug' => 'boostcharge-pro', 'brand' => 'BELKIN', 'name' => 'BoostCharge Pro 3-in-1', 'detail' => '15W wireless charging · MagSafe', 'price' => '$149.00', 'image' => '25fc8.png'],
+                ['slug' => 'airpods-pro', 'brand' => 'APPLE', 'name' => 'AirPods Pro', 'detail' => 'Active noise cancellation · USB-C', 'price' => '$249.00', 'image' => '8f66f.png'],
             ],
         ],
     ];
@@ -50,3 +50,20 @@ Route::get('/categories/{category}', function (string $category) {
 
     return view('category', ['category' => $categories[$category]]);
 })->name('categories.show');
+
+Route::get('/products/{product}', function (string $product) {
+    $products = [
+        'iphone-13-pro' => ['brand' => 'APPLE', 'name' => 'iPhone 13 Pro', 'category' => 'Smartphones', 'detail' => '128GB · Unlocked', 'price' => '$999.00', 'image' => '2d2a2.png', 'rating' => '4.8', 'reviews' => 124, 'colors' => ['Graphite', 'Silver', 'Sierra Blue']],
+        'macbook-pro-14' => ['brand' => 'APPLE', 'name' => 'MacBook Pro 14″', 'category' => 'Laptops', 'detail' => 'M1 Pro · 16GB RAM · 512GB SSD', 'price' => '$1,999.00', 'image' => 'b0999.png', 'rating' => '4.9', 'reviews' => 86, 'colors' => ['Space Gray', 'Silver']],
+        'galaxy-tab-s8' => ['brand' => 'SAMSUNG', 'name' => 'Galaxy Tab S8', 'category' => 'Tablets', 'detail' => '11″ display · 128GB · Wi-Fi', 'price' => '$699.00', 'image' => 'a1a1c.png', 'rating' => '4.7', 'reviews' => 58, 'colors' => ['Graphite', 'Silver', 'Pink Gold']],
+        'galaxy-s23-ultra' => ['brand' => 'SAMSUNG', 'name' => 'Galaxy S23 Ultra', 'category' => 'Smartphones', 'detail' => '256GB · Unlocked', 'price' => '$1,199.00', 'image' => '46886.png', 'rating' => '4.8', 'reviews' => 92, 'colors' => ['Phantom Black', 'Cream', 'Green']],
+        'airpods-pro' => ['brand' => 'APPLE', 'name' => 'AirPods Pro', 'category' => 'Audio', 'detail' => 'Active noise cancellation · USB-C', 'price' => '$249.00', 'image' => '8f66f.png', 'rating' => '4.8', 'reviews' => 108, 'colors' => ['White']],
+        'boostcharge-pro' => ['brand' => 'BELKIN', 'name' => 'BoostCharge Pro 3-in-1', 'category' => 'Accessories', 'detail' => '15W wireless charging · MagSafe', 'price' => '$149.00', 'image' => '25fc8.png', 'rating' => '4.7', 'reviews' => 42, 'colors' => ['White', 'Black']],
+        'mx-keys-mini' => ['brand' => 'LOGITECH', 'name' => 'MX Keys Mini', 'category' => 'Accessories', 'detail' => 'Wireless keyboard', 'price' => '$99.00', 'image' => 'a3684.png', 'rating' => '4.9', 'reviews' => 67, 'colors' => ['Graphite', 'Pale Gray', 'Rose']],
+        'sony-wh-1000xm5' => ['brand' => 'SONY', 'name' => 'Sony WH-1000XM5', 'category' => 'Audio', 'detail' => 'Noise cancelling · 30-hour battery', 'price' => '$399.00', 'image' => '6d140.png', 'rating' => '4.8', 'reviews' => 96, 'colors' => ['Black', 'Silver', 'Midnight Blue']],
+    ];
+
+    abort_unless(isset($products[$product]), 404);
+
+    return view('product', ['product' => $products[$product], 'slug' => $product]);
+})->name('products.show');

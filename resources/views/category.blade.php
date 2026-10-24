@@ -32,7 +32,7 @@
         </div>
         <div class="grid gap-[24px] grid-cols-2 mt-[32px] max-w-[900px] max-md:grid-cols-1">
           @foreach ($category['products'] as $product)
-            <article class="flex flex-col gap-[16px]">
+            <article class="flex flex-col gap-[16px]" data-product-url="{{ route('products.show', $product['slug']) }}">
               <div class="bg-[#f4f5f1] h-[300px] p-[32px] relative rounded-[4px]">
                 <img alt="{{ $product['name'] }}" class="object-cover size-full" src="{{ asset('assets/'.$product['image']) }}">
               </div>

@@ -23,6 +23,13 @@ const readList = (key) => {
 }
 let wishlistItems = readList("forme-wishlist")
 let bagItems = readList("forme-bag")
+let selectedColors = (() => {
+  try {
+    return JSON.parse(localStorage.getItem("forme-colors") || "{}")
+  } catch {
+    return {}
+  }
+})()
 const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[character])
 
 function updateProductControls() {
@@ -68,6 +75,64 @@ function wireProductControl(control, key, type) {
 document.querySelectorAll("[data-save-product]").forEach((control) => wireProductControl(control, "saveProduct", "wishlist"))
 document.querySelectorAll("[data-add-product]").forEach((control) => wireProductControl(control, "addProduct", "bag"))
 updateProductControls()
+
+document.querySelectorAll("[data-product-color]").forEach((control) => {
+  const colors = control.dataset.colors.split("|")
+  const buttons = control.querySelectorAll("[data-select-color]")
+  const updateColor = () => {
+    const selected = selectedColors[control.dataset.productColor] || colors[0]
+    control.setAttribute("aria-label", `Selected color ${selected}. Choose next color`)
+    control.title = `Color: ${selected}`
+    buttons.forEach((button) => {
+      const active = button.dataset.selectColor === selected
+      button.classList.toggle("bg-[#245c4d]", active)
+      button.classList.toggle("text-white", active)
+      button.setAttribute("aria-pressed", String(active))
+    })
+  }
+  const cycle = () => {
+    const selected = selectedColors[control.dataset.productColor] || colors[0]
+    selectedColors[control.dataset.productColor] = colors[(colors.indexOf(selected) + 1) % colors.length]
+    localStorage.setItem("forme-colors", JSON.stringify(selectedColors))
+    updateColor()
+  }
+  if (buttons.length) {
+    buttons.forEach((button) => button.addEventListener("click", (event) => {
+      event.stopPropagation()
+      selectedColors[control.dataset.productColor] = button.dataset.selectColor
+      localStorage.setItem("forme-colors", JSON.stringify(selectedColors))
+      updateColor()
+    }))
+  } else {
+    control.setAttribute("role", "button")
+    control.tabIndex = 0
+    control.addEventListener("click", (event) => {
+      event.stopPropagation()
+      cycle()
+    })
+    control.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault()
+        event.stopPropagation()
+        cycle()
+      }
+    })
+  }
+  updateColor()
+})
+
+document.querySelectorAll("[data-product-url]").forEach((card) => {
+  card.setAttribute("role", "link")
+  card.tabIndex = 0
+  card.addEventListener("click", (event) => {
+    if (event.target.closest("button,[role='button']")) return
+    const reviews = event.target.closest("[data-name='Reviews']")
+    window.location.assign(`${card.dataset.productUrl}${reviews ? "#reviews" : ""}`)
+  })
+  card.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.target.closest("button,[role='button']")) window.location.assign(card.dataset.productUrl)
+  })
+})
 
 function browseProducts() {
   panel?.classList.add("hidden")

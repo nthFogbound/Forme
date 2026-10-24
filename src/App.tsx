@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent, type MouseEvent } from "react";
 
 const assetPathPrefix = "/assets";
 const imgEverydayTechnologyStillLife = `${assetPathPrefix}/7c3c6.png`;
@@ -62,8 +62,8 @@ const categoryPages = {
     description: "Powerful cameras, thoughtful design and all-day performance—selected for the way you communicate, create and move.",
     hero: imgCategoryProduct,
     products: [
-      { brand: "APPLE", name: "iPhone 13 Pro", detail: "128GB · Unlocked · Graphite", price: "$999.00", image: imgProduct },
-      { brand: "SAMSUNG", name: "Galaxy S23 Ultra", detail: "256GB · Unlocked · Phantom black", price: "$1,199.00", image: imgProduct3 },
+      { slug: "iphone-13-pro", brand: "APPLE", name: "iPhone 13 Pro", detail: "128GB · Unlocked · Graphite", price: "$999.00", image: imgProduct },
+      { slug: "galaxy-s23-ultra", brand: "SAMSUNG", name: "Galaxy S23 Ultra", detail: "256GB · Unlocked · Phantom black", price: "$1,199.00", image: imgProduct3 },
     ],
   },
   laptops: {
@@ -72,7 +72,7 @@ const categoryPages = {
     description: "Portable performance and beautifully considered hardware for deep work, creative projects and everything between.",
     hero: imgCategoryProduct1,
     products: [
-      { brand: "APPLE", name: "MacBook Pro 14″", detail: "M1 Pro · 16GB RAM · 512GB SSD", price: "$1,999.00", image: imgProduct1 },
+      { slug: "macbook-pro-14", brand: "APPLE", name: "MacBook Pro 14″", detail: "M1 Pro · 16GB RAM · 512GB SSD", price: "$1,999.00", image: imgProduct1 },
     ],
   },
   tablets: {
@@ -81,7 +81,7 @@ const categoryPages = {
     description: "Flexible screens for sketching, streaming, focused work and lighter days away from your desk.",
     hero: imgCategoryProduct2,
     products: [
-      { brand: "SAMSUNG", name: "Galaxy Tab S8", detail: "11″ display · 128GB · Wi-Fi", price: "$699.00", image: imgProduct2 },
+      { slug: "galaxy-tab-s8", brand: "SAMSUNG", name: "Galaxy Tab S8", detail: "11″ display · 128GB · Wi-Fi", price: "$699.00", image: imgProduct2 },
     ],
   },
   "mobile-accessories": {
@@ -90,13 +90,77 @@ const categoryPages = {
     description: "Charging, audio and everyday additions chosen to make your devices more useful wherever the day takes you.",
     hero: imgCategoryProduct3,
     products: [
-      { brand: "BELKIN", name: "BoostCharge Pro 3-in-1", detail: "15W wireless charging · MagSafe", price: "$149.00", image: imgProduct5 },
-      { brand: "APPLE", name: "AirPods Pro", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4 },
+      { slug: "boostcharge-pro", brand: "BELKIN", name: "BoostCharge Pro 3-in-1", detail: "15W wireless charging · MagSafe", price: "$149.00", image: imgProduct5 },
+      { slug: "airpods-pro", brand: "APPLE", name: "AirPods Pro", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4 },
     ],
   },
 } as const;
 
 type CategorySlug = keyof typeof categoryPages;
+
+const productPages = {
+  "iphone-13-pro": { brand: "APPLE", name: "iPhone 13 Pro", category: "Smartphones", detail: "128GB · Unlocked", price: "$999.00", image: imgProduct, rating: "4.8", reviewCount: 124, colors: ["Graphite", "Silver", "Sierra Blue"] },
+  "macbook-pro-14": { brand: "APPLE", name: "MacBook Pro 14″", category: "Laptops", detail: "M1 Pro · 16GB RAM · 512GB SSD", price: "$1,999.00", image: imgProduct1, rating: "4.9", reviewCount: 86, colors: ["Space Gray", "Silver"] },
+  "galaxy-tab-s8": { brand: "SAMSUNG", name: "Galaxy Tab S8", category: "Tablets", detail: "11″ display · 128GB · Wi-Fi", price: "$699.00", image: imgProduct2, rating: "4.7", reviewCount: 58, colors: ["Graphite", "Silver", "Pink Gold"] },
+  "galaxy-s23-ultra": { brand: "SAMSUNG", name: "Galaxy S23 Ultra", category: "Smartphones", detail: "256GB · Unlocked", price: "$1,199.00", image: imgProduct3, rating: "4.8", reviewCount: 92, colors: ["Phantom Black", "Cream", "Green"] },
+  "airpods-pro": { brand: "APPLE", name: "AirPods Pro", category: "Audio", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4, rating: "4.8", reviewCount: 108, colors: ["White"] },
+  "boostcharge-pro": { brand: "BELKIN", name: "BoostCharge Pro 3-in-1", category: "Accessories", detail: "15W wireless charging · MagSafe", price: "$149.00", image: imgProduct5, rating: "4.7", reviewCount: 42, colors: ["White", "Black"] },
+  "mx-keys-mini": { brand: "LOGITECH", name: "MX Keys Mini", category: "Accessories", detail: "Wireless keyboard", price: "$99.00", image: imgProduct6, rating: "4.9", reviewCount: 67, colors: ["Graphite", "Pale Gray", "Rose"] },
+  "sony-wh-1000xm5": { brand: "SONY", name: "Sony WH-1000XM5", category: "Audio", detail: "Noise cancelling · 30-hour battery", price: "$399.00", image: imgProduct7, rating: "4.8", reviewCount: 96, colors: ["Black", "Silver", "Midnight Blue"] },
+} as const;
+
+type ProductSlug = keyof typeof productPages;
+
+function ColorSelector({ colors, selected, onSelect }: { colors: readonly string[]; selected: string; onSelect: (color: string) => void }) {
+  const swatches: Record<string, string> = {
+    Black: "#292d2b", Graphite: "#555956", Silver: "#d8dad7", White: "#f7f7f4", Cream: "#eee4d1", Green: "#768277",
+    "Sierra Blue": "#9aafbf", "Space Gray": "#777b78", "Pink Gold": "#d6aaa4", "Pale Gray": "#c9ccca", Rose: "#c99090", "Midnight Blue": "#344758",
+  };
+  return (
+    <div className="flex flex-wrap gap-[8px]" aria-label="Choose color">
+      {colors.map((color) => (
+        <button aria-label={color} aria-pressed={selected === color} className={`border rounded-full size-[22px] ${selected === color ? "border-[#245c4d]" : "border-[#dfe3dc]"}`} key={color} onClick={(event) => { event.stopPropagation(); onSelect(color); }} title={color} type="button">
+          <span className="block border-2 border-white rounded-full size-full" style={{ backgroundColor: swatches[color] || "#d8dad7" }} />
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ProductPage({ slug, wishlist, bag, toggleWishlist, toggleBag, selectedColor, selectColor }: {
+  slug: ProductSlug; wishlist: string[]; bag: string[]; toggleWishlist: (name: string) => void; toggleBag: (name: string) => void; selectedColor: string; selectColor: (color: string) => void;
+}) {
+  const product = productPages[slug];
+  return (
+    <main className="bg-white min-h-screen text-[#202522]">
+      <header className="border-[#dfe3dc] border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
+        <button className="font-['Inter:Semi_Bold'] text-[30px]" onClick={() => window.location.assign("/")} type="button">FORME</button>
+        <button className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => history.back()} type="button">← Back to shopping</button>
+      </header>
+      <section className="grid grid-cols-2 min-h-[560px] max-md:grid-cols-1">
+        <div className="bg-[#f4f5f1] flex items-center justify-center p-[64px] min-h-[420px]"><img alt={product.name} className="max-h-[430px] object-contain size-full" src={product.image} /></div>
+        <div className="flex flex-col justify-center px-[64px] py-[64px] max-md:px-[24px]">
+          <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">{product.brand} · {product.category}</p>
+          <h1 className="font-['Inter:Medium'] leading-[1.1] mt-[14px] text-[44px]">{product.name}</h1>
+          <p className="font-['Inter:Regular'] mt-[14px] text-[#717772] text-[14px]">{product.detail}</p>
+          <a className="font-['Inter:Regular'] mt-[16px] text-[#245c4d] text-[12px]" href="#reviews">★ {product.rating} · {product.reviewCount} reviews</a>
+          <p className="font-['Inter:Semi_Bold'] mt-[28px] text-[24px]">{product.price}</p>
+          <p className="font-['Inter:Medium'] mt-[28px] text-[11px]">COLOR · {selectedColor}</p>
+          <div className="mt-[12px]"><ColorSelector colors={product.colors} onSelect={selectColor} selected={selectedColor} /></div>
+          <div className="flex gap-[12px] mt-[30px]">
+            <button className="bg-[#245c4d] flex-1 h-[48px] rounded-[4px] text-white text-[13px]" onClick={() => toggleBag(product.name)} type="button">{bag.includes(product.name) ? "Remove from bag" : "Add to bag"}</button>
+            <button aria-pressed={wishlist.includes(product.name)} className="border border-[#245c4d] h-[48px] px-[20px] rounded-[4px] text-[#245c4d] text-[13px]" onClick={() => toggleWishlist(product.name)} type="button">{wishlist.includes(product.name) ? "Saved" : "Save"}</button>
+          </div>
+        </div>
+      </section>
+      <section className="border-[#dfe3dc] border-t px-[64px] py-[72px] max-md:px-[24px]" id="reviews">
+        <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">CUSTOMER REVIEWS</p>
+        <h2 className="font-['Inter:Medium'] mt-[10px] text-[32px]">{product.rating} out of 5</h2>
+        <p className="font-['Inter:Regular'] leading-[1.7] mt-[16px] max-w-[580px] text-[#717772] text-[13px]">Based on {product.reviewCount} verified reviews. Customers highlight the considered design, dependable performance and ease of use.</p>
+      </section>
+    </main>
+  );
+}
 
 function CategoryPage({
   slug,
@@ -138,7 +202,7 @@ function CategoryPage({
         </div>
         <div className="grid gap-[24px] grid-cols-2 mt-[32px] max-w-[900px] max-md:grid-cols-1">
           {category.products.map((product) => (
-            <article className="flex flex-col gap-[16px]" key={product.name}>
+            <article className="flex flex-col gap-[16px]" key={product.name} onClick={(event) => { if (!(event.target as Element).closest("button")) window.location.assign(`/products/${product.slug}`); }} onKeyDown={(event) => { if (event.key === "Enter") window.location.assign(`/products/${product.slug}`); }} role="link" tabIndex={0}>
               <div className="bg-[#f4f5f1] h-[300px] p-[32px] relative rounded-[4px]">
                 <img alt={product.name} className="object-cover size-full" src={product.image} />
               </div>
@@ -167,8 +231,10 @@ export default function FormePremiumTechnologyStorefront() {
   const [activeCategory, setActiveCategory] = useState<ProductCategory>("all");
   const [wishlist, setWishlist] = useState<string[]>(() => JSON.parse(localStorage.getItem("forme-wishlist") || "[]"));
   const [bag, setBag] = useState<string[]>(() => JSON.parse(localStorage.getItem("forme-bag") || "[]"));
+  const [selectedColors, setSelectedColors] = useState<Record<string, string>>(() => JSON.parse(localStorage.getItem("forme-colors") || "{}"));
   useEffect(() => localStorage.setItem("forme-wishlist", JSON.stringify(wishlist)), [wishlist]);
   useEffect(() => localStorage.setItem("forme-bag", JSON.stringify(bag)), [bag]);
+  useEffect(() => localStorage.setItem("forme-colors", JSON.stringify(selectedColors)), [selectedColors]);
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return searchableProducts.slice(0, 4);
@@ -199,6 +265,40 @@ export default function FormePremiumTechnologyStorefront() {
     activeCategory === "all" || activeCategory === category || (activeCategory === "new-arrivals" && isNew);
   const toggleWishlist = (name: string) => setWishlist((items) => items.includes(name) ? items.filter((item) => item !== name) : [...items, name]);
   const toggleBag = (name: string) => setBag((items) => items.includes(name) ? items.filter((item) => item !== name) : [...items, name]);
+  const selectColor = (slug: ProductSlug, color: string) => setSelectedColors((colors) => ({ ...colors, [slug]: color }));
+  const productCardInteraction = (slug: ProductSlug) => ({
+    onClick: (event: MouseEvent) => {
+      if ((event.target as Element).closest("[data-name='Reviews']")) {
+        window.location.assign(`/products/${slug}#reviews`);
+        return;
+      }
+      if (!(event.target as Element).closest("button,[role='button'],a")) window.location.assign(`/products/${slug}`);
+    },
+    onKeyDown: (event: KeyboardEvent) => {
+      if (event.key === "Enter") window.location.assign(`/products/${slug}`);
+    },
+    role: "link",
+    tabIndex: 0,
+  });
+  const colorControl = (slug: ProductSlug) => {
+    const colors = productPages[slug].colors;
+    const selected = selectedColors[slug] || colors[0];
+    const cycle = () => selectColor(slug, colors[(colors.indexOf(selected) + 1) % colors.length]);
+    return {
+      "aria-label": `Selected color ${selected}. Choose next color`,
+      onClick: (event: MouseEvent) => { event.stopPropagation(); cycle(); },
+      onKeyDown: (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          event.stopPropagation();
+          cycle();
+        }
+      },
+      role: "button",
+      tabIndex: 0,
+      title: `Color: ${selected}`,
+    };
+  };
   const productControl = (kind: "wishlist" | "bag", name: string) => {
     const active = (kind === "wishlist" ? wishlist : bag).includes(name);
     const activate = () => kind === "wishlist" ? toggleWishlist(name) : toggleBag(name);
@@ -219,6 +319,11 @@ export default function FormePremiumTechnologyStorefront() {
   };
   const activePanelItems = headerPanel === "wishlist" ? wishlist : bag;
 
+  const productSlug = window.location.pathname.match(/^\/products\/([^/]+)\/?$/)?.[1] as ProductSlug | undefined;
+  if (productSlug && productPages[productSlug]) {
+    const product = productPages[productSlug];
+    return <ProductPage bag={bag} selectColor={(color) => selectColor(productSlug, color)} selectedColor={selectedColors[productSlug] || product.colors[0]} slug={productSlug} toggleBag={toggleBag} toggleWishlist={toggleWishlist} wishlist={wishlist} />;
+  }
   const categorySlug = window.location.pathname.match(/^\/categories\/([^/]+)\/?$/)?.[1] as CategorySlug | undefined;
   if (categorySlug && categoryPages[categorySlug]) return <CategoryPage bag={bag} slug={categorySlug} toggleBag={toggleBag} toggleWishlist={toggleWishlist} wishlist={wishlist} />;
 
@@ -547,7 +652,7 @@ export default function FormePremiumTechnologyStorefront() {
           </div>
         </div>
         <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:133" data-name="Product grid">
-          <div className={`${productIsVisible("smartphones") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:134" data-name="Product card">
+          <div {...productCardInteraction("iphone-13-pro")} className={`${productIsVisible("smartphones") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:134" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:135" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:136" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct} />
@@ -588,7 +693,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:152">
                   $999.00
                 </p>
-                <div className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:153" data-name="Color options">
+                <div {...colorControl("iphone-13-pro")} className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:153" data-name="Color options">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgColorOptions} />
                 </div>
               </div>
@@ -602,7 +707,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className={`${productIsVisible("laptops") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:161" data-name="Product card">
+          <div {...productCardInteraction("macbook-pro-14")} className={`${productIsVisible("laptops") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:161" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:162" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:163" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct1} />
@@ -643,7 +748,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:179">
                   $1,999.00
                 </p>
-                <div className="h-[12px] relative shrink-0 w-[30px]" data-node-id="2:180" data-name="Color options">
+                <div {...colorControl("macbook-pro-14")} className="h-[12px] relative shrink-0 w-[30px]" data-node-id="2:180" data-name="Color options">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgColorOptions1} />
                 </div>
               </div>
@@ -657,7 +762,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className={`${productIsVisible("tablets") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:187" data-name="Product card">
+          <div {...productCardInteraction("galaxy-tab-s8")} className={`${productIsVisible("tablets") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:187" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:188" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:189" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct2} />
@@ -693,7 +798,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:203">
                   $699.00
                 </p>
-                <div className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:204" data-name="Color options">
+                <div {...colorControl("galaxy-tab-s8")} className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:204" data-name="Color options">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgColorOptions2} />
                 </div>
               </div>
@@ -707,7 +812,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className={`${productIsVisible("smartphones") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:212" data-name="Product card">
+          <div {...productCardInteraction("galaxy-s23-ultra")} className={`${productIsVisible("smartphones") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:212" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:213" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:214" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct3} />
@@ -743,7 +848,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:228">
                   $1,199.00
                 </p>
-                <div className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:229" data-name="Color options">
+                <div {...colorControl("galaxy-s23-ultra")} className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:229" data-name="Color options">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgColorOptions3} />
                 </div>
               </div>
@@ -799,7 +904,7 @@ export default function FormePremiumTechnologyStorefront() {
           </div>
         </div>
         <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:253" data-name="Accessories grid">
-          <div className={`${productIsVisible("audio", true) ? "" : "hidden "} ${productCardClass}`} data-node-id="2:254" data-name="Product card">
+          <div {...productCardInteraction("airpods-pro")} className={`${productIsVisible("audio", true) ? "" : "hidden "} ${productCardClass}`} data-node-id="2:254" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:255" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:256" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct4} />
@@ -840,7 +945,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:272">
                   $249.00
                 </p>
-                <div className="relative shrink-0 size-[12px]" data-node-id="2:273" data-name="Color options">
+                <div {...colorControl("airpods-pro")} className="relative shrink-0 size-[12px]" data-node-id="2:273" data-name="Color options">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgColorOptions4} />
                 </div>
               </div>
@@ -854,7 +959,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className={`${productIsVisible("mobile-accessories", true) ? "" : "hidden "} ${productCardClass}`} data-node-id="2:279" data-name="Product card">
+          <div {...productCardInteraction("boostcharge-pro")} className={`${productIsVisible("mobile-accessories", true) ? "" : "hidden "} ${productCardClass}`} data-node-id="2:279" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:280" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:281" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct5} />
@@ -895,7 +1000,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:297">
                   $149.00
                 </p>
-                <div className="h-[12px] relative shrink-0 w-[30px]" data-node-id="2:298" data-name="Color options">
+                <div {...colorControl("boostcharge-pro")} className="h-[12px] relative shrink-0 w-[30px]" data-node-id="2:298" data-name="Color options">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgColorOptions5} />
                 </div>
               </div>
@@ -909,7 +1014,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className={`${productIsVisible("mobile-accessories") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:305" data-name="Product card">
+          <div {...productCardInteraction("mx-keys-mini")} className={`${productIsVisible("mobile-accessories") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:305" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:306" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:307" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct6} />
@@ -945,7 +1050,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:321">
                   $99.00
                 </p>
-                <div className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:322" data-name="Color options">
+                <div {...colorControl("mx-keys-mini")} className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:322" data-name="Color options">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgColorOptions6} />
                 </div>
               </div>
@@ -959,7 +1064,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className={`${productIsVisible("audio") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:330" data-name="Product card">
+          <div {...productCardInteraction("sony-wh-1000xm5")} className={`${productIsVisible("audio") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:330" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:331" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:332" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct7} />
@@ -995,7 +1100,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:346">
                   $399.00
                 </p>
-                <div className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:347" data-name="Color options">
+                <div {...colorControl("sony-wh-1000xm5")} className="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:347" data-name="Color options">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgColorOptions7} />
                 </div>
               </div>

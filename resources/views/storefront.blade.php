@@ -303,7 +303,7 @@
           </div>
         </div>
         <div class="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:133" data-name="Product grid">
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="smartphones" data-node-id="2:134" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="smartphones" data-product-url="{{ url('/products/iphone-13-pro') }}" data-node-id="2:134" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:135" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:136" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/2d2a2.png') }}" />
@@ -344,7 +344,7 @@
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:152">
                   $999.00
                 </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:153" data-name="Color options">
+                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Graphite|Silver|Sierra Blue" data-product-color="iphone-13-pro" data-node-id="2:153" data-name="Color options">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/f48d4.svg') }}" />
                 </div>
               </div>
@@ -358,7 +358,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="laptops" data-node-id="2:161" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="laptops" data-product-url="{{ url('/products/macbook-pro-14') }}" data-node-id="2:161" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:162" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:163" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/b0999.png') }}" />
@@ -399,7 +399,7 @@
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:179">
                   $1,999.00
                 </p>
-                <div class="h-[12px] relative shrink-0 w-[30px]" data-node-id="2:180" data-name="Color options">
+                <div class="h-[12px] relative shrink-0 w-[30px]" data-colors="Space Gray|Silver" data-product-color="macbook-pro-14" data-node-id="2:180" data-name="Color options">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/8cea2.svg') }}" />
                 </div>
               </div>
@@ -413,7 +413,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="tablets" data-node-id="2:187" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="tablets" data-product-url="{{ url('/products/galaxy-tab-s8') }}" data-node-id="2:187" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:188" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:189" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/a1a1c.png') }}" />
@@ -449,7 +449,7 @@
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:203">
                   $699.00
                 </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:204" data-name="Color options">
+                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Graphite|Silver|Pink Gold" data-product-color="galaxy-tab-s8" data-node-id="2:204" data-name="Color options">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/4c43d.svg') }}" />
                 </div>
               </div>
@@ -463,7 +463,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="smartphones" data-node-id="2:212" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="smartphones" data-product-url="{{ url('/products/galaxy-s23-ultra') }}" data-node-id="2:212" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:213" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:214" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/46886.png') }}" />
@@ -499,7 +499,7 @@
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:228">
                   $1,199.00
                 </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:229" data-name="Color options">
+                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Phantom Black|Cream|Green" data-product-color="galaxy-s23-ultra" data-node-id="2:229" data-name="Color options">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/6a280.svg') }}" />
                 </div>
               </div>
@@ -555,7 +555,7 @@
           </div>
         </div>
         <div class="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:253" data-name="Accessories grid">
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="audio" data-new-arrival data-node-id="2:254" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="audio" data-new-arrival data-product-url="{{ url('/products/airpods-pro') }}" data-node-id="2:254" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:255" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:256" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/8f66f.png') }}" />
@@ -596,7 +596,7 @@
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:272">
                   $249.00
                 </p>
-                <div class="relative shrink-0 size-[12px]" data-node-id="2:273" data-name="Color options">
+                <div class="relative shrink-0 size-[12px]" data-colors="White" data-product-color="airpods-pro" data-node-id="2:273" data-name="Color options">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/ca37d.svg') }}" />
                 </div>
               </div>
@@ -610,7 +610,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="mobile-accessories" data-new-arrival data-node-id="2:279" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="mobile-accessories" data-new-arrival data-product-url="{{ url('/products/boostcharge-pro') }}" data-node-id="2:279" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:280" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:281" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/25fc8.png') }}" />
@@ -651,7 +651,7 @@
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:297">
                   $149.00
                 </p>
-                <div class="h-[12px] relative shrink-0 w-[30px]" data-node-id="2:298" data-name="Color options">
+                <div class="h-[12px] relative shrink-0 w-[30px]" data-colors="White|Black" data-product-color="boostcharge-pro" data-node-id="2:298" data-name="Color options">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/6bf7d.svg') }}" />
                 </div>
               </div>
@@ -665,7 +665,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="mobile-accessories" data-node-id="2:305" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="mobile-accessories" data-product-url="{{ url('/products/mx-keys-mini') }}" data-node-id="2:305" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:306" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:307" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/a3684.png') }}" />
@@ -701,7 +701,7 @@
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:321">
                   $99.00
                 </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:322" data-name="Color options">
+                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Graphite|Pale Gray|Rose" data-product-color="mx-keys-mini" data-node-id="2:322" data-name="Color options">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/c4251.svg') }}" />
                 </div>
               </div>
@@ -715,7 +715,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="audio" data-node-id="2:330" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="audio" data-product-url="{{ url('/products/sony-wh-1000xm5') }}" data-node-id="2:330" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:331" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:332" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/6d140.png') }}" />
@@ -751,7 +751,7 @@
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:346">
                   $399.00
                 </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-node-id="2:347" data-name="Color options">
+                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Black|Silver|Midnight Blue" data-product-color="sony-wh-1000xm5" data-node-id="2:347" data-name="Color options">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/eac21.svg') }}" />
                 </div>
               </div>
