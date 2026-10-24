@@ -120,11 +120,60 @@ const productPages = {
 
 type ProductSlug = keyof typeof productPages;
 type Quantities = Record<string, number>;
+type Confirmation = { reference: string; items: { name: string; quantity: number }[]; total: number };
 
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 const productEntries = Object.entries(productPages) as [ProductSlug, (typeof productPages)[ProductSlug]][];
 const productByName = (name: string) => productEntries.find(([, product]) => product.name === name);
 const priceNumber = (price: string) => Number(price.replace(/[^0-9.]/g, ""));
+const productNames = new Set(productEntries.map(([, product]) => product.name));
+
+type StorageKind = "local" | "session";
+
+const getStorage = (kind: StorageKind) => kind === "local" ? window.localStorage : window.sessionStorage;
+
+const readStorage = <T,>(kind: StorageKind, key: string, fallback: T, validate: (value: unknown) => value is T): T => {
+  try {
+    const storage = getStorage(kind);
+    const raw = storage.getItem(key);
+    if (raw === null) return fallback;
+    const parsed: unknown = JSON.parse(raw);
+    return validate(parsed) ? parsed : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+const writeStorage = (kind: StorageKind, key: string, value: unknown) => {
+  try {
+    getStorage(kind).setItem(key, JSON.stringify(value));
+  } catch {
+    // Browsing still works when storage is disabled, full, or unavailable.
+  }
+};
+
+const isProductList = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === "string" && productNames.has(item));
+const isQuantities = (value: unknown): value is Quantities =>
+  Boolean(value) && typeof value === "object" && !Array.isArray(value)
+  && Object.entries(value).every(([name, quantity]) => productNames.has(name) && Number.isInteger(quantity) && Number(quantity) > 0);
+const isSelectedColors = (value: unknown): value is Record<string, string> =>
+  Boolean(value) && typeof value === "object" && !Array.isArray(value)
+  && Object.entries(value).every(([slug, color]) =>
+    slug in productPages && typeof color === "string" && (productPages[slug as ProductSlug].colors as readonly string[]).includes(color),
+  );
+const isConfirmation = (value: unknown): value is Confirmation => {
+  if (!value || typeof value !== "object") return false;
+  const candidate = value as Partial<Confirmation>;
+  return typeof candidate.reference === "string"
+    && typeof candidate.total === "number"
+    && Number.isFinite(candidate.total)
+    && Array.isArray(candidate.items)
+    && candidate.items.every((item) =>
+      Boolean(item) && typeof item.name === "string" && productNames.has(item.name)
+      && Number.isInteger(item.quantity) && item.quantity > 0,
+    );
+};
 
 function StoreHeader({ title, backLabel, backTo }: { title: string; backLabel: string; backTo: string }) {
   return (
@@ -294,6 +343,25 @@ function ConfirmationPage({ reference, completedItems, total }: { reference: str
           <div className="flex justify-between text-[16px]"><span>Total</span><strong>{money.format(total)}</strong></div>
         </div>
         <button className="bg-[#245c4d] h-[48px] mt-[28px] px-[24px] rounded-[4px] text-[12px] text-white" onClick={() => window.location.assign("/")} type="button">Continue shopping</button>
+      </section>
+    </main>
+  );
+}
+
+function NotFoundPage({ header }: { header: ReactNode }) {
+  return (
+    <main className="bg-white min-h-screen text-[#202522]">
+      {header}
+      <section className="bg-[#f4f5f1] flex min-h-[520px] items-center px-[64px] py-[72px] max-md:px-[24px]">
+        <div className="max-w-[620px]">
+          <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">404 · PAGE NOT FOUND</p>
+          <h1 className="font-['Inter:Medium'] leading-[1.08] mt-[16px] text-[52px] max-md:text-[40px]">This page isn’t in our collection.</h1>
+          <p className="leading-[1.7] mt-[20px] max-w-[500px] text-[#717772] text-[14px]">The product, category, or collection may have moved or may no longer be available.</p>
+          <div className="flex flex-wrap gap-[12px] mt-[30px]">
+            <a className="bg-[#245c4d] flex h-[46px] items-center justify-center px-[24px] rounded-[4px] text-[12px] text-white" href="/">Return home</a>
+            <a className="border border-[#245c4d] flex h-[46px] items-center justify-center px-[24px] rounded-[4px] text-[#245c4d] text-[12px]" href="/#featured">Browse products</a>
+          </div>
+        </div>
       </section>
     </main>
   );
@@ -623,18 +691,16 @@ export default function FormePremiumTechnologyStorefront() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [headerPanel, setHeaderPanel] = useState<HeaderPanel>(null);
-  const [accountMode, setAccountMode] = useState<"signin" | "create" | null>(null);
-  const [accountSubmitted, setAccountSubmitted] = useState(false);
   const [activeCategory, setActiveCategory] = useState<ProductCategory>("all");
-  const [wishlist, setWishlist] = useState<string[]>(() => JSON.parse(localStorage.getItem("forme-wishlist") || "[]"));
-  const [bag, setBag] = useState<string[]>(() => JSON.parse(localStorage.getItem("forme-bag") || "[]"));
-  const [quantities, setQuantities] = useState<Quantities>(() => JSON.parse(localStorage.getItem("forme-bag-quantities") || "{}"));
-  const [confirmation, setConfirmation] = useState(() => JSON.parse(sessionStorage.getItem("forme-confirmation") || '{"reference":"","items":[],"total":0}'));
-  const [selectedColors, setSelectedColors] = useState<Record<string, string>>(() => JSON.parse(localStorage.getItem("forme-colors") || "{}"));
-  useEffect(() => localStorage.setItem("forme-wishlist", JSON.stringify(wishlist)), [wishlist]);
-  useEffect(() => localStorage.setItem("forme-bag", JSON.stringify(bag)), [bag]);
-  useEffect(() => localStorage.setItem("forme-bag-quantities", JSON.stringify(quantities)), [quantities]);
-  useEffect(() => localStorage.setItem("forme-colors", JSON.stringify(selectedColors)), [selectedColors]);
+  const [wishlist, setWishlist] = useState<string[]>(() => readStorage("local", "forme-wishlist", [], isProductList));
+  const [bag, setBag] = useState<string[]>(() => readStorage("local", "forme-bag", [], isProductList));
+  const [quantities, setQuantities] = useState<Quantities>(() => readStorage("local", "forme-bag-quantities", {}, isQuantities));
+  const [confirmation, setConfirmation] = useState<Confirmation>(() => readStorage("session", "forme-confirmation", { reference: "", items: [], total: 0 }, isConfirmation));
+  const [selectedColors, setSelectedColors] = useState<Record<string, string>>(() => readStorage("local", "forme-colors", {}, isSelectedColors));
+  useEffect(() => writeStorage("local", "forme-wishlist", wishlist), [wishlist]);
+  useEffect(() => writeStorage("local", "forme-bag", bag), [bag]);
+  useEffect(() => writeStorage("local", "forme-bag-quantities", quantities), [quantities]);
+  useEffect(() => writeStorage("local", "forme-colors", selectedColors), [selectedColors]);
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     const category = activeCategory === "all" || activeCategory === "new-arrivals"
@@ -651,8 +717,6 @@ export default function FormePremiumTechnologyStorefront() {
 
   const openPanel = (panel: Exclude<HeaderPanel, null>) => {
     setSearchOpen(false);
-    setAccountMode(null);
-    setAccountSubmitted(false);
     setHeaderPanel(panel);
   };
 
@@ -772,7 +836,7 @@ export default function FormePremiumTechnologyStorefront() {
   if (window.location.pathname === "/bag") return <BagPage bag={bag} quantities={quantities} remove={toggleBag} selectedColors={selectedColors} setQuantity={setQuantity} subtotal={subtotal} />;
   if (window.location.pathname === "/checkout") return <CheckoutPage bag={bag} completeOrder={(reference) => {
     const completed = { reference, items: bag.map((name) => ({ name, quantity: quantities[name] || 1 })), total: subtotal };
-    sessionStorage.setItem("forme-confirmation", JSON.stringify(completed));
+    writeStorage("session", "forme-confirmation", completed);
     setConfirmation(completed);
     setBag([]);
     setQuantities({});
@@ -789,6 +853,7 @@ export default function FormePremiumTechnologyStorefront() {
   }
   const categorySlug = window.location.pathname.match(/^\/categories\/([^/]+)\/?$/)?.[1] as CategorySlug | undefined;
   if (categorySlug && categoryPages[categorySlug]) return <CategoryPage bag={bag} header={shoppingHeader} slug={categorySlug} toggleBag={toggleBag} toggleWishlist={toggleWishlist} wishlist={wishlist} />;
+  if (pathname !== "/") return <NotFoundPage header={shoppingHeader} />;
 
   return (
     <div className="bg-white content-stretch flex flex-col items-start relative size-full" data-node-id="2:3" data-name="FORME — Premium technology storefront">

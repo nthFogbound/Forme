@@ -14,18 +14,44 @@ const results = document.querySelector("[data-search-results]")
 const panel = document.querySelector("[data-header-panel]")
 const panelTitle = document.querySelector("[data-panel-title]")
 const panelContent = document.querySelector("[data-panel-content]")
+const productNames = new Set([
+  ...products.map(([name]) => name),
+  ...[...document.querySelectorAll("[data-save-product], [data-add-product]")].flatMap((control) =>
+    [control.dataset.saveProduct, control.dataset.addProduct].filter(Boolean),
+  ),
+])
+const productColors = new Map(
+  [...document.querySelectorAll("[data-product-color]")].map((control) => [
+    control.dataset.productColor,
+    new Set((control.dataset.colors || "").split("|").filter(Boolean)),
+  ]),
+)
 const readList = (key) => {
   try {
-    return JSON.parse(localStorage.getItem(key) || "[]")
+    const value = JSON.parse(localStorage.getItem(key) || "[]")
+    return Array.isArray(value) && value.every((item) => typeof item === "string" && productNames.has(item)) ? value : []
   } catch {
     return []
+  }
+}
+const writeLocal = (key, value) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch {
+    // Keep the current in-memory state when storage is unavailable.
   }
 }
 let wishlistItems = readList("forme-wishlist")
 let bagItems = readList("forme-bag")
 let selectedColors = (() => {
   try {
-    return JSON.parse(localStorage.getItem("forme-colors") || "{}")
+    const value = JSON.parse(localStorage.getItem("forme-colors") || "{}")
+    if (!value || typeof value !== "object" || Array.isArray(value)) return {}
+    return Object.fromEntries(
+      Object.entries(value).filter(([slug, color]) =>
+        typeof color === "string" && productColors.get(slug)?.has(color),
+      ),
+    )
   } catch {
     return {}
   }
@@ -33,8 +59,8 @@ let selectedColors = (() => {
 const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[character])
 
 function updateProductControls() {
-  localStorage.setItem("forme-wishlist", JSON.stringify(wishlistItems))
-  localStorage.setItem("forme-bag", JSON.stringify(bagItems))
+  writeLocal("forme-wishlist", wishlistItems)
+  writeLocal("forme-bag", bagItems)
   document.querySelectorAll("[data-save-product]").forEach((control) => {
     const active = wishlistItems.includes(control.dataset.saveProduct)
     control.setAttribute("aria-pressed", String(active))
@@ -93,14 +119,14 @@ document.querySelectorAll("[data-product-color]").forEach((control) => {
   const cycle = () => {
     const selected = selectedColors[control.dataset.productColor] || colors[0]
     selectedColors[control.dataset.productColor] = colors[(colors.indexOf(selected) + 1) % colors.length]
-    localStorage.setItem("forme-colors", JSON.stringify(selectedColors))
+    writeLocal("forme-colors", selectedColors)
     updateColor()
   }
   if (buttons.length) {
     buttons.forEach((button) => button.addEventListener("click", (event) => {
       event.stopPropagation()
       selectedColors[control.dataset.productColor] = button.dataset.selectColor
-      localStorage.setItem("forme-colors", JSON.stringify(selectedColors))
+      writeLocal("forme-colors", selectedColors)
       updateColor()
     }))
   } else {
