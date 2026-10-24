@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type KeyboardEvent, type MouseEvent } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 
 const assetPathPrefix = "/assets";
 const imgEverydayTechnologyStillLife = `${assetPathPrefix}/7c3c6.png`;
@@ -299,6 +299,147 @@ function ConfirmationPage({ reference, completedItems, total }: { reference: str
   );
 }
 
+function ShoppingHeader({
+  activeCategory,
+  bag,
+  bagCount,
+  headerPanel,
+  quantities,
+  searchOpen,
+  searchQuery,
+  searchResults,
+  selectedColors,
+  subtotal,
+  wishlist,
+  onCategory,
+  onClosePanel,
+  onOpenPanel,
+  onQuantity,
+  onSearchOpen,
+  onSearchQuery,
+  onSelectSearchResult,
+  onToggleBag,
+  onToggleWishlist,
+}: {
+  activeCategory?: ProductCategory;
+  bag: string[];
+  bagCount: number;
+  headerPanel: HeaderPanel;
+  quantities: Quantities;
+  searchOpen: boolean;
+  searchQuery: string;
+  searchResults: typeof searchableProducts;
+  selectedColors: Record<string, string>;
+  subtotal: number;
+  wishlist: string[];
+  onCategory?: (category: ProductCategory) => void;
+  onClosePanel: () => void;
+  onOpenPanel: (panel: Exclude<HeaderPanel, null>) => void;
+  onQuantity: (name: string, quantity: number) => void;
+  onSearchOpen: (open: boolean) => void;
+  onSearchQuery: (query: string) => void;
+  onSelectSearchResult: (slug: ProductSlug) => void;
+  onToggleBag: (name: string) => void;
+  onToggleWishlist: (name: string) => void;
+}) {
+  const panelItems = headerPanel === "wishlist" ? wishlist : bag;
+  const navigate = (category: ProductCategory) => {
+    if (onCategory) return onCategory(category);
+    if (category === "all") return window.location.assign("/");
+    if (category === "new-arrivals") return window.location.assign("/collections/new-arrivals");
+    window.location.assign(`/categories/${category}`);
+  };
+
+  return (
+    <>
+      <div className="content-stretch flex flex-col items-start overflow-visible relative shrink-0 w-full z-40" data-name="Retail navigation">
+        <div className="bg-[#202d27] content-stretch flex h-[32px] items-center justify-center overflow-clip relative shrink-0 w-full" data-name="Store announcement">
+          <p className="font-['Inter:Regular'] text-[11px] text-white whitespace-nowrap">Curated devices, thoughtful essentials and everyday accessories.</p>
+        </div>
+        <div className="bg-white content-stretch flex h-[80px] items-center justify-between overflow-visible px-[64px] relative shrink-0 w-full" data-name="Main navigation">
+          <button aria-label="Forme home" className="font-['Inter:Semi_Bold'] font-semibold shrink-0 text-[#202522] text-[30px]" onClick={() => window.location.assign("/")} type="button">FORME</button>
+          <form
+            className="bg-[#f4f5f1] content-stretch flex gap-[12px] h-[40px] items-center px-[16px] relative shrink-0 w-[360px]"
+            data-name="Product search"
+            onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) onSearchOpen(false); }}
+            onSubmit={(event) => { event.preventDefault(); if (searchResults[0]) onSelectSearchResult(searchResults[0].slug as ProductSlug); }}
+            role="search"
+          >
+            <img alt="" className="size-[17px]" src={imgSearch} />
+            <input
+              aria-label="Search products"
+              className="bg-transparent flex-1 font-['Inter:Regular'] min-w-0 outline-none text-[#202522] text-[12px] placeholder:text-[#717772]"
+              onChange={(event) => { onSearchQuery(event.target.value); onSearchOpen(true); }}
+              onFocus={() => onSearchOpen(true)}
+              placeholder="Search devices, brands and essentials"
+              type="search"
+              value={searchQuery}
+            />
+            {searchQuery && <button aria-label="Clear search" className="text-[#245c4d] text-[11px]" onClick={() => { onSearchQuery(""); onSearchOpen(true); }} type="button">Clear</button>}
+            {searchOpen && (
+              <div className="absolute bg-white border border-[#dfe3dc] left-0 max-h-[min(420px,60vh)] overflow-y-auto p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" role="listbox">
+                <p className="font-['Inter:Semi_Bold'] px-[10px] py-[8px] text-[#717772] text-[10px]">PRODUCTS</p>
+                {searchResults.length ? searchResults.map((product) => (
+                  <button className="flex min-h-[44px] items-center justify-between px-[10px] py-[10px] text-left hover:bg-[#f4f5f1] w-full" key={product.slug} onClick={() => onSelectSearchResult(product.slug as ProductSlug)} role="option" type="button">
+                    <span className="font-['Inter:Medium'] text-[#202522] text-[12px]">{product.name}</span>
+                    <span className="font-['Inter:Regular'] text-[#717772] text-[10px]">{product.category}</span>
+                  </button>
+                )) : <p className="px-[10px] py-[16px] text-[#717772] text-[12px]">No products found</p>}
+              </div>
+            )}
+          </form>
+          <div className="content-stretch flex gap-[24px] items-center relative shrink-0" data-name="Account actions">
+            <button aria-label="Open account menu" className="relative shrink-0 size-[20px]" onClick={() => onOpenPanel("account")} type="button"><img alt="" className="size-full" src={imgUserRound} /></button>
+            <button aria-label={`Open wishlist, ${wishlist.length} saved items`} className="relative shrink-0 size-[20px]" onClick={() => onOpenPanel("wishlist")} type="button">
+              <img alt="" className="size-full" src={imgHeart} />
+              {wishlist.length > 0 && <span className="absolute bg-[#245c4d] flex items-center justify-center -right-[8px] rounded-full text-[8px] text-white -top-[8px] size-[15px]">{wishlist.length}</span>}
+            </button>
+            <button aria-label={`Open shopping bag, ${bagCount} items`} className="content-stretch flex gap-[8px] items-center shrink-0" onClick={() => onOpenPanel("bag")} type="button">
+              <img alt="" className="size-[20px]" src={imgShoppingBag} />
+              <span className="font-['Inter:Regular'] text-[#202522] text-[12px] whitespace-nowrap">Bag ({bagCount})</span>
+            </button>
+          </div>
+        </div>
+        <div className="border-[#dfe3dc] border-b border-t content-stretch flex h-[44px] items-center justify-between overflow-x-auto px-[64px] relative shrink-0 w-full" data-name="Category navigation">
+          <div className="content-stretch flex gap-[32px] items-center shrink-0 text-[12px] whitespace-nowrap" data-name="Shop destinations">
+            {([
+              ["all", "Shop all"],
+              ["smartphones", "Smartphones"],
+              ["laptops", "Laptops"],
+              ["tablets", "Tablets"],
+              ["mobile-accessories", "Mobile accessories"],
+              ["audio", "Audio"],
+              ["new-arrivals", "New arrivals"],
+            ] as [ProductCategory, string][]).map(([category, label]) => (
+              <button className={`${category === "all" ? "font-['Inter:Semi_Bold']" : "font-['Inter:Regular']"} ${activeCategory === category ? "text-[#245c4d]" : "text-[#202522]"}`} key={category} onClick={() => navigate(category)} type="button">{label}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+      {headerPanel && (
+        <div className="fixed inset-0 z-[100]" role="presentation">
+          <button aria-label="Close panel" className="absolute bg-[rgba(32,37,34,0.38)] inset-0 w-full" onClick={onClosePanel} type="button" />
+          <section aria-labelledby="header-panel-title" aria-modal="true" className="absolute bg-white flex flex-col h-full p-[32px] right-0 shadow-[-16px_0_48px_rgba(32,37,34,0.16)] top-0 w-[min(420px,100vw)]" role="dialog">
+            <div className="border-[#dfe3dc] border-b flex items-center justify-between pb-[22px]">
+              <div><p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[10px]">FORME</p><p className="font-['Inter:Medium'] mt-[6px] text-[#202522] text-[26px]" id="header-panel-title">{headerPanel === "account" ? "Your account" : headerPanel === "wishlist" ? "Your wishlist" : "Your bag"}</p></div>
+              <button aria-label="Close panel" className="border border-[#dfe3dc] flex items-center justify-center rounded-full size-[36px] text-[22px]" onClick={onClosePanel} type="button">×</button>
+            </div>
+            {headerPanel === "account" ? (
+              <div className="flex flex-col gap-[18px] pt-[28px]"><p className="font-['Inter:Medium'] text-[18px]">Accounts are not available yet</p><p className="leading-[1.6] text-[#717772] text-[13px]">You can still browse, save items on this device, and complete checkout as a guest.</p><button className="bg-[#245c4d] h-[46px] rounded-[4px] text-[13px] text-white" onClick={onClosePanel} type="button">Continue as guest</button></div>
+            ) : panelItems.length ? (
+              <div className="flex flex-col overflow-y-auto pt-[20px]">
+                {headerPanel === "bag" ? <OrderItems bag={bag} editable onQuantity={onQuantity} onRemove={onToggleBag} quantities={quantities} selectedColors={selectedColors} /> : panelItems.map((name) => <div className="border-[#dfe3dc] border-b flex items-center justify-between py-[16px]" key={name}><p className="font-['Inter:Medium'] text-[14px]">{name}</p><button className="text-[#245c4d] text-[11px]" onClick={() => onToggleWishlist(name)} type="button">Remove</button></div>)}
+                {headerPanel === "wishlist" && <button className="bg-[#245c4d] h-[44px] mt-[20px] rounded-[4px] text-[12px] text-white" onClick={() => panelItems.forEach((name) => { if (!bag.includes(name)) onToggleBag(name); })} type="button">Add saved items to bag</button>}
+                {headerPanel === "bag" && <><div className="flex justify-between mt-[18px] text-[15px]"><span>Subtotal</span><strong>{money.format(subtotal)}</strong></div><button className="border border-[#245c4d] h-[44px] mt-[16px] rounded-[4px] text-[#245c4d] text-[12px]" onClick={() => window.location.assign("/bag")} type="button">View bag</button><button className="bg-[#245c4d] h-[46px] mt-[10px] rounded-[4px] text-[12px] text-white" onClick={() => window.location.assign("/checkout")} type="button">Checkout</button></>}
+              </div>
+            ) : <div className="flex flex-1 flex-col items-center justify-center text-center"><img alt="" className="size-[24px]" src={headerPanel === "wishlist" ? imgHeart : imgShoppingBag} /><p className="font-['Inter:Medium'] mt-[20px] text-[18px]">{headerPanel === "wishlist" ? "Your wishlist is empty" : "Your bag is empty"}</p><button className="bg-[#245c4d] h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" onClick={() => window.location.assign("/")} type="button">Browse products</button></div>}
+          </section>
+        </div>
+      )}
+    </>
+  );
+}
+
 function ColorSelector({ colors, selected, onSelect }: { colors: readonly string[]; selected: string; onSelect: (color: string) => void }) {
   const swatches: Record<string, string> = {
     Black: "#292d2b", Graphite: "#555956", Silver: "#d8dad7", White: "#f7f7f4", Cream: "#eee4d1", Green: "#768277",
@@ -319,16 +460,13 @@ function NoReviewsLabel() {
   return <p className="font-['Inter:Regular'] text-[#717772] text-[11px]">No reviews yet</p>;
 }
 
-function ProductPage({ slug, wishlist, bag, toggleWishlist, toggleBag, selectedColor, selectColor }: {
-  slug: ProductSlug; wishlist: string[]; bag: string[]; toggleWishlist: (name: string) => void; toggleBag: (name: string) => void; selectedColor: string; selectColor: (color: string) => void;
+function ProductPage({ header, slug, wishlist, bag, toggleWishlist, toggleBag, selectedColor, selectColor }: {
+  header: ReactNode; slug: ProductSlug; wishlist: string[]; bag: string[]; toggleWishlist: (name: string) => void; toggleBag: (name: string) => void; selectedColor: string; selectColor: (color: string) => void;
 }) {
   const product = productPages[slug];
   return (
     <main className="bg-white min-h-screen text-[#202522]">
-      <header className="border-[#dfe3dc] border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
-        <button className="font-['Inter:Semi_Bold'] text-[30px]" onClick={() => window.location.assign("/")} type="button">FORME</button>
-        <button className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => history.back()} type="button">← Back to shopping</button>
-      </header>
+      {header}
       <section className="grid grid-cols-2 min-h-[560px] max-md:grid-cols-1">
         <div className="bg-[#f4f5f1] flex items-center justify-center p-[64px] min-h-[420px]"><img alt={product.name} className="max-h-[430px] object-contain size-full" src={product.image} /></div>
         <div className="flex flex-col justify-center px-[64px] py-[64px] max-md:px-[24px]">
@@ -354,12 +492,14 @@ function ProductPage({ slug, wishlist, bag, toggleWishlist, toggleBag, selectedC
 }
 
 function CategoryPage({
+  header,
   slug,
   wishlist,
   bag,
   toggleWishlist,
   toggleBag,
 }: {
+  header: ReactNode;
   slug: CategorySlug;
   wishlist: string[];
   bag: string[];
@@ -370,10 +510,7 @@ function CategoryPage({
 
   return (
     <main className="bg-white min-h-screen text-[#202522]">
-      <header className="border-[#dfe3dc] border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
-        <button className="font-['Inter:Semi_Bold'] text-[30px]" onClick={() => window.location.assign("/")} type="button">FORME</button>
-        <button className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => window.location.assign("/#categories")} type="button">← All categories</button>
-      </header>
+      {header}
       <section className="bg-[#edefe8] grid grid-cols-2 min-h-[480px] max-md:grid-cols-1">
         <div className="flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
           <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">{category.eyebrow}</p>
@@ -447,14 +584,11 @@ const collectionPages = {
 
 type CollectionSlug = keyof typeof collectionPages;
 
-function CollectionPage({ slug }: { slug: CollectionSlug }) {
+function CollectionPage({ header, slug }: { header: ReactNode; slug: CollectionSlug }) {
   const collection = collectionPages[slug];
   return (
     <main className="bg-white min-h-screen text-[#202522]">
-      <header className="border-[#dfe3dc] border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
-        <button className="font-['Inter:Semi_Bold'] text-[30px]" onClick={() => window.location.assign("/")} type="button">FORME</button>
-        <button className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => window.location.assign("/#footer")} type="button">← All collections</button>
-      </header>
+      {header}
       <section className="bg-[#edefe8] grid grid-cols-2 min-h-[480px] max-md:grid-cols-1">
         <div className="flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
           <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">{collection.eyebrow}</p>
@@ -608,7 +742,32 @@ export default function FormePremiumTechnologyStorefront() {
       tabIndex: 0,
     };
   };
-  const activePanelItems = headerPanel === "wishlist" ? wishlist : bag;
+  const pathname = window.location.pathname;
+  const routeCategory = pathname.match(/^\/categories\/([^/]+)\/?$/)?.[1] as ProductCategory | undefined;
+  const shoppingHeader = (
+    <ShoppingHeader
+      activeCategory={routeCategory || (pathname === "/" ? activeCategory : undefined)}
+      bag={bag}
+      bagCount={bagCount}
+      headerPanel={headerPanel}
+      onCategory={pathname === "/" ? navigateToCategory : undefined}
+      onClosePanel={() => setHeaderPanel(null)}
+      onOpenPanel={openPanel}
+      onQuantity={setQuantity}
+      onSearchOpen={setSearchOpen}
+      onSearchQuery={setSearchQuery}
+      onSelectSearchResult={selectSearchResult}
+      onToggleBag={toggleBag}
+      onToggleWishlist={toggleWishlist}
+      quantities={quantities}
+      searchOpen={searchOpen}
+      searchQuery={searchQuery}
+      searchResults={searchResults}
+      selectedColors={selectedColors}
+      subtotal={subtotal}
+      wishlist={wishlist}
+    />
+  );
 
   if (window.location.pathname === "/bag") return <BagPage bag={bag} quantities={quantities} remove={toggleBag} selectedColors={selectedColors} setQuantity={setQuantity} subtotal={subtotal} />;
   if (window.location.pathname === "/checkout") return <CheckoutPage bag={bag} completeOrder={(reference) => {
@@ -622,137 +781,18 @@ export default function FormePremiumTechnologyStorefront() {
   if (window.location.pathname === "/order-confirmation") return <ConfirmationPage completedItems={confirmation.items} reference={confirmation.reference} total={confirmation.total} />;
 
   const collectionSlug = window.location.pathname.match(/^\/collections\/([^/]+)\/?$/)?.[1] as CollectionSlug | undefined;
-  if (collectionSlug && collectionPages[collectionSlug]) return <CollectionPage slug={collectionSlug} />;
+  if (collectionSlug && collectionPages[collectionSlug]) return <CollectionPage header={shoppingHeader} slug={collectionSlug} />;
   const productSlug = window.location.pathname.match(/^\/products\/([^/]+)\/?$/)?.[1] as ProductSlug | undefined;
   if (productSlug && productPages[productSlug]) {
     const product = productPages[productSlug];
-    return <ProductPage bag={bag} selectColor={(color) => selectColor(productSlug, color)} selectedColor={selectedColors[productSlug] || product.colors[0]} slug={productSlug} toggleBag={toggleBag} toggleWishlist={toggleWishlist} wishlist={wishlist} />;
+    return <ProductPage bag={bag} header={shoppingHeader} selectColor={(color) => selectColor(productSlug, color)} selectedColor={selectedColors[productSlug] || product.colors[0]} slug={productSlug} toggleBag={toggleBag} toggleWishlist={toggleWishlist} wishlist={wishlist} />;
   }
   const categorySlug = window.location.pathname.match(/^\/categories\/([^/]+)\/?$/)?.[1] as CategorySlug | undefined;
-  if (categorySlug && categoryPages[categorySlug]) return <CategoryPage bag={bag} slug={categorySlug} toggleBag={toggleBag} toggleWishlist={toggleWishlist} wishlist={wishlist} />;
+  if (categorySlug && categoryPages[categorySlug]) return <CategoryPage bag={bag} header={shoppingHeader} slug={categorySlug} toggleBag={toggleBag} toggleWishlist={toggleWishlist} wishlist={wishlist} />;
 
   return (
     <div className="bg-white content-stretch flex flex-col items-start relative size-full" data-node-id="2:3" data-name="FORME — Premium technology storefront">
-      <div className="content-stretch flex flex-col items-start overflow-visible relative shrink-0 w-full z-40" data-node-id="2:4" data-name="Retail navigation">
-        <div className="bg-[#202d27] content-stretch flex h-[32px] items-center justify-center overflow-clip relative shrink-0 w-full" data-node-id="2:5" data-name="Store announcement">
-          <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[11px] text-white whitespace-nowrap" data-node-id="2:6">
-            Curated devices, thoughtful essentials and everyday accessories.
-          </p>
-        </div>
-        <div className="bg-white content-stretch flex h-[80px] items-center justify-between overflow-visible px-[64px] relative shrink-0 w-full" data-node-id="2:7" data-name="Main navigation">
-          <button aria-label="Forme home" className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[30px] whitespace-nowrap" data-node-id="2:8" onClick={() => window.location.assign("/")} type="button">
-            FORME
-          </button>
-          <form
-            className="bg-[#f4f5f1] content-stretch flex gap-[12px] h-[40px] items-center px-[16px] relative shrink-0 w-[360px]"
-            data-node-id="2:9"
-            data-name="Product search"
-            onBlur={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget as Node)) setSearchOpen(false);
-            }}
-            onSubmit={(event) => {
-              event.preventDefault();
-              if (searchResults[0]) selectSearchResult(searchResults[0].slug as ProductSlug);
-            }}
-            role="search"
-          >
-            <div className="relative shrink-0 size-[17px]" data-node-id="2:10" data-name="search">
-              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgSearch} />
-            </div>
-            <input
-              aria-label="Search products"
-              className="bg-transparent flex-1 font-['Inter:Regular'] outline-none text-[#202522] text-[12px] placeholder:text-[#717772]"
-              onChange={(event) => {
-                setSearchQuery(event.target.value);
-                setSearchOpen(true);
-              }}
-              onFocus={() => setSearchOpen(true)}
-              placeholder="Search devices, brands and essentials"
-              type="search"
-              value={searchQuery}
-            />
-            {searchQuery && (
-              <button
-                aria-label="Clear search"
-                className="flex h-[36px] items-center justify-center -mr-[10px] text-[#245c4d] text-[11px] w-[48px]"
-                onClick={() => {
-                  setSearchQuery("");
-                  setSearchOpen(true);
-                }}
-                type="button"
-              >
-                Clear
-              </button>
-            )}
-            {searchOpen && (
-              <div className="absolute bg-white border border-[#dfe3dc] left-0 max-h-[min(420px,60vh)] overflow-y-auto p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" role="listbox">
-                <p className="font-['Inter:Semi_Bold'] px-[10px] py-[8px] text-[#717772] text-[10px]">PRODUCTS</p>
-                {searchResults.length ? searchResults.map((product) => (
-                  <button
-                    className="flex min-h-[44px] items-center justify-between px-[10px] py-[10px] text-left transition-colors hover:bg-[#f4f5f1] focus:bg-[#f4f5f1] w-full"
-                    key={product.slug}
-                    onClick={() => selectSearchResult(product.slug as ProductSlug)}
-                    role="option"
-                    type="button"
-                  >
-                    <span className="font-['Inter:Medium'] text-[#202522] text-[12px]">{product.name}</span>
-                    <span className="font-['Inter:Regular'] text-[#717772] text-[10px]">{product.category}</span>
-                  </button>
-                )) : (
-                  <div className="px-[10px] py-[16px]">
-                    <p className="font-['Inter:Medium'] text-[#202522] text-[12px]">No products found</p>
-                    <p className="font-['Inter:Regular'] mt-[4px] text-[#717772] text-[11px]">Try another term or clear your search.</p>
-                    <button className="font-['Inter:Medium'] mt-[12px] min-h-[36px] text-[#245c4d] text-[11px] underline underline-offset-4" onClick={() => setSearchQuery("")} type="button">Clear search</button>
-                  </div>
-                )}
-              </div>
-            )}
-          </form>
-          <div className="content-stretch flex gap-[24px] items-center relative shrink-0" data-node-id="2:13" data-name="Account actions">
-            <button aria-label="Open account menu" className="relative shrink-0 size-[20px]" data-node-id="2:14" data-name="user-round" onClick={() => openPanel("account")} type="button">
-              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgUserRound} />
-            </button>
-            <button aria-label="Open wishlist" className="relative shrink-0 size-[20px]" data-node-id="2:16" data-name="heart" onClick={() => openPanel("wishlist")} type="button">
-              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgHeart} />
-            </button>
-            <button aria-label="Open shopping bag" className="content-stretch flex gap-[8px] items-center relative shrink-0" data-node-id="2:18" data-name="Shopping bag" onClick={() => openPanel("bag")} type="button">
-              <div className="relative shrink-0 size-[20px]" data-node-id="2:19" data-name="shopping-bag">
-                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgShoppingBag} />
-              </div>
-              <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[12px] whitespace-nowrap" data-node-id="2:21">
-                Bag ({bagCount})
-              </p>
-            </button>
-          </div>
-        </div>
-        <div className="border-[#dfe3dc] border-b border-solid border-t content-stretch flex h-[44px] items-center justify-between overflow-clip px-[64px] relative shrink-0 w-full" data-node-id="2:22" data-name="Category navigation">
-          <div className="[word-break:break-word] content-stretch flex gap-[32px] items-center leading-[normal] not-italic overflow-clip relative shrink-0 text-[12px] whitespace-nowrap" data-node-id="2:23" data-name="Shop destinations">
-            <button className={`font-['Inter:Semi_Bold'] font-semibold relative shrink-0 ${activeCategory === "all" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:24" onClick={() => navigateToCategory("all")} type="button">
-              Shop all
-            </button>
-            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "smartphones" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:25" onClick={() => navigateToCategory("smartphones")} type="button">
-              Smartphones
-            </button>
-            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "laptops" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:26" onClick={() => navigateToCategory("laptops")} type="button">
-              Laptops
-            </button>
-            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "tablets" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:27" onClick={() => navigateToCategory("tablets")} type="button">
-              Tablets
-            </button>
-            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "mobile-accessories" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:28" onClick={() => navigateToCategory("mobile-accessories")} type="button">
-              Mobile accessories
-            </button>
-            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "audio" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:29" onClick={() => navigateToCategory("audio")} type="button">
-              Audio
-            </button>
-          </div>
-          <div className="content-stretch flex items-start overflow-clip relative shrink-0" data-node-id="2:30" data-name="Editorial destinations">
-            <button className={`[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[12px] whitespace-nowrap ${activeCategory === "new-arrivals" ? "font-semibold text-[#245c4d]" : "text-[#245c4d]"}`} data-node-id="2:31" onClick={() => navigateToCategory("new-arrivals")} type="button">
-              New arrivals
-            </button>
-          </div>
-        </div>
-      </div>
+      {shoppingHeader}
       <div className="bg-[#edefe8] content-stretch flex h-[600px] items-start relative shrink-0 w-full" data-node-id="2:32" data-name="Hero collection">
         <div className="content-stretch flex flex-col gap-[24px] h-full items-start overflow-clip pb-[32px] pl-[64px] pr-[48px] pt-[72px] relative shrink-0 w-[608px]" data-node-id="2:33" data-name="Collection introduction">
           <div className="content-stretch flex gap-[12px] items-center overflow-clip relative shrink-0" data-node-id="2:34" data-name="Season label">
@@ -1473,57 +1513,7 @@ export default function FormePremiumTechnologyStorefront() {
           </p>
         </div>
       </div>
-      {headerPanel && (
-        <div className="fixed inset-0 z-[100]" role="presentation">
-          <button aria-label="Close panel" className="absolute bg-[rgba(32,37,34,0.38)] inset-0 w-full" onClick={() => setHeaderPanel(null)} type="button" />
-          <section aria-labelledby="header-panel-title" aria-modal="true" className="absolute bg-white flex flex-col h-full p-[32px] right-0 shadow-[-16px_0_48px_rgba(32,37,34,0.16)] top-0 w-[min(420px,100vw)]" role="dialog">
-            <div className="border-[#dfe3dc] border-b flex items-center justify-between pb-[22px]">
-              <div>
-                <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[10px]">FORME</p>
-                <p className="font-['Inter:Medium'] mt-[6px] text-[#202522] text-[26px]" id="header-panel-title">
-                  {headerPanel === "account" ? "Your account" : headerPanel === "wishlist" ? "Your wishlist" : "Your bag"}
-                </p>
-              </div>
-              <button aria-label="Close panel" className="border border-[#dfe3dc] flex items-center justify-center rounded-full size-[36px] text-[#202522] text-[22px]" onClick={() => setHeaderPanel(null)} type="button">×</button>
-            </div>
-            {headerPanel === "account" ? (
-              <div className="flex flex-col gap-[18px] pt-[28px]">
-                <p className="font-['Inter:Medium'] text-[#202522] text-[18px]">Accounts are not available yet</p>
-                <p className="font-['Inter:Regular'] leading-[1.6] text-[#717772] text-[13px]">You can still browse, save items on this device, and complete the demo checkout as a guest.</p>
-                <button className="bg-[#245c4d] font-['Inter:Medium'] h-[46px] rounded-[4px] text-[13px] text-white" onClick={() => setHeaderPanel(null)} type="button">Continue as guest</button>
-              </div>
-            ) : (
-              activePanelItems.length ? (
-                <div className="flex flex-col gap-[4px] overflow-y-auto pt-[20px]">
-                  {headerPanel === "bag" ? (
-                    <OrderItems bag={bag} editable onQuantity={setQuantity} onRemove={toggleBag} quantities={quantities} selectedColors={selectedColors} />
-                  ) : activePanelItems.map((name) => (
-                    <div className="border-[#dfe3dc] border-b flex items-center justify-between py-[16px]" key={name}>
-                      <div><p className="font-['Inter:Medium'] text-[#202522] text-[14px]">{name}</p><p className="font-['Inter:Regular'] mt-[4px] text-[#717772] text-[11px]">Saved item</p></div>
-                      <button className="font-['Inter:Medium'] text-[#245c4d] text-[11px]" onClick={() => toggleWishlist(name)} type="button">Remove</button>
-                    </div>
-                  ))}
-                  {headerPanel === "wishlist" && <button className="bg-[#245c4d] font-['Inter:Medium'] h-[44px] mt-[20px] rounded-[4px] text-[12px] text-white" onClick={() => activePanelItems.forEach((name) => { if (!bag.includes(name)) toggleBag(name); })} type="button">Add saved items to bag</button>}
-                  {headerPanel === "bag" && <>
-                    <div className="flex justify-between mt-[18px] text-[15px]"><span>Subtotal</span><strong>{money.format(subtotal)}</strong></div>
-                    <button className="border border-[#245c4d] h-[44px] mt-[16px] rounded-[4px] text-[#245c4d] text-[12px]" onClick={() => window.location.assign("/bag")} type="button">View bag</button>
-                    <button className="bg-[#245c4d] h-[46px] mt-[10px] rounded-[4px] text-[12px] text-white" onClick={() => window.location.assign("/checkout")} type="button">Checkout</button>
-                  </>}
-                </div>
-              ) : (
-                <div className="flex flex-1 flex-col items-center justify-center text-center">
-                  <div className="bg-[#f4f5f1] flex items-center justify-center rounded-full size-[64px]">
-                    <img alt="" className="size-[24px]" src={headerPanel === "wishlist" ? imgHeart : imgShoppingBag} />
-                  </div>
-                  <p className="font-['Inter:Medium'] mt-[20px] text-[#202522] text-[18px]">{headerPanel === "wishlist" ? "Your wishlist is empty" : "Your bag is empty"}</p>
-                  <p className="font-['Inter:Regular'] leading-[1.6] mt-[8px] max-w-[280px] text-[#717772] text-[12px]">Explore the collection and add something considered.</p>
-                  <button className="bg-[#245c4d] font-['Inter:Medium'] h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" onClick={() => { setHeaderPanel(null); document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" }); }} type="button">Browse products</button>
-                </div>
-              )
-            )}
-          </section>
-        </div>
-      )}
+
     </div>
   );
 }
