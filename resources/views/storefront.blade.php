@@ -45,29 +45,29 @@
         </div>
         <div class="border-[#dfe3dc] border-b border-solid border-t content-stretch flex h-[44px] items-center justify-between overflow-clip px-[64px] relative shrink-0 w-full" data-node-id="2:22" data-name="Category navigation">
           <div class="[word-break:break-word] content-stretch flex gap-[32px] items-center leading-[normal] not-italic overflow-clip relative shrink-0 text-[12px] whitespace-nowrap" data-node-id="2:23" data-name="Shop destinations">
-            <p class="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#245c4d]" data-node-id="2:24">
+            <button class="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#245c4d]" data-nav-category="all" data-node-id="2:24" type="button">
               Shop all
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:25">
+            </button>
+            <button class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-nav-category="smartphones" data-node-id="2:25" type="button">
               Smartphones
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:26">
+            </button>
+            <button class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-nav-category="laptops" data-node-id="2:26" type="button">
               Laptops
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:27">
+            </button>
+            <button class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-nav-category="tablets" data-node-id="2:27" type="button">
               Tablets
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:28">
+            </button>
+            <button class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-nav-category="mobile-accessories" data-node-id="2:28" type="button">
               Mobile accessories
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:29">
+            </button>
+            <button class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-nav-category="audio" data-node-id="2:29" type="button">
               Audio
-            </p>
+            </button>
           </div>
           <div class="content-stretch flex items-start overflow-clip relative shrink-0" data-node-id="2:30" data-name="Editorial destinations">
-            <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:31">
+            <button class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-nav-category="new-arrivals" data-node-id="2:31" type="button">
               New arrivals
-            </p>
+            </button>
           </div>
         </div>
       </div>
@@ -303,7 +303,7 @@
           </div>
         </div>
         <div class="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:133" data-name="Product grid">
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:134" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="smartphones" data-node-id="2:134" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:135" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:136" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/2d2a2.png') }}" />
@@ -358,7 +358,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:161" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="laptops" data-node-id="2:161" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:162" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:163" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/b0999.png') }}" />
@@ -413,7 +413,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:187" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="tablets" data-node-id="2:187" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:188" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:189" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/a1a1c.png') }}" />
@@ -463,7 +463,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:212" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="smartphones" data-node-id="2:212" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:213" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:214" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/46886.png') }}" />
@@ -555,7 +555,7 @@
           </div>
         </div>
         <div class="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:253" data-name="Accessories grid">
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:254" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="audio" data-new-arrival data-node-id="2:254" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:255" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:256" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/8f66f.png') }}" />
@@ -610,7 +610,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:279" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="mobile-accessories" data-new-arrival data-node-id="2:279" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:280" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:281" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/25fc8.png') }}" />
@@ -665,7 +665,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:305" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="mobile-accessories" data-node-id="2:305" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:306" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:307" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/a3684.png') }}" />
@@ -715,7 +715,7 @@
               </p>
             </div>
           </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:330" data-name="Product card">
+          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="audio" data-node-id="2:330" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:331" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:332" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/6d140.png') }}" />

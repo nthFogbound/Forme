@@ -75,6 +75,22 @@ document.querySelectorAll("[data-open-panel]").forEach((trigger) => {
 
 document.querySelectorAll("[data-close-panel]").forEach((button) => button.addEventListener("click", () => panel?.classList.add("hidden")))
 document.querySelectorAll("[data-scroll-target]").forEach((button) => button.addEventListener("click", () => document.querySelector(button.dataset.scrollTarget)?.scrollIntoView({ behavior: "smooth" })))
+document.querySelectorAll("[data-nav-category]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const category = button.dataset.navCategory
+    document.querySelectorAll("[data-nav-category]").forEach((item) => {
+      item.classList.toggle("text-[#245c4d]", item === button)
+      item.classList.toggle("font-semibold", item === button)
+      item.classList.toggle("text-[#202522]", item !== button)
+    })
+    document.querySelectorAll("[data-product-category]").forEach((card) => {
+      const visible = category === "all" || card.dataset.productCategory === category || (category === "new-arrivals" && card.hasAttribute("data-new-arrival"))
+      card.classList.toggle("hidden", !visible)
+    })
+    const accessories = ["mobile-accessories", "audio", "new-arrivals"].includes(category)
+    document.querySelector(accessories ? "#accessories" : "#featured")?.scrollIntoView({ behavior: "smooth" })
+  })
+})
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     results?.classList.add("hidden")

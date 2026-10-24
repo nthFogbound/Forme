@@ -51,6 +51,9 @@ const searchableProducts = [
 ];
 
 type HeaderPanel = "account" | "wishlist" | "bag" | null;
+type ProductCategory = "all" | "smartphones" | "laptops" | "tablets" | "mobile-accessories" | "audio" | "new-arrivals";
+
+const productCardClass = "content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative";
 
 export default function FormePremiumTechnologyStorefront() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,6 +61,7 @@ export default function FormePremiumTechnologyStorefront() {
   const [headerPanel, setHeaderPanel] = useState<HeaderPanel>(null);
   const [accountMode, setAccountMode] = useState<"signin" | "create" | null>(null);
   const [accountSubmitted, setAccountSubmitted] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<ProductCategory>("all");
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return searchableProducts.slice(0, 4);
@@ -77,6 +81,15 @@ export default function FormePremiumTechnologyStorefront() {
     setSearchOpen(false);
     document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const navigateToCategory = (category: ProductCategory) => {
+    setActiveCategory(category);
+    const accessories = ["mobile-accessories", "audio", "new-arrivals"].includes(category);
+    requestAnimationFrame(() => document.querySelector(accessories ? "#accessories" : "#featured")?.scrollIntoView({ behavior: "smooth" }));
+  };
+
+  const productIsVisible = (category: ProductCategory, isNew = false) =>
+    activeCategory === "all" || activeCategory === category || (activeCategory === "new-arrivals" && isNew);
 
   return (
     <div className="bg-white content-stretch flex flex-col items-start relative size-full" data-node-id="2:3" data-name="FORME — Premium technology storefront">
@@ -145,29 +158,29 @@ export default function FormePremiumTechnologyStorefront() {
         </div>
         <div className="border-[#dfe3dc] border-b border-solid border-t content-stretch flex h-[44px] items-center justify-between overflow-clip px-[64px] relative shrink-0 w-full" data-node-id="2:22" data-name="Category navigation">
           <div className="[word-break:break-word] content-stretch flex gap-[32px] items-center leading-[normal] not-italic overflow-clip relative shrink-0 text-[12px] whitespace-nowrap" data-node-id="2:23" data-name="Shop destinations">
-            <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#245c4d]" data-node-id="2:24">
+            <button className={`font-['Inter:Semi_Bold'] font-semibold relative shrink-0 ${activeCategory === "all" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:24" onClick={() => navigateToCategory("all")} type="button">
               Shop all
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:25">
+            </button>
+            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "smartphones" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:25" onClick={() => navigateToCategory("smartphones")} type="button">
               Smartphones
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:26">
+            </button>
+            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "laptops" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:26" onClick={() => navigateToCategory("laptops")} type="button">
               Laptops
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:27">
+            </button>
+            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "tablets" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:27" onClick={() => navigateToCategory("tablets")} type="button">
               Tablets
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:28">
+            </button>
+            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "mobile-accessories" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:28" onClick={() => navigateToCategory("mobile-accessories")} type="button">
               Mobile accessories
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#202522]" data-node-id="2:29">
+            </button>
+            <button className={`font-['Inter:Regular'] font-normal relative shrink-0 ${activeCategory === "audio" ? "text-[#245c4d]" : "text-[#202522]"}`} data-node-id="2:29" onClick={() => navigateToCategory("audio")} type="button">
               Audio
-            </p>
+            </button>
           </div>
           <div className="content-stretch flex items-start overflow-clip relative shrink-0" data-node-id="2:30" data-name="Editorial destinations">
-            <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:31">
+            <button className={`[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[12px] whitespace-nowrap ${activeCategory === "new-arrivals" ? "font-semibold text-[#245c4d]" : "text-[#245c4d]"}`} data-node-id="2:31" onClick={() => navigateToCategory("new-arrivals")} type="button">
               New arrivals
-            </p>
+            </button>
           </div>
         </div>
       </div>
@@ -403,7 +416,7 @@ export default function FormePremiumTechnologyStorefront() {
           </div>
         </div>
         <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:133" data-name="Product grid">
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:134" data-name="Product card">
+          <div className={`${productIsVisible("smartphones") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:134" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:135" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:136" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct} />
@@ -458,7 +471,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:161" data-name="Product card">
+          <div className={`${productIsVisible("laptops") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:161" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:162" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:163" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct1} />
@@ -513,7 +526,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:187" data-name="Product card">
+          <div className={`${productIsVisible("tablets") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:187" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:188" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:189" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct2} />
@@ -563,7 +576,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:212" data-name="Product card">
+          <div className={`${productIsVisible("smartphones") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:212" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:213" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:214" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct3} />
@@ -655,7 +668,7 @@ export default function FormePremiumTechnologyStorefront() {
           </div>
         </div>
         <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:253" data-name="Accessories grid">
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:254" data-name="Product card">
+          <div className={`${productIsVisible("audio", true) ? "" : "hidden "} ${productCardClass}`} data-node-id="2:254" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:255" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:256" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct4} />
@@ -710,7 +723,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:279" data-name="Product card">
+          <div className={`${productIsVisible("mobile-accessories", true) ? "" : "hidden "} ${productCardClass}`} data-node-id="2:279" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:280" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:281" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct5} />
@@ -765,7 +778,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:305" data-name="Product card">
+          <div className={`${productIsVisible("mobile-accessories") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:305" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:306" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:307" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct6} />
@@ -815,7 +828,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-node-id="2:330" data-name="Product card">
+          <div className={`${productIsVisible("audio") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:330" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:331" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:332" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct7} />

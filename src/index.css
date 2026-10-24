@@ -171,11 +171,6 @@ button,
     gap: 16px !important;
   }
 
-  [data-name='Account actions'] > button:first-child,
-  [data-name='Account actions'] > button:nth-child(2) {
-    display: none !important;
-  }
-
   [data-name='Category navigation'] {
     justify-content: flex-start !important;
     overflow-x: auto !important;
@@ -186,10 +181,6 @@ button,
   [data-name='Shop destinations'] {
     gap: 24px !important;
     overflow: visible !important;
-  }
-
-  [data-name='Editorial destinations'] {
-    display: none !important;
   }
 
   [data-name='Hero collection'] {
