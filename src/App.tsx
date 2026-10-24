@@ -94,6 +94,16 @@ const categoryPages = {
       { slug: "airpods-pro", brand: "APPLE", name: "AirPods Pro", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4 },
     ],
   },
+  audio: {
+    eyebrow: "LISTEN WITH INTENTION",
+    title: "Audio",
+    description: "Immersive sound, considered comfort and dependable listening for work, travel and slower moments.",
+    hero: imgProduct7,
+    products: [
+      { slug: "airpods-pro", brand: "APPLE", name: "AirPods Pro", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4 },
+      { slug: "sony-wh-1000xm5", brand: "SONY", name: "Sony WH-1000XM5", detail: "Noise cancelling · 30-hour battery", price: "$399.00", image: imgProduct7 },
+    ],
+  },
 } as const;
 
 type CategorySlug = keyof typeof categoryPages;
@@ -222,6 +232,76 @@ function CategoryPage({
   );
 }
 
+const collectionPages = {
+  "everyday-edit": {
+    eyebrow: "CURATED FOR EVERYDAY",
+    title: "The everyday edit",
+    description: "A balanced selection of capable, beautifully designed technology for communication, focus and downtime.",
+    hero: imgEverydayTechnologyStillLife,
+    products: ["iphone-13-pro", "galaxy-tab-s8", "airpods-pro"],
+  },
+  "workspace-edit": {
+    eyebrow: "WORK, CONSIDERED",
+    title: "The workspace edit",
+    description: "Focused tools that bring clarity, comfort and dependable performance to the place where ideas become real.",
+    hero: imgQuietWorkspace,
+    products: ["macbook-pro-14", "mx-keys-mini", "boostcharge-pro"],
+  },
+  "audio-essentials": {
+    eyebrow: "SOUND, REFINED",
+    title: "Audio essentials",
+    description: "Immersive listening selected for thoughtful details, lasting comfort and less distraction.",
+    hero: imgProduct7,
+    products: ["airpods-pro", "sony-wh-1000xm5"],
+  },
+  "new-arrivals": {
+    eyebrow: "JUST IN",
+    title: "New arrivals",
+    description: "The latest additions to the Forme selection, chosen for usefulness, quality and enduring design.",
+    hero: imgProduct4,
+    products: ["airpods-pro", "boostcharge-pro"],
+  },
+} as const satisfies Record<string, { eyebrow: string; title: string; description: string; hero: string; products: readonly ProductSlug[] }>;
+
+type CollectionSlug = keyof typeof collectionPages;
+
+function CollectionPage({ slug }: { slug: CollectionSlug }) {
+  const collection = collectionPages[slug];
+  return (
+    <main className="bg-white min-h-screen text-[#202522]">
+      <header className="border-[#dfe3dc] border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
+        <button className="font-['Inter:Semi_Bold'] text-[30px]" onClick={() => window.location.assign("/")} type="button">FORME</button>
+        <button className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => window.location.assign("/#footer")} type="button">← All collections</button>
+      </header>
+      <section className="bg-[#edefe8] grid grid-cols-2 min-h-[480px] max-md:grid-cols-1">
+        <div className="flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
+          <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">{collection.eyebrow}</p>
+          <h1 className="font-['Inter:Medium'] leading-[1.08] mt-[18px] text-[52px] max-md:text-[40px]">{collection.title}</h1>
+          <p className="font-['Inter:Regular'] leading-[1.7] mt-[22px] max-w-[480px] text-[#717772] text-[15px]">{collection.description}</p>
+        </div>
+        <div className="min-h-[360px] relative"><img alt={collection.title} className="absolute inset-0 object-cover size-full" src={collection.hero} /></div>
+      </section>
+      <section className="px-[64px] py-[72px] max-md:px-[24px]">
+        <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">THE SELECTION</p>
+        <h2 className="font-['Inter:Medium'] mt-[10px] text-[36px]">Products in this collection.</h2>
+        <div className="grid gap-[24px] grid-cols-3 mt-[32px] max-md:grid-cols-1">
+          {collection.products.map((productSlug) => {
+            const product = productPages[productSlug];
+            return (
+              <button className="flex flex-col gap-[12px] text-left" key={productSlug} onClick={() => window.location.assign(`/products/${productSlug}`)} type="button">
+                <span className="bg-[#f4f5f1] block h-[260px] p-[28px] rounded-[4px]"><img alt={product.name} className="object-cover size-full" src={product.image} /></span>
+                <span className="font-['Inter:Medium'] text-[#717772] text-[10px]">{product.brand}</span>
+                <span className="font-['Inter:Medium'] text-[18px]">{product.name}</span>
+                <span className="font-['Inter:Semi_Bold'] text-[16px]">{product.price}</span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+    </main>
+  );
+}
+
 export default function FormePremiumTechnologyStorefront() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -319,6 +399,8 @@ export default function FormePremiumTechnologyStorefront() {
   };
   const activePanelItems = headerPanel === "wishlist" ? wishlist : bag;
 
+  const collectionSlug = window.location.pathname.match(/^\/collections\/([^/]+)\/?$/)?.[1] as CollectionSlug | undefined;
+  if (collectionSlug && collectionPages[collectionSlug]) return <CollectionPage slug={collectionSlug} />;
   const productSlug = window.location.pathname.match(/^\/products\/([^/]+)\/?$/)?.[1] as ProductSlug | undefined;
   if (productSlug && productPages[productSlug]) {
     const product = productPages[productSlug];
@@ -1166,58 +1248,48 @@ export default function FormePremiumTechnologyStorefront() {
             <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#202522]" data-node-id="2:414">
               Explore
             </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:415">
+            <button className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:415" onClick={() => window.location.assign("/categories/smartphones")} type="button">
               Smartphones
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:416">
+            </button>
+            <button className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:416" onClick={() => window.location.assign("/categories/laptops")} type="button">
               Laptops
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:417">
+            </button>
+            <button className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:417" onClick={() => window.location.assign("/categories/tablets")} type="button">
               Tablets
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:418">
+            </button>
+            <button className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:418" onClick={() => window.location.assign("/categories/mobile-accessories")} type="button">
               Mobile accessories
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:419">
+            </button>
+            <button className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:419" onClick={() => window.location.assign("/categories/audio")} type="button">
               Audio
-            </p>
+            </button>
           </div>
           <div className="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start leading-[normal] min-w-px not-italic overflow-clip relative text-[12px] whitespace-nowrap" data-node-id="2:420" data-name="Navigation group">
             <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#202522]" data-node-id="2:421">
-              Product focus
+              Collections
             </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:422">
-              Camera-first devices
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:423">
-              All-day battery life
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:424">
-              Premium materials
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:425">
-              Everyday essentials
-            </p>
-            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:426">
-              Workspace accessories
-            </p>
+            <button className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:422" onClick={() => window.location.assign("/collections/everyday-edit")} type="button">The everyday edit</button>
+            <button className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:423" onClick={() => window.location.assign("/collections/workspace-edit")} type="button">The workspace edit</button>
+            <button className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:424" onClick={() => window.location.assign("/collections/audio-essentials")} type="button">Audio essentials</button>
+            <button className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:425" onClick={() => window.location.assign("/collections/new-arrivals")} type="button">New arrivals</button>
           </div>
           <div className="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start leading-[normal] min-w-px not-italic overflow-clip relative text-[12px] whitespace-nowrap" data-node-id="2:427" data-name="Navigation group">
             <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#202522]" data-node-id="2:428">
-              Collections
+              Product focus
             </p>
             <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:429">
-              The everyday edit
+              Camera-first devices
             </p>
             <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:430">
-              The workspace edit
+              All-day battery life
             </p>
             <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:431">
-              Audio essentials
+              Premium materials
             </p>
             <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:432">
-              New arrivals
+              Everyday essentials
             </p>
+            <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]">Workspace accessories</p>
           </div>
         </div>
         <div className="bg-[#dfe3dc] h-px relative shrink-0 w-full" data-node-id="2:446" data-name="Footer divider" />

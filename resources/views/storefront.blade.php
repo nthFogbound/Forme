@@ -817,58 +817,48 @@
             <p class="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#202522]" data-node-id="2:414">
               Explore
             </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:415">
+            <a class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:415" href="{{ route('categories.show', 'smartphones') }}">
               Smartphones
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:416">
+            </a>
+            <a class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:416" href="{{ route('categories.show', 'laptops') }}">
               Laptops
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:417">
+            </a>
+            <a class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:417" href="{{ route('categories.show', 'tablets') }}">
               Tablets
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:418">
+            </a>
+            <a class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:418" href="{{ route('categories.show', 'mobile-accessories') }}">
               Mobile accessories
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:419">
+            </a>
+            <a class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:419" href="{{ route('categories.show', 'audio') }}">
               Audio
-            </p>
+            </a>
           </div>
           <div class="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start leading-[normal] min-w-px not-italic overflow-clip relative text-[12px] whitespace-nowrap" data-node-id="2:420" data-name="Navigation group">
             <p class="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#202522]" data-node-id="2:421">
-              Product focus
+              Collections
             </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:422">
-              Camera-first devices
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:423">
-              All-day battery life
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:424">
-              Premium materials
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:425">
-              Everyday essentials
-            </p>
-            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:426">
-              Workspace accessories
-            </p>
+            <a class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" href="{{ route('collections.show', 'everyday-edit') }}">The everyday edit</a>
+            <a class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" href="{{ route('collections.show', 'workspace-edit') }}">The workspace edit</a>
+            <a class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" href="{{ route('collections.show', 'audio-essentials') }}">Audio essentials</a>
+            <a class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" href="{{ route('collections.show', 'new-arrivals') }}">New arrivals</a>
           </div>
           <div class="[word-break:break-word] content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start leading-[normal] min-w-px not-italic overflow-clip relative text-[12px] whitespace-nowrap" data-node-id="2:427" data-name="Navigation group">
             <p class="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#202522]" data-node-id="2:428">
-              Collections
+              Product focus
             </p>
             <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:429">
-              The everyday edit
+              Camera-first devices
             </p>
             <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:430">
-              The workspace edit
+              All-day battery life
             </p>
             <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:431">
-              Audio essentials
+              Premium materials
             </p>
             <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:432">
-              New arrivals
+              Everyday essentials
             </p>
+            <p class="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]">Workspace accessories</p>
           </div>
         </div>
         <div class="bg-[#dfe3dc] h-px relative shrink-0 w-full" data-node-id="2:446" data-name="Footer divider"></div>
