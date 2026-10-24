@@ -63,13 +63,13 @@ Route::get('/categories/{category}', function (string $category) {
 
 Route::get('/collections/{collection}', function (string $collection) {
     $products = [
-        'iphone-13-pro' => ['brand' => 'APPLE', 'name' => 'iPhone 13 Pro', 'price' => '$999.00', 'image' => '2d2a2.png'],
-        'galaxy-tab-s8' => ['brand' => 'SAMSUNG', 'name' => 'Galaxy Tab S8', 'price' => '$699.00', 'image' => 'a1a1c.png'],
-        'airpods-pro' => ['brand' => 'APPLE', 'name' => 'AirPods Pro', 'price' => '$249.00', 'image' => '8f66f.png'],
-        'macbook-pro-14' => ['brand' => 'APPLE', 'name' => 'MacBook Pro 14″', 'price' => '$1,999.00', 'image' => 'b0999.png'],
-        'mx-keys-mini' => ['brand' => 'LOGITECH', 'name' => 'MX Keys Mini', 'price' => '$99.00', 'image' => 'a3684.png'],
-        'boostcharge-pro' => ['brand' => 'BELKIN', 'name' => 'BoostCharge Pro 3-in-1', 'price' => '$149.00', 'image' => '25fc8.png'],
-        'sony-wh-1000xm5' => ['brand' => 'SONY', 'name' => 'Sony WH-1000XM5', 'price' => '$399.00', 'image' => '6d140.png'],
+        'iphone-13-pro' => ['brand' => 'APPLE', 'name' => 'iPhone 13 Pro', 'detail' => '128GB · Unlocked · Graphite', 'price' => '$999.00', 'image' => '2d2a2.png'],
+        'galaxy-tab-s8' => ['brand' => 'SAMSUNG', 'name' => 'Galaxy Tab S8', 'detail' => '11″ display · 128GB · Wi-Fi', 'price' => '$699.00', 'image' => 'a1a1c.png'],
+        'airpods-pro' => ['brand' => 'APPLE', 'name' => 'AirPods Pro', 'detail' => 'Active noise cancellation · USB-C', 'price' => '$249.00', 'image' => '8f66f.png'],
+        'macbook-pro-14' => ['brand' => 'APPLE', 'name' => 'MacBook Pro 14″', 'detail' => 'M1 Pro · 16GB RAM · 512GB SSD', 'price' => '$1,999.00', 'image' => 'b0999.png'],
+        'mx-keys-mini' => ['brand' => 'LOGITECH', 'name' => 'MX Keys Mini', 'detail' => 'Wireless keyboard', 'price' => '$99.00', 'image' => 'a3684.png'],
+        'boostcharge-pro' => ['brand' => 'BELKIN', 'name' => 'BoostCharge Pro 3-in-1', 'detail' => '15W wireless charging · MagSafe', 'price' => '$149.00', 'image' => '25fc8.png'],
+        'sony-wh-1000xm5' => ['brand' => 'SONY', 'name' => 'Sony WH-1000XM5', 'detail' => 'Noise cancelling · 30-hour battery', 'price' => '$399.00', 'image' => '6d140.png'],
     ];
     $collections = [
         'everyday-edit' => ['eyebrow' => 'CURATED FOR EVERYDAY', 'title' => 'The everyday edit', 'description' => 'A balanced selection of capable, beautifully designed technology for communication, focus and downtime.', 'hero' => '7c3c6.png', 'products' => ['iphone-13-pro', 'galaxy-tab-s8', 'airpods-pro']],
