@@ -613,7 +613,7 @@ function ProductPage({ header, slug, wishlist, bag, toggleWishlist, toggleBag, s
           <div className="mt-[12px]"><ColorSelector colors={product.colors} onSelect={selectColor} selected={selectedColor} /></div>
           <div className="flex gap-[12px] mt-[30px]">
             <button className="bg-[#245c4d] flex-1 h-[48px] rounded-[4px] text-white text-[13px]" onClick={() => toggleBag(product.name)} type="button">{bag.includes(product.name) ? "Remove from bag" : "Add to bag"}</button>
-            <button aria-pressed={wishlist.includes(product.name)} className="border border-[#245c4d] h-[48px] px-[20px] rounded-[4px] text-[#245c4d] text-[13px]" onClick={() => toggleWishlist(product.name)} type="button">{wishlist.includes(product.name) ? "Saved" : "Save"}</button>
+            <button aria-label={`${wishlist.includes(product.name) ? "Remove" : "Add"} ${product.name} ${wishlist.includes(product.name) ? "from" : "to"} wishlist`} aria-pressed={wishlist.includes(product.name)} className="border border-[#245c4d] h-[48px] px-[20px] rounded-[4px] text-[#245c4d] text-[13px]" data-wishlist-button onClick={() => toggleWishlist(product.name)} type="button">{wishlist.includes(product.name) ? "Saved" : "Save"}</button>
           </div>
         </div>
       </section>
@@ -674,7 +674,7 @@ function CategoryPage({
               <NoReviewsLabel />
               <div className="flex items-center justify-between">
                 <p className="font-['Inter:Semi_Bold'] text-[18px]">{product.price}</p>
-                <button aria-pressed={wishlist.includes(product.name)} className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => toggleWishlist(product.name)} type="button">{wishlist.includes(product.name) ? "Saved" : "Save"}</button>
+                <button aria-label={`${wishlist.includes(product.name) ? "Remove" : "Add"} ${product.name} ${wishlist.includes(product.name) ? "from" : "to"} wishlist`} aria-pressed={wishlist.includes(product.name)} className="border border-[#245c4d] font-['Inter:Medium'] min-h-[40px] px-[14px] rounded-[4px] text-[#245c4d] text-[12px]" data-wishlist-button onClick={() => toggleWishlist(product.name)} type="button">{wishlist.includes(product.name) ? "Saved" : "Save"}</button>
               </div>
               <button className={`border h-[42px] rounded-[4px] text-[12px] ${bag.includes(product.name) ? "bg-[#245c4d] border-[#245c4d] text-white" : "border-[#245c4d] text-[#245c4d]"}`} onClick={() => toggleBag(product.name)} type="button">{bag.includes(product.name) ? "Remove from bag" : "Add to bag"}</button>
             </article>

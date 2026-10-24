@@ -65,7 +65,6 @@ function updateProductControls() {
     const active = wishlistItems.includes(control.dataset.saveProduct)
     control.setAttribute("aria-pressed", String(active))
     control.setAttribute("aria-label", `${active ? "Remove" : "Add"} ${control.dataset.saveProduct} ${active ? "from" : "to"} wishlist`)
-    control.classList.toggle("bg-[#edefe8]", active)
     if (control.matches("button")) control.textContent = active ? "Saved" : "Save"
   })
   document.querySelectorAll("[data-add-product]").forEach((control) => {

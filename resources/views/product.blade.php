@@ -31,7 +31,7 @@
           </div>
           <div class="flex gap-[12px] mt-[30px]">
             <button class="bg-[#245c4d] flex-1 h-[48px] rounded-[4px] text-[13px] text-white" data-add-product="{{ $product['name'] }}" type="button">Add to bag</button>
-            <button class="border border-[#245c4d] h-[48px] px-[20px] rounded-[4px] text-[#245c4d] text-[13px]" data-save-product="{{ $product['name'] }}" type="button">Save</button>
+            <button class="border border-[#245c4d] h-[48px] px-[20px] rounded-[4px] text-[#245c4d] text-[13px]" data-save-product="{{ $product['name'] }}" data-wishlist-button type="button">Save</button>
           </div>
           </div>
         </div>

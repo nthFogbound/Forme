@@ -87,8 +87,71 @@ button:disabled {
   background: #f4f5f1;
 }
 
+[data-name='Save product'] {
+  color: #202522;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+[data-name='Save product']:hover {
+  box-shadow: 0 0 0 2px #d9b9b5;
+}
+
 [data-name='Save product'][aria-pressed='true'] {
-  background: #edefe8;
+  animation: wishlist-pop 220ms ease-out;
+  background: #9a3f35;
+  color: #ffffff;
+}
+
+[data-name='Save product'][aria-pressed='true'] img {
+  display: none;
+}
+
+[data-name='Save product'][aria-pressed='true']::after {
+  content: '♥';
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1;
+}
+
+[data-wishlist-button] {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+[data-wishlist-button]:hover {
+  background: #f4f5f1;
+}
+
+[data-wishlist-button][aria-pressed='true'] {
+  animation: wishlist-pop 220ms ease-out;
+  background: #9a3f35;
+  border-color: #9a3f35;
+  color: #ffffff;
+}
+
+[data-wishlist-button][aria-pressed='true']::before {
+  content: '♥';
+  margin-right: 6px;
+}
+
+@keyframes wishlist-pop {
+  0% { transform: scale(1); }
+  55% { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-name='Save product'][aria-pressed='true'],
+  [data-wishlist-button][aria-pressed='true'] {
+    animation: none;
+  }
 }
 
 [data-name='Add to bag'][aria-pressed='true'] {
