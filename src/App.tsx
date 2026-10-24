@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type KeyboardEvent, type MouseEvent } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
 const assetPathPrefix = "/assets";
 const imgEverydayTechnologyStillLife = `${assetPathPrefix}/7c3c6.png`;
@@ -119,6 +120,185 @@ const productPages = {
 } as const;
 
 type ProductSlug = keyof typeof productPages;
+type Quantities = Record<string, number>;
+
+const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+const productEntries = Object.entries(productPages) as [ProductSlug, (typeof productPages)[ProductSlug]][];
+const productByName = (name: string) => productEntries.find(([, product]) => product.name === name);
+const priceNumber = (price: string) => Number(price.replace(/[^0-9.]/g, ""));
+
+function StoreHeader({ title, backLabel, backTo }: { title: string; backLabel: string; backTo: string }) {
+  return (
+    <header className="border-[#dfe3dc] border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
+      <button className="font-['Inter:Semi_Bold'] text-[30px]" onClick={() => window.location.assign("/")} type="button">FORME</button>
+      <button className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => window.location.assign(backTo)} type="button">← {backLabel}</button>
+    </header>
+  );
+}
+
+function OrderItems({ bag, quantities, selectedColors, editable, onQuantity, onRemove }: {
+  bag: string[]; quantities: Quantities; selectedColors: Record<string, string>; editable?: boolean;
+  onQuantity?: (name: string, quantity: number) => void; onRemove?: (name: string) => void;
+}) {
+  return (
+    <div className="divide-y divide-[#dfe3dc]">
+      {bag.map((name) => {
+        const entry = productByName(name);
+        if (!entry) return null;
+        const [slug, product] = entry;
+        const quantity = quantities[name] || 1;
+        return (
+          <div className="flex gap-[18px] py-[22px]" key={name}>
+            <div className="bg-[#f4f5f1] flex h-[110px] items-center justify-center p-[12px] rounded-[4px] w-[110px] max-sm:h-[88px] max-sm:w-[88px]">
+              <img alt={name} className="object-contain size-full" src={product.image} />
+            </div>
+            <div className="flex flex-1 flex-col min-w-0">
+              <div className="flex gap-[12px] justify-between">
+                <div>
+                  <p className="font-['Inter:Medium'] text-[15px]">{name}</p>
+                  <p className="font-['Inter:Regular'] mt-[5px] text-[#717772] text-[11px]">Color · {selectedColors[slug] || product.colors[0]}</p>
+                  <p className="font-['Inter:Regular'] mt-[3px] text-[#717772] text-[11px]">{money.format(priceNumber(product.price))} each</p>
+                </div>
+                <p className="font-['Inter:Semi_Bold'] text-[14px]">{money.format(priceNumber(product.price) * quantity)}</p>
+              </div>
+              {editable ? (
+                <div className="flex items-center justify-between mt-auto pt-[14px]">
+                  <div className="border border-[#dfe3dc] flex h-[34px] items-center rounded-[4px]">
+                    <button aria-label={`Decrease ${name} quantity`} className="h-full w-[34px] disabled:cursor-not-allowed disabled:opacity-30" disabled={quantity === 1} onClick={() => onQuantity?.(name, quantity - 1)} type="button">−</button>
+                    <span aria-live="polite" className="border-[#dfe3dc] border-x flex h-full items-center justify-center text-[12px] w-[38px]">{quantity}</span>
+                    <button aria-label={`Increase ${name} quantity`} className="h-full w-[34px]" onClick={() => onQuantity?.(name, quantity + 1)} type="button">+</button>
+                  </div>
+                  <button className="font-['Inter:Medium'] text-[#245c4d] text-[11px] underline underline-offset-4" onClick={() => onRemove?.(name)} type="button">Remove</button>
+                </div>
+              ) : <p className="font-['Inter:Regular'] mt-auto pt-[10px] text-[#717772] text-[11px]">Quantity {quantity}</p>}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function BagPage({ bag, quantities, selectedColors, subtotal, setQuantity, remove }: {
+  bag: string[]; quantities: Quantities; selectedColors: Record<string, string>; subtotal: number;
+  setQuantity: (name: string, quantity: number) => void; remove: (name: string) => void;
+}) {
+  return (
+    <main className="bg-white min-h-screen text-[#202522]">
+      <StoreHeader backLabel="Continue shopping" backTo="/" title="Shopping bag" />
+      <section className="mx-auto max-w-[1120px] px-[64px] py-[64px] max-md:px-[24px] max-md:py-[40px]">
+        <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">YOUR SELECTION</p>
+        <h1 className="font-['Inter:Medium'] mt-[10px] text-[42px] max-md:text-[34px]">Shopping bag</h1>
+        {!bag.length ? (
+          <div className="bg-[#f4f5f1] flex flex-col items-center mt-[36px] px-[24px] py-[72px] text-center">
+            <img alt="" className="size-[28px]" src={imgShoppingBag} />
+            <p className="font-['Inter:Medium'] mt-[18px] text-[20px]">Your bag is empty</p>
+            <p className="mt-[8px] text-[#717772] text-[13px]">Explore the collection and add something considered.</p>
+            <button className="bg-[#245c4d] h-[46px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" onClick={() => window.location.assign("/#featured")} type="button">Continue shopping</button>
+          </div>
+        ) : (
+          <div className="grid gap-[64px] grid-cols-[1fr_340px] mt-[28px] max-md:grid-cols-1 max-md:gap-[32px]">
+            <OrderItems bag={bag} editable onQuantity={setQuantity} onRemove={remove} quantities={quantities} selectedColors={selectedColors} />
+            <aside className="bg-[#f4f5f1] h-fit p-[28px] rounded-[4px]">
+              <h2 className="font-['Inter:Medium'] text-[20px]">Order summary</h2>
+              <div className="border-[#dfe3dc] border-b flex justify-between py-[22px] text-[13px]"><span>Subtotal</span><strong>{money.format(subtotal)}</strong></div>
+              <p className="leading-[1.5] mt-[16px] text-[#717772] text-[11px]">Shipping and taxes are not configured for this prototype. Order total equals subtotal.</p>
+              <div className="flex justify-between mt-[20px] text-[16px]"><span>Order total</span><strong>{money.format(subtotal)}</strong></div>
+              <button className="bg-[#245c4d] font-['Inter:Medium'] h-[48px] mt-[24px] rounded-[4px] text-[13px] text-white w-full" onClick={() => window.location.assign("/checkout")} type="button">Checkout</button>
+            </aside>
+          </div>
+        )}
+      </section>
+    </main>
+  );
+}
+
+type CheckoutData = { email: string; firstName: string; lastName: string; address: string; city: string; postalCode: string; country: string };
+const emptyCheckout: CheckoutData = { email: "", firstName: "", lastName: "", address: "", city: "", postalCode: "", country: "" };
+
+function CheckoutPage({ bag, quantities, selectedColors, subtotal, completeOrder }: {
+  bag: string[]; quantities: Quantities; selectedColors: Record<string, string>; subtotal: number;
+  completeOrder: (reference: string) => void;
+}) {
+  const [data, setData] = useState<CheckoutData>(emptyCheckout);
+  const [errors, setErrors] = useState<Partial<CheckoutData>>({});
+  const [reviewing, setReviewing] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  if (!bag.length) return <BagPage bag={bag} quantities={quantities} selectedColors={selectedColors} subtotal={0} setQuantity={() => {}} remove={() => {}} />;
+  const validate = () => {
+    const next: Partial<CheckoutData> = {};
+    Object.entries(data).forEach(([key, value]) => { if (!value.trim()) next[key as keyof CheckoutData] = "This field is required."; });
+    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) next.email = "Enter a valid email address.";
+    setErrors(next);
+    return !Object.keys(next).length;
+  };
+  const submit = () => {
+    if (submitting) return;
+    setSubmitting(true);
+    completeOrder(`FORME-${Date.now().toString().slice(-8)}`);
+  };
+  return (
+    <main className="bg-white min-h-screen text-[#202522]">
+      <StoreHeader backLabel="Return to bag" backTo="/bag" title="Checkout" />
+      <section className="mx-auto max-w-[1120px] px-[64px] py-[56px] max-md:px-[24px] max-md:py-[36px]">
+        <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">DEMO CHECKOUT</p>
+        <h1 className="font-['Inter:Medium'] mt-[10px] text-[40px]">{reviewing ? "Review your order" : "Customer & shipping"}</h1>
+        <p className="leading-[1.6] mt-[10px] text-[#717772] text-[12px]">Prototype only. No payment will be processed and no shipment will be created.</p>
+        <div className="grid gap-[64px] grid-cols-[1fr_380px] mt-[32px] max-md:grid-cols-1 max-md:gap-[32px]">
+          {!reviewing ? (
+            <form className="grid gap-[18px] grid-cols-2 max-sm:grid-cols-1" onSubmit={(event) => { event.preventDefault(); if (validate()) setReviewing(true); }}>
+              {Object.entries({ email: "Email address", firstName: "First name", lastName: "Last name", address: "Street address", city: "City", postalCode: "Postal code", country: "Country" }).map(([key, label]) => (
+                <label className={`font-['Inter:Medium'] text-[11px] ${key === "email" || key === "address" ? "col-span-2 max-sm:col-span-1" : ""}`} key={key}>
+                  {label}
+                  <input aria-invalid={Boolean(errors[key as keyof CheckoutData])} className="border border-[#dfe3dc] h-[46px] mt-[8px] outline-none px-[14px] rounded-[4px] text-[13px] w-full focus:border-[#245c4d]" onChange={(event) => setData({ ...data, [key]: event.target.value })} type={key === "email" ? "email" : "text"} value={data[key as keyof CheckoutData]} />
+                  {errors[key as keyof CheckoutData] && <span className="block font-['Inter:Regular'] mt-[6px] text-[#9a3f35] text-[11px]">{errors[key as keyof CheckoutData]}</span>}
+                </label>
+              ))}
+              <button className="bg-[#245c4d] col-span-2 h-[48px] mt-[8px] rounded-[4px] text-[13px] text-white max-sm:col-span-1" type="submit">Review order</button>
+            </form>
+          ) : (
+            <div>
+              <div className="bg-[#f4f5f1] p-[24px] rounded-[4px]">
+                <h2 className="font-['Inter:Medium'] text-[18px]">Shipping to</h2>
+                <p className="leading-[1.7] mt-[12px] text-[#717772] text-[13px]">{data.firstName} {data.lastName}<br />{data.address}<br />{data.city}, {data.postalCode}<br />{data.country}<br />{data.email}</p>
+              </div>
+              <div className="flex gap-[12px] mt-[20px]">
+                <button className="border border-[#245c4d] h-[48px] px-[20px] rounded-[4px] text-[#245c4d] text-[12px]" onClick={() => setReviewing(false)} type="button">Edit details</button>
+                <button className="bg-[#245c4d] flex-1 h-[48px] rounded-[4px] text-[12px] text-white disabled:opacity-60" disabled={submitting} onClick={submit} type="button">{submitting ? "Submitting…" : "Place demo order"}</button>
+              </div>
+            </div>
+          )}
+          <aside>
+            <h2 className="font-['Inter:Medium'] text-[20px]">Order summary</h2>
+            <OrderItems bag={bag} quantities={quantities} selectedColors={selectedColors} />
+            <div className="border-[#dfe3dc] border-t flex justify-between pt-[18px] text-[16px]"><span>Order total</span><strong>{money.format(subtotal)}</strong></div>
+            <p className="mt-[8px] text-[#717772] text-[10px]">Shipping and taxes not configured.</p>
+          </aside>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function ConfirmationPage({ reference, completedItems, total }: { reference: string; completedItems: { name: string; quantity: number }[]; total: number }) {
+  if (!reference) return <main><StoreHeader backLabel="Continue shopping" backTo="/" title="Order confirmation" /><div className="p-[64px] max-md:p-[24px]">No completed demo order found.</div></main>;
+  return (
+    <main className="bg-white min-h-screen text-[#202522]">
+      <StoreHeader backLabel="Continue shopping" backTo="/" title="Order confirmation" />
+      <section className="mx-auto max-w-[720px] px-[24px] py-[72px]">
+        <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">DEMO ORDER COMPLETE</p>
+        <h1 className="font-['Inter:Medium'] mt-[12px] text-[42px]">Thank you.</h1>
+        <p className="leading-[1.7] mt-[16px] text-[#717772] text-[13px]">This prototype order was recorded for demonstration only. No payment was processed and nothing will be shipped.</p>
+        <div className="bg-[#f4f5f1] mt-[32px] p-[28px] rounded-[4px]">
+          <div className="flex justify-between text-[13px]"><span>Order reference</span><strong>{reference}</strong></div>
+          <div className="border-[#dfe3dc] border-y my-[20px] py-[12px]">{completedItems.map((item) => <div className="flex justify-between py-[7px] text-[12px]" key={item.name}><span>{item.name}</span><span>Qty {item.quantity}</span></div>)}</div>
+          <div className="flex justify-between text-[16px]"><span>Total</span><strong>{money.format(total)}</strong></div>
+        </div>
+        <button className="bg-[#245c4d] h-[48px] mt-[28px] px-[24px] rounded-[4px] text-[12px] text-white" onClick={() => window.location.assign("/")} type="button">Continue shopping</button>
+      </section>
+    </main>
+  );
+}
 
 function ColorSelector({ colors, selected, onSelect }: { colors: readonly string[]; selected: string; onSelect: (color: string) => void }) {
   const swatches: Record<string, string> = {
@@ -295,7 +475,7 @@ function CollectionPage({ slug }: { slug: CollectionSlug }) {
   );
 }
 
-export default function FormePremiumTechnologyStorefront() {
+function FormePremiumTechnologyStorefront() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [headerPanel, setHeaderPanel] = useState<HeaderPanel>(null);
@@ -304,9 +484,12 @@ export default function FormePremiumTechnologyStorefront() {
   const [activeCategory, setActiveCategory] = useState<ProductCategory>("all");
   const [wishlist, setWishlist] = useState<string[]>(() => JSON.parse(localStorage.getItem("forme-wishlist") || "[]"));
   const [bag, setBag] = useState<string[]>(() => JSON.parse(localStorage.getItem("forme-bag") || "[]"));
+  const [quantities, setQuantities] = useState<Quantities>(() => JSON.parse(localStorage.getItem("forme-bag-quantities") || "{}"));
+  const [confirmation, setConfirmation] = useState(() => JSON.parse(sessionStorage.getItem("forme-confirmation") || '{"reference":"","items":[],"total":0}'));
   const [selectedColors, setSelectedColors] = useState<Record<string, string>>(() => JSON.parse(localStorage.getItem("forme-colors") || "{}"));
   useEffect(() => localStorage.setItem("forme-wishlist", JSON.stringify(wishlist)), [wishlist]);
   useEffect(() => localStorage.setItem("forme-bag", JSON.stringify(bag)), [bag]);
+  useEffect(() => localStorage.setItem("forme-bag-quantities", JSON.stringify(quantities)), [quantities]);
   useEffect(() => localStorage.setItem("forme-colors", JSON.stringify(selectedColors)), [selectedColors]);
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -337,7 +520,20 @@ export default function FormePremiumTechnologyStorefront() {
   const productIsVisible = (category: ProductCategory, isNew = false) =>
     activeCategory === "all" || activeCategory === category || (activeCategory === "new-arrivals" && isNew);
   const toggleWishlist = (name: string) => setWishlist((items) => items.includes(name) ? items.filter((item) => item !== name) : [...items, name]);
-  const toggleBag = (name: string) => setBag((items) => items.includes(name) ? items.filter((item) => item !== name) : [...items, name]);
+  const toggleBag = (name: string) => setBag((items) => {
+    if (items.includes(name)) {
+      setQuantities((values) => { const next = { ...values }; delete next[name]; return next; });
+      return items.filter((item) => item !== name);
+    }
+    setQuantities((values) => ({ ...values, [name]: values[name] || 1 }));
+    return [...items, name];
+  });
+  const setQuantity = (name: string, quantity: number) => setQuantities((values) => ({ ...values, [name]: Math.max(1, quantity) }));
+  const subtotal = bag.reduce((sum, name) => {
+    const entry = productByName(name);
+    return sum + (entry ? priceNumber(entry[1].price) * (quantities[name] || 1) : 0);
+  }, 0);
+  const bagCount = bag.reduce((sum, name) => sum + (quantities[name] || 1), 0);
   const selectColor = (slug: ProductSlug, color: string) => setSelectedColors((colors) => ({ ...colors, [slug]: color }));
   const productCardInteraction = (slug: ProductSlug) => ({
     onClick: (event: MouseEvent) => {
@@ -387,6 +583,17 @@ export default function FormePremiumTechnologyStorefront() {
     };
   };
   const activePanelItems = headerPanel === "wishlist" ? wishlist : bag;
+
+  if (window.location.pathname === "/bag") return <BagPage bag={bag} quantities={quantities} remove={toggleBag} selectedColors={selectedColors} setQuantity={setQuantity} subtotal={subtotal} />;
+  if (window.location.pathname === "/checkout") return <CheckoutPage bag={bag} completeOrder={(reference) => {
+    const completed = { reference, items: bag.map((name) => ({ name, quantity: quantities[name] || 1 })), total: subtotal };
+    sessionStorage.setItem("forme-confirmation", JSON.stringify(completed));
+    setConfirmation(completed);
+    setBag([]);
+    setQuantities({});
+    window.location.assign("/order-confirmation");
+  }} quantities={quantities} selectedColors={selectedColors} subtotal={subtotal} />;
+  if (window.location.pathname === "/order-confirmation") return <ConfirmationPage completedItems={confirmation.items} reference={confirmation.reference} total={confirmation.total} />;
 
   const collectionSlug = window.location.pathname.match(/^\/collections\/([^/]+)\/?$/)?.[1] as CollectionSlug | undefined;
   if (collectionSlug && collectionPages[collectionSlug]) return <CollectionPage slug={collectionSlug} />;
@@ -458,7 +665,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgShoppingBag} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[12px] whitespace-nowrap" data-node-id="2:21">
-                Bag ({bag.length})
+                Bag ({bagCount})
               </p>
             </button>
           </div>
@@ -1241,16 +1448,20 @@ export default function FormePremiumTechnologyStorefront() {
             ) : (
               activePanelItems.length ? (
                 <div className="flex flex-col gap-[4px] overflow-y-auto pt-[20px]">
-                  {activePanelItems.map((name) => (
+                  {headerPanel === "bag" ? (
+                    <OrderItems bag={bag} editable onQuantity={setQuantity} onRemove={toggleBag} quantities={quantities} selectedColors={selectedColors} />
+                  ) : activePanelItems.map((name) => (
                     <div className="border-[#dfe3dc] border-b flex items-center justify-between py-[16px]" key={name}>
-                      <div>
-                        <p className="font-['Inter:Medium'] text-[#202522] text-[14px]">{name}</p>
-                        <p className="font-['Inter:Regular'] mt-[4px] text-[#717772] text-[11px]">{headerPanel === "wishlist" ? "Saved item" : "Quantity 1"}</p>
-                      </div>
-                      <button className="font-['Inter:Medium'] text-[#245c4d] text-[11px]" onClick={() => headerPanel === "wishlist" ? toggleWishlist(name) : toggleBag(name)} type="button">Remove</button>
+                      <div><p className="font-['Inter:Medium'] text-[#202522] text-[14px]">{name}</p><p className="font-['Inter:Regular'] mt-[4px] text-[#717772] text-[11px]">Saved item</p></div>
+                      <button className="font-['Inter:Medium'] text-[#245c4d] text-[11px]" onClick={() => toggleWishlist(name)} type="button">Remove</button>
                     </div>
                   ))}
                   {headerPanel === "wishlist" && <button className="bg-[#245c4d] font-['Inter:Medium'] h-[44px] mt-[20px] rounded-[4px] text-[12px] text-white" onClick={() => activePanelItems.forEach((name) => { if (!bag.includes(name)) toggleBag(name); })} type="button">Add saved items to bag</button>}
+                  {headerPanel === "bag" && <>
+                    <div className="flex justify-between mt-[18px] text-[15px]"><span>Subtotal</span><strong>{money.format(subtotal)}</strong></div>
+                    <button className="border border-[#245c4d] h-[44px] mt-[16px] rounded-[4px] text-[#245c4d] text-[12px]" onClick={() => window.location.assign("/bag")} type="button">View bag</button>
+                    <button className="bg-[#245c4d] h-[46px] mt-[10px] rounded-[4px] text-[12px] text-white" onClick={() => window.location.assign("/checkout")} type="button">Checkout</button>
+                  </>}
                 </div>
               ) : (
                 <div className="flex flex-1 flex-col items-center justify-center text-center">
@@ -1268,4 +1479,10 @@ export default function FormePremiumTechnologyStorefront() {
       )}
     </div>
   );
+}
+
+const router = createBrowserRouter([{ path: "*", Component: FormePremiumTechnologyStorefront }]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }
