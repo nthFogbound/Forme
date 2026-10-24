@@ -333,13 +333,4 @@ button,
     white-space: normal !important;
   }
 
-  [data-name='Social and region'] {
-    width: auto !important;
-  }
-
-  [data-name='Legal and payments'] {
-    align-items: flex-start !important;
-    flex-direction: column;
-    gap: 14px;
-  }
 }

@@ -36,11 +36,6 @@ const imgColorOptions5 = `${assetPathPrefix}/6bf7d.svg`;
 const imgColorOptions6 = `${assetPathPrefix}/c4251.svg`;
 const imgColorOptions7 = `${assetPathPrefix}/eac21.svg`;
 const imgCamera1 = `${assetPathPrefix}/0eaee.svg`;
-const imgInstagram = `${assetPathPrefix}/aa31e.svg`;
-const imgFacebook = `${assetPathPrefix}/4c38c.svg`;
-const imgYoutube = `${assetPathPrefix}/146e7.svg`;
-const imgGlobe = `${assetPathPrefix}/b5bdf.svg`;
-const imgLockKeyhole = `${assetPathPrefix}/76600.svg`;
 
 export default function FormePremiumTechnologyStorefront() {
   return (
@@ -907,46 +902,12 @@ export default function FormePremiumTechnologyStorefront() {
               New arrivals
             </p>
           </div>
-          <div className="content-stretch flex flex-col gap-[18px] items-start overflow-clip relative shrink-0 w-[156px]" data-node-id="2:433" data-name="Social and region">
-            <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[12px] whitespace-nowrap" data-node-id="2:434">
-              Keep in touch
-            </p>
-            <div className="content-stretch flex gap-[16px] items-start overflow-clip relative shrink-0" data-node-id="2:435" data-name="Social links">
-              <div className="relative shrink-0 size-[19px]" data-node-id="2:436" data-name="instagram">
-                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgInstagram} />
-              </div>
-              <div className="relative shrink-0 size-[18px]" data-node-id="2:438" data-name="facebook">
-                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgFacebook} />
-              </div>
-              <div className="relative shrink-0 size-[21px]" data-node-id="2:440" data-name="youtube">
-                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgYoutube} />
-              </div>
-            </div>
-            <div className="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="2:442" data-name="Region selector">
-              <div className="relative shrink-0 size-[16px]" data-node-id="2:443" data-name="globe">
-                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgGlobe} />
-              </div>
-              <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:445">
-                United States · USD
-              </p>
-            </div>
-          </div>
         </div>
         <div className="bg-[#dfe3dc] h-px relative shrink-0 w-full" data-node-id="2:446" data-name="Footer divider" />
-        <div className="content-stretch flex items-center justify-between overflow-clip relative shrink-0 w-full" data-node-id="2:447" data-name="Legal and payments">
+        <div className="content-stretch flex items-center overflow-clip relative shrink-0 w-full" data-node-id="2:447" data-name="Copyright">
           <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[10px] whitespace-nowrap" data-node-id="2:448">
             © 2026 Forme. All rights reserved.
           </p>
-          <div className="content-stretch flex items-start overflow-clip relative shrink-0" data-node-id="2:449" data-name="Legal links">
-            <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[10px] whitespace-nowrap" data-node-id="2:450">
-              Accessibility
-            </p>
-          </div>
-          <div className="content-stretch flex items-center overflow-clip relative shrink-0" data-node-id="2:451" data-name="Payment methods">
-            <div className="relative shrink-0 size-[13px]" data-node-id="2:452" data-name="lock-keyhole">
-              <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgLockKeyhole} />
-            </div>
-          </div>
         </div>
       </div>
     </div>
