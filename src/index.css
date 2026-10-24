@@ -106,15 +106,17 @@ button:disabled {
   color: #ffffff;
 }
 
-[data-name='Save product'][aria-pressed='true'] img {
+[data-name='Save product'][aria-pressed='true'] > * {
   display: none;
 }
 
 [data-name='Save product'][aria-pressed='true']::after {
-  content: '♥';
-  font-family: Arial, sans-serif;
-  font-size: 18px;
-  line-height: 1;
+  background: url('/assets/heart-filled.svg') center / contain no-repeat;
+  content: '';
+  display: block;
+  flex: 0 0 18px;
+  height: 18px;
+  width: 18px;
 }
 
 [data-wishlist-button] {
@@ -137,8 +139,13 @@ button:disabled {
 }
 
 [data-wishlist-button][aria-pressed='true']::before {
-  content: '♥';
+  background: url('/assets/heart-filled.svg') center / contain no-repeat;
+  content: '';
+  display: inline-block;
+  height: 16px;
   margin-right: 6px;
+  vertical-align: -3px;
+  width: 16px;
 }
 
 @keyframes wishlist-pop {

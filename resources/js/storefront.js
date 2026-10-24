@@ -7,6 +7,18 @@ const products = [
   ["BoostCharge Pro 3-in-1", "Accessories", "boostcharge-pro"],
   ["MX Keys Mini", "Accessories", "mx-keys-mini"],
   ["WH-1000XM5", "Audio", "sony-wh-1000xm5"],
+  ["Pixel 8 Pro", "Smartphones", "pixel-8-pro"],
+  ["Phone (2)", "Smartphones", "nothing-phone-2"],
+  ["XPS 13", "Laptops", "dell-xps-13"],
+  ["Surface Laptop 5", "Laptops", "surface-laptop-5"],
+  ["Laptop 13", "Laptops", "framework-laptop-13"],
+  ["iPad Air", "Tablets", "ipad-air"],
+  ["Surface Pro 9", "Tablets", "surface-pro-9"],
+  ["Tab P12", "Tablets", "lenovo-tab-p12"],
+  ["MagSafe Battery Pack", "Accessories", "magsafe-battery-pack"],
+  ["735 GaN Charger", "Accessories", "anker-735-charger"],
+  ["QuietComfort Ultra", "Audio", "bose-qc-ultra"],
+  ["Studio Pro", "Audio", "beats-studio-pro"],
 ]
 
 const search = document.querySelector("[data-product-search]")

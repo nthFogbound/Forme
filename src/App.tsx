@@ -39,74 +39,10 @@ const imgColorOptions7 = `${assetPathPrefix}/eac21.svg`;
 const imgCamera1 = `${assetPathPrefix}/0eaee.svg`;
 const searchResultsId = "product-search-results";
 
-const searchableProducts = [
-  { slug: "iphone-13-pro", name: "iPhone 13 Pro", brand: "Apple", category: "Smartphones", collection: "Everyday elevated", keywords: "phone mobile ios camera unlocked" },
-  { slug: "macbook-pro-14", name: "MacBook Pro 14″", brand: "Apple", category: "Laptops", collection: "Workspace edit", keywords: "notebook computer mac m1 pro" },
-  { slug: "galaxy-tab-s8", name: "Galaxy Tab S8", brand: "Samsung", category: "Tablets", collection: "Everyday elevated", keywords: "tablet android wifi display" },
-  { slug: "galaxy-s23-ultra", name: "Galaxy S23 Ultra", brand: "Samsung", category: "Smartphones", collection: "Everyday elevated", keywords: "phone mobile android camera unlocked" },
-  { slug: "airpods-pro", name: "AirPods Pro", brand: "Apple", category: "Audio", collection: "Everyday essentials", keywords: "earbuds headphones wireless noise cancellation" },
-  { slug: "boostcharge-pro", name: "BoostCharge Pro 3-in-1", brand: "Belkin", category: "Accessories", collection: "Everyday essentials", keywords: "charger charging wireless magsafe mobile accessory" },
-  { slug: "mx-keys-mini", name: "MX Keys Mini", brand: "Logitech", category: "Accessories", collection: "Workspace edit", keywords: "keyboard wireless computer laptop accessory" },
-  { slug: "sony-wh-1000xm5", name: "Sony WH-1000XM5", brand: "Sony", category: "Audio", collection: "Workspace edit", keywords: "headphones wireless noise cancelling battery" },
-];
-
 type HeaderPanel = "account" | "wishlist" | "bag" | null;
 type ProductCategory = "all" | "smartphones" | "laptops" | "tablets" | "mobile-accessories" | "audio" | "new-arrivals";
 
 const productCardClass = "content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative";
-
-const categoryPages = {
-  smartphones: {
-    eyebrow: "CONNECTED, BEAUTIFULLY",
-    title: "Smartphones",
-    description: "Powerful cameras, thoughtful design and all-day performance—selected for the way you communicate, create and move.",
-    hero: imgCategoryProduct,
-    products: [
-      { slug: "iphone-13-pro", brand: "APPLE", name: "iPhone 13 Pro", detail: "128GB · Unlocked · Graphite", price: "$999.00", image: imgProduct },
-      { slug: "galaxy-s23-ultra", brand: "SAMSUNG", name: "Galaxy S23 Ultra", detail: "256GB · Unlocked · Phantom black", price: "$1,199.00", image: imgProduct3 },
-    ],
-  },
-  laptops: {
-    eyebrow: "FOR YOUR NEXT BIG IDEA",
-    title: "Laptops",
-    description: "Portable performance and beautifully considered hardware for deep work, creative projects and everything between.",
-    hero: imgCategoryProduct1,
-    products: [
-      { slug: "macbook-pro-14", brand: "APPLE", name: "MacBook Pro 14″", detail: "M1 Pro · 16GB RAM · 512GB SSD", price: "$1,999.00", image: imgProduct1 },
-    ],
-  },
-  tablets: {
-    eyebrow: "POSSIBILITY, IN YOUR HANDS",
-    title: "Tablets",
-    description: "Flexible screens for sketching, streaming, focused work and lighter days away from your desk.",
-    hero: imgCategoryProduct2,
-    products: [
-      { slug: "galaxy-tab-s8", brand: "SAMSUNG", name: "Galaxy Tab S8", detail: "11″ display · 128GB · Wi-Fi", price: "$699.00", image: imgProduct2 },
-    ],
-  },
-  "mobile-accessories": {
-    eyebrow: "THE DETAILS MAKE THE DIFFERENCE",
-    title: "Mobile accessories",
-    description: "Charging, audio and everyday additions chosen to make your devices more useful wherever the day takes you.",
-    hero: imgCategoryProduct3,
-    products: [
-      { slug: "boostcharge-pro", brand: "BELKIN", name: "BoostCharge Pro 3-in-1", detail: "15W wireless charging · MagSafe", price: "$149.00", image: imgProduct5 },
-      { slug: "airpods-pro", brand: "APPLE", name: "AirPods Pro", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4 },
-    ],
-  },
-  audio: {
-    eyebrow: "LISTEN WITH INTENTION",
-    title: "Audio",
-    description: "Immersive sound, considered comfort and dependable listening for work, travel and slower moments.",
-    hero: imgProduct7,
-    products: [
-      { slug: "airpods-pro", brand: "APPLE", name: "AirPods Pro", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4 },
-      { slug: "sony-wh-1000xm5", brand: "SONY", name: "Sony WH-1000XM5", detail: "Noise cancelling · 30-hour battery", price: "$399.00", image: imgProduct7 },
-    ],
-  },
-} as const;
-
-type CategorySlug = keyof typeof categoryPages;
 
 const productPages = {
   "iphone-13-pro": { brand: "APPLE", name: "iPhone 13 Pro", category: "Smartphones", detail: "128GB · Unlocked", price: "$999.00", image: imgProduct, colors: ["Graphite", "Silver", "Sierra Blue"] },
@@ -117,9 +53,40 @@ const productPages = {
   "boostcharge-pro": { brand: "BELKIN", name: "BoostCharge Pro 3-in-1", category: "Accessories", detail: "15W wireless charging · MagSafe", price: "$149.00", image: imgProduct5, colors: ["White", "Black"] },
   "mx-keys-mini": { brand: "LOGITECH", name: "MX Keys Mini", category: "Accessories", detail: "Wireless keyboard", price: "$99.00", image: imgProduct6, colors: ["Graphite", "Pale Gray", "Rose"] },
   "sony-wh-1000xm5": { brand: "SONY", name: "Sony WH-1000XM5", category: "Audio", detail: "Noise cancelling · 30-hour battery", price: "$399.00", image: imgProduct7, colors: ["Black", "Silver", "Midnight Blue"] },
+  "pixel-8-pro": { brand: "GOOGLE", name: "Pixel 8 Pro", category: "Smartphones", detail: "128GB · Unlocked", price: "$999.00", image: imgCategoryProduct, colors: ["Obsidian", "Porcelain"] },
+  "nothing-phone-2": { brand: "NOTHING", name: "Phone (2)", category: "Smartphones", detail: "256GB · Unlocked", price: "$699.00", image: imgProduct, colors: ["White", "Black"] },
+  "dell-xps-13": { brand: "DELL", name: "XPS 13", category: "Laptops", detail: "13.4″ · 16GB RAM · 512GB SSD", price: "$1,299.00", image: imgCategoryProduct1, colors: ["Platinum", "Graphite"] },
+  "surface-laptop-5": { brand: "MICROSOFT", name: "Surface Laptop 5", category: "Laptops", detail: "13.5″ · 16GB RAM · 512GB SSD", price: "$1,499.00", image: `${assetPathPrefix}/13c3c.png`, colors: ["Platinum", "Black"] },
+  "framework-laptop-13": { brand: "FRAMEWORK", name: "Laptop 13", category: "Laptops", detail: "13.5″ · 16GB RAM · 512GB SSD", price: "$1,249.00", image: imgProduct1, colors: ["Silver"] },
+  "ipad-air": { brand: "APPLE", name: "iPad Air", category: "Tablets", detail: "10.9″ display · 128GB · Wi-Fi", price: "$599.00", image: imgCategoryProduct2, colors: ["Space Gray", "Blue", "Starlight"] },
+  "surface-pro-9": { brand: "MICROSOFT", name: "Surface Pro 9", category: "Tablets", detail: "13″ display · 256GB · Wi-Fi", price: "$999.00", image: imgProduct2, colors: ["Platinum", "Graphite"] },
+  "lenovo-tab-p12": { brand: "LENOVO", name: "Tab P12", category: "Tablets", detail: "12.7″ display · 128GB · Wi-Fi", price: "$349.00", image: imgCategoryProduct2, colors: ["Storm Gray"] },
+  "magsafe-battery-pack": { brand: "APPLE", name: "MagSafe Battery Pack", category: "Accessories", detail: "Portable magnetic charging", price: "$99.00", image: imgCategoryProduct3, colors: ["White"] },
+  "anker-735-charger": { brand: "ANKER", name: "735 GaN Charger", category: "Accessories", detail: "65W · Three ports · USB-C", price: "$59.00", image: imgProduct5, colors: ["Black"] },
+  "bose-qc-ultra": { brand: "BOSE", name: "QuietComfort Ultra", category: "Audio", detail: "Immersive audio · Noise cancelling", price: "$429.00", image: `${assetPathPrefix}/e1a76.png`, colors: ["Black", "White Smoke"] },
+  "beats-studio-pro": { brand: "BEATS", name: "Studio Pro", category: "Audio", detail: "Spatial audio · USB-C", price: "$349.00", image: imgProduct7, colors: ["Black", "Sandstone"] },
 } as const;
 
 type ProductSlug = keyof typeof productPages;
+const productCard = (slug: ProductSlug) => ({ slug, ...productPages[slug] });
+
+const categoryPages = {
+  smartphones: { eyebrow: "CONNECTED, BEAUTIFULLY", title: "Smartphones", description: "Powerful cameras, thoughtful design and all-day performance—selected for the way you communicate, create and move.", hero: imgCategoryProduct, products: ["iphone-13-pro", "galaxy-s23-ultra", "pixel-8-pro", "nothing-phone-2"].map((slug) => productCard(slug as ProductSlug)) },
+  laptops: { eyebrow: "FOR YOUR NEXT BIG IDEA", title: "Laptops", description: "Portable performance and beautifully considered hardware for deep work, creative projects and everything between.", hero: imgCategoryProduct1, products: ["macbook-pro-14", "dell-xps-13", "surface-laptop-5", "framework-laptop-13"].map((slug) => productCard(slug as ProductSlug)) },
+  tablets: { eyebrow: "POSSIBILITY, IN YOUR HANDS", title: "Tablets", description: "Flexible screens for sketching, streaming, focused work and lighter days away from your desk.", hero: imgCategoryProduct2, products: ["galaxy-tab-s8", "ipad-air", "surface-pro-9", "lenovo-tab-p12"].map((slug) => productCard(slug as ProductSlug)) },
+  "mobile-accessories": { eyebrow: "THE DETAILS MAKE THE DIFFERENCE", title: "Mobile accessories", description: "Charging, audio and everyday additions chosen to make your devices more useful wherever the day takes you.", hero: imgCategoryProduct3, products: ["boostcharge-pro", "airpods-pro", "magsafe-battery-pack", "anker-735-charger"].map((slug) => productCard(slug as ProductSlug)) },
+  audio: { eyebrow: "LISTEN WITH INTENTION", title: "Audio", description: "Immersive sound, considered comfort and dependable listening for work, travel and slower moments.", hero: imgProduct7, products: ["airpods-pro", "sony-wh-1000xm5", "bose-qc-ultra", "beats-studio-pro"].map((slug) => productCard(slug as ProductSlug)) },
+};
+
+type CategorySlug = keyof typeof categoryPages;
+const searchableProducts = (Object.entries(productPages) as [ProductSlug, (typeof productPages)[ProductSlug]][]).map(([slug, product]) => ({
+  slug,
+  name: product.name,
+  brand: product.brand,
+  category: product.category,
+  collection: "",
+  keywords: `${product.detail} ${product.colors.join(" ")}`,
+}));
 type Quantities = Record<string, number>;
 type Confirmation = { reference: string; items: { name: string; quantity: number }[]; total: number };
 
