@@ -13,9 +13,6 @@ const imgProduct4 = `${assetPathPrefix}/8f66f.png`;
 const imgProduct5 = `${assetPathPrefix}/25fc8.png`;
 const imgProduct6 = `${assetPathPrefix}/a3684.png`;
 const imgProduct7 = `${assetPathPrefix}/6d140.png`;
-const imgEditorialPhotograph = `${assetPathPrefix}/13c3c.png`;
-const imgEditorialPhotograph1 = `${assetPathPrefix}/edf07.png`;
-const imgEditorialPhotograph2 = `${assetPathPrefix}/e1a76.png`;
 const imgSearch = `${assetPathPrefix}/e30e9.svg`;
 const imgUserRound = `${assetPathPrefix}/b4eb0.svg`;
 const imgHeart = `${assetPathPrefix}/4ff0c.svg`;
@@ -38,7 +35,6 @@ const imgColorOptions4 = `${assetPathPrefix}/ca37d.svg`;
 const imgColorOptions5 = `${assetPathPrefix}/6bf7d.svg`;
 const imgColorOptions6 = `${assetPathPrefix}/c4251.svg`;
 const imgColorOptions7 = `${assetPathPrefix}/eac21.svg`;
-const imgArrowRight2 = `${assetPathPrefix}/9a7a0.svg`;
 const imgCamera1 = `${assetPathPrefix}/0eaee.svg`;
 const imgInstagram = `${assetPathPrefix}/aa31e.svg`;
 const imgFacebook = `${assetPathPrefix}/4c38c.svg`;
@@ -831,101 +827,6 @@ export default function FormePremiumTechnologyStorefront() {
           <p className="font-['Inter:Medium'] font-medium relative shrink-0 text-[28px]" data-node-id="2:363">
             Microsoft
           </p>
-        </div>
-      </div>
-      <div className="content-stretch flex flex-col gap-[32px] items-start overflow-clip px-[64px] py-[72px] relative shrink-0 w-full" id="journal" data-node-id="2:364" data-name="Buying guides and journal">
-        <div className="content-stretch flex items-end justify-between overflow-clip relative shrink-0 w-full" data-node-id="2:365" data-name="Section heading">
-          <div className="[word-break:break-word] content-stretch flex flex-col gap-[12px] items-start leading-[normal] not-italic overflow-clip relative shrink-0 whitespace-nowrap" data-node-id="2:366" data-name="Heading">
-            <p className="font-['Inter:Semi_Bold'] font-semibold relative shrink-0 text-[#245c4d] text-[11px]" data-node-id="2:367">
-              THE FORME JOURNAL
-            </p>
-            <p className="font-['Inter:Medium'] font-medium relative shrink-0 text-[#202522] text-[36px]" data-node-id="2:368">
-              A more considered connection.
-            </p>
-          </div>
-        </div>
-        <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:369" data-name="Editorial grid">
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[18px] items-start min-w-px overflow-clip relative" data-node-id="2:370" data-name="Journal article">
-            <div className="h-[238px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:371" data-name="Editorial photograph">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[4px] size-full" src={imgEditorialPhotograph} />
-            </div>
-            <div className="[word-break:break-word] content-stretch flex items-start justify-between leading-[normal] not-italic overflow-clip relative shrink-0 text-[10px] w-full whitespace-nowrap" data-node-id="2:372" data-name="Article metadata">
-              <p className="font-['Inter:Medium'] font-medium relative shrink-0 text-[#245c4d]" data-node-id="2:373">
-                BUYING GUIDE
-              </p>
-              <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:374">
-                6 min read
-              </p>
-            </div>
-            <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[1.25] min-w-full not-italic relative shrink-0 text-[#202522] text-[23px] w-[min-content]" data-node-id="2:375">
-              The right laptop for your kind of day.
-            </p>
-            <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[1.6] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:376">
-              A clear guide to power, portability and everything in between.
-            </p>
-            <div className="content-stretch flex gap-[10px] items-center overflow-clip relative shrink-0" data-node-id="2:377" data-name="Read article">
-              <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:378">
-                Read the story
-              </p>
-              <div className="relative shrink-0 size-[14px]" data-node-id="2:379" data-name="arrow-right">
-                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgArrowRight2} />
-              </div>
-            </div>
-          </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[18px] items-start min-w-px overflow-clip relative" data-node-id="2:381" data-name="Journal article">
-            <div className="h-[238px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:382" data-name="Editorial photograph">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[4px] size-full" src={imgEditorialPhotograph1} />
-            </div>
-            <div className="[word-break:break-word] content-stretch flex items-start justify-between leading-[normal] not-italic overflow-clip relative shrink-0 text-[10px] w-full whitespace-nowrap" data-node-id="2:383" data-name="Article metadata">
-              <p className="font-['Inter:Medium'] font-medium relative shrink-0 text-[#245c4d]" data-node-id="2:384">
-                THE CONSIDERED LIFE
-              </p>
-              <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:385">
-                4 min read
-              </p>
-            </div>
-            <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[1.25] min-w-full not-italic relative shrink-0 text-[#202522] text-[23px] w-[min-content]" data-node-id="2:386">
-              A little less on your desk. A lot more focus.
-            </p>
-            <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[1.6] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:387">
-              Five thoughtful essentials for a calmer, more intentional workspace.
-            </p>
-            <div className="content-stretch flex gap-[10px] items-center overflow-clip relative shrink-0" data-node-id="2:388" data-name="Read article">
-              <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:389">
-                Read the story
-              </p>
-              <div className="relative shrink-0 size-[14px]" data-node-id="2:390" data-name="arrow-right">
-                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgArrowRight2} />
-              </div>
-            </div>
-          </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[18px] items-start min-w-px overflow-clip relative" data-node-id="2:392" data-name="Journal article">
-            <div className="h-[238px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:393" data-name="Editorial photograph">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[4px] size-full" src={imgEditorialPhotograph2} />
-            </div>
-            <div className="[word-break:break-word] content-stretch flex items-start justify-between leading-[normal] not-italic overflow-clip relative shrink-0 text-[10px] w-full whitespace-nowrap" data-node-id="2:394" data-name="Article metadata">
-              <p className="font-['Inter:Medium'] font-medium relative shrink-0 text-[#245c4d]" data-node-id="2:395">
-                EXPLAINED SIMPLY
-              </p>
-              <p className="font-['Inter:Regular'] font-normal relative shrink-0 text-[#717772]" data-node-id="2:396">
-                5 min read
-              </p>
-            </div>
-            <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[1.25] min-w-full not-italic relative shrink-0 text-[#202522] text-[23px] w-[min-content]" data-node-id="2:397">
-              Your world, with a little less noise.
-            </p>
-            <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[1.6] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:398">
-              What to look for in your next pair of noise-cancelling headphones.
-            </p>
-            <div className="content-stretch flex gap-[10px] items-center overflow-clip relative shrink-0" data-node-id="2:399" data-name="Read article">
-              <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:400">
-                Read the story
-              </p>
-              <div className="relative shrink-0 size-[14px]" data-node-id="2:401" data-name="arrow-right">
-                <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgArrowRight2} />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div className="content-stretch flex flex-col gap-[40px] items-start overflow-clip pb-[24px] pt-[56px] px-[64px] relative shrink-0 w-full" id="footer" data-node-id="2:403" data-name="Store footer">

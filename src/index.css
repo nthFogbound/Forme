@@ -52,7 +52,6 @@ button,
 [data-name='Shopping action'],
 [data-name='Browse link'],
 [data-name='Add to bag'],
-[data-name='Read article'],
 [data-name='Category card'] {
   transition:
     transform 180ms ease,
@@ -61,8 +60,7 @@ button,
 }
 
 [data-name='Shopping action']:hover,
-[data-name='Browse link']:hover,
-[data-name='Read article']:hover {
+[data-name='Browse link']:hover {
   transform: translateY(-2px);
 }
 
@@ -113,7 +111,6 @@ button,
   [data-name='Category discovery'],
   [data-name='Featured products'],
   [data-name='Everyday essentials'],
-  [data-name='Buying guides and journal'],
   [data-name='Store footer'] {
     padding-left: 40px !important;
     padding-right: 40px !important;
@@ -244,7 +241,6 @@ button,
   [data-name='Category discovery'],
   [data-name='Featured products'],
   [data-name='Everyday essentials'],
-  [data-name='Buying guides and journal'],
   [data-name='Store footer'] {
     padding-left: 24px !important;
     padding-right: 24px !important;
@@ -270,8 +266,7 @@ button,
 
   [data-name='Category grid'],
   [data-name='Product grid'],
-  [data-name='Accessories grid'],
-  [data-name='Editorial grid'] {
+  [data-name='Accessories grid'] {
     display: grid !important;
     grid-template-columns: 1fr;
     gap: 32px !important;
