@@ -37,7 +37,7 @@
               <div class="relative shrink-0 size-[20px]" data-node-id="2:19" data-name="shopping-bag">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/991a5.svg') }}" />
               </div>
-              <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[12px] whitespace-nowrap" data-node-id="2:21">
+              <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[12px] whitespace-nowrap" data-bag-count data-node-id="2:21">
                 Bag (0)
               </p>
             </button>
@@ -313,7 +313,7 @@
                   OUR PICK
                 </p>
               </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:139" data-name="Save product">
+              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="iPhone 13 Pro" data-node-id="2:139" data-name="Save product">
                 <div class="relative shrink-0 size-[17px]" data-node-id="2:140" data-name="heart">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
                 </div>
@@ -349,7 +349,7 @@
                 </div>
               </div>
             </div>
-            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:157" data-name="Add to bag">
+            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="iPhone 13 Pro" data-node-id="2:157" data-name="Add to bag">
               <div class="relative shrink-0 size-[15px]" data-node-id="2:158" data-name="plus">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
               </div>
@@ -368,7 +368,7 @@
                   BESTSELLER
                 </p>
               </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:166" data-name="Save product">
+              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="MacBook Pro 14″" data-node-id="2:166" data-name="Save product">
                 <div class="relative shrink-0 size-[17px]" data-node-id="2:167" data-name="heart">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
                 </div>
@@ -404,7 +404,7 @@
                 </div>
               </div>
             </div>
-            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:183" data-name="Add to bag">
+            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="MacBook Pro 14″" data-node-id="2:183" data-name="Add to bag">
               <div class="relative shrink-0 size-[15px]" data-node-id="2:184" data-name="plus">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
               </div>
@@ -418,7 +418,7 @@
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:189" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/a1a1c.png') }}" />
               </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:190" data-name="Save product">
+              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-save-product="Galaxy Tab S8" data-node-id="2:190" data-name="Save product">
                 <div class="relative shrink-0 size-[17px]" data-node-id="2:191" data-name="heart">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
                 </div>
@@ -454,7 +454,7 @@
                 </div>
               </div>
             </div>
-            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:208" data-name="Add to bag">
+            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="Galaxy Tab S8" data-node-id="2:208" data-name="Add to bag">
               <div class="relative shrink-0 size-[15px]" data-node-id="2:209" data-name="plus">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
               </div>
@@ -468,7 +468,7 @@
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:214" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/46886.png') }}" />
               </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:215" data-name="Save product">
+              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="Galaxy S23 Ultra" data-node-id="2:215" data-name="Save product">
                 <div class="relative shrink-0 size-[17px]" data-node-id="2:216" data-name="heart">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
                 </div>
@@ -504,7 +504,7 @@
                 </div>
               </div>
             </div>
-            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:233" data-name="Add to bag">
+            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="Galaxy S23 Ultra" data-node-id="2:233" data-name="Add to bag">
               <div class="relative shrink-0 size-[15px]" data-node-id="2:234" data-name="plus">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
               </div>
@@ -565,7 +565,7 @@
                   NEW ARRIVAL
                 </p>
               </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:259" data-name="Save product">
+              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="AirPods Pro" data-node-id="2:259" data-name="Save product">
                 <div class="relative shrink-0 size-[17px]" data-node-id="2:260" data-name="heart">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
                 </div>
@@ -601,7 +601,7 @@
                 </div>
               </div>
             </div>
-            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:275" data-name="Add to bag">
+            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="AirPods Pro" data-node-id="2:275" data-name="Add to bag">
               <div class="relative shrink-0 size-[15px]" data-node-id="2:276" data-name="plus">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
               </div>
@@ -620,7 +620,7 @@
                   NEW ARRIVAL
                 </p>
               </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:284" data-name="Save product">
+              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="BoostCharge Pro 3-in-1" data-node-id="2:284" data-name="Save product">
                 <div class="relative shrink-0 size-[17px]" data-node-id="2:285" data-name="heart">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
                 </div>
@@ -656,7 +656,7 @@
                 </div>
               </div>
             </div>
-            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:301" data-name="Add to bag">
+            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="BoostCharge Pro 3-in-1" data-node-id="2:301" data-name="Add to bag">
               <div class="relative shrink-0 size-[15px]" data-node-id="2:302" data-name="plus">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
               </div>
@@ -670,7 +670,7 @@
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:307" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/a3684.png') }}" />
               </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:308" data-name="Save product">
+              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-save-product="MX Keys Mini" data-node-id="2:308" data-name="Save product">
                 <div class="relative shrink-0 size-[17px]" data-node-id="2:309" data-name="heart">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
                 </div>
@@ -706,7 +706,7 @@
                 </div>
               </div>
             </div>
-            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:326" data-name="Add to bag">
+            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="MX Keys Mini" data-node-id="2:326" data-name="Add to bag">
               <div class="relative shrink-0 size-[15px]" data-node-id="2:327" data-name="plus">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
               </div>
@@ -720,7 +720,7 @@
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:332" data-name="Product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/6d140.png') }}" />
               </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:333" data-name="Save product">
+              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="Sony WH-1000XM5" data-node-id="2:333" data-name="Save product">
                 <div class="relative shrink-0 size-[17px]" data-node-id="2:334" data-name="heart">
                   <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
                 </div>
@@ -756,7 +756,7 @@
                 </div>
               </div>
             </div>
-            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:351" data-name="Add to bag">
+            <div class="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="Sony WH-1000XM5" data-node-id="2:351" data-name="Add to bag">
               <div class="relative shrink-0 size-[15px]" data-node-id="2:352" data-name="plus">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
               </div>

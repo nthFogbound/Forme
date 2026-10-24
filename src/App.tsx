@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
 
 const assetPathPrefix = "/assets";
 const imgEverydayTechnologyStillLife = `${assetPathPrefix}/7c3c6.png`;
@@ -98,7 +98,19 @@ const categoryPages = {
 
 type CategorySlug = keyof typeof categoryPages;
 
-function CategoryPage({ slug }: { slug: CategorySlug }) {
+function CategoryPage({
+  slug,
+  wishlist,
+  bag,
+  toggleWishlist,
+  toggleBag,
+}: {
+  slug: CategorySlug;
+  wishlist: string[];
+  bag: string[];
+  toggleWishlist: (name: string) => void;
+  toggleBag: (name: string) => void;
+}) {
   const category = categoryPages[slug];
 
   return (
@@ -133,7 +145,11 @@ function CategoryPage({ slug }: { slug: CategorySlug }) {
               <p className="font-['Inter:Medium'] text-[#717772] text-[10px]">{product.brand}</p>
               <h2 className="font-['Inter:Medium'] text-[20px]">{product.name}</h2>
               <p className="font-['Inter:Regular'] text-[#717772] text-[12px]">{product.detail}</p>
-              <p className="font-['Inter:Semi_Bold'] text-[18px]">{product.price}</p>
+              <div className="flex items-center justify-between">
+                <p className="font-['Inter:Semi_Bold'] text-[18px]">{product.price}</p>
+                <button aria-pressed={wishlist.includes(product.name)} className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => toggleWishlist(product.name)} type="button">{wishlist.includes(product.name) ? "Saved" : "Save"}</button>
+              </div>
+              <button className={`border h-[42px] rounded-[4px] text-[12px] ${bag.includes(product.name) ? "bg-[#245c4d] border-[#245c4d] text-white" : "border-[#245c4d] text-[#245c4d]"}`} onClick={() => toggleBag(product.name)} type="button">{bag.includes(product.name) ? "Remove from bag" : "Add to bag"}</button>
             </article>
           ))}
         </div>
@@ -149,6 +165,10 @@ export default function FormePremiumTechnologyStorefront() {
   const [accountMode, setAccountMode] = useState<"signin" | "create" | null>(null);
   const [accountSubmitted, setAccountSubmitted] = useState(false);
   const [activeCategory, setActiveCategory] = useState<ProductCategory>("all");
+  const [wishlist, setWishlist] = useState<string[]>(() => JSON.parse(localStorage.getItem("forme-wishlist") || "[]"));
+  const [bag, setBag] = useState<string[]>(() => JSON.parse(localStorage.getItem("forme-bag") || "[]"));
+  useEffect(() => localStorage.setItem("forme-wishlist", JSON.stringify(wishlist)), [wishlist]);
+  useEffect(() => localStorage.setItem("forme-bag", JSON.stringify(bag)), [bag]);
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return searchableProducts.slice(0, 4);
@@ -177,9 +197,30 @@ export default function FormePremiumTechnologyStorefront() {
 
   const productIsVisible = (category: ProductCategory, isNew = false) =>
     activeCategory === "all" || activeCategory === category || (activeCategory === "new-arrivals" && isNew);
+  const toggleWishlist = (name: string) => setWishlist((items) => items.includes(name) ? items.filter((item) => item !== name) : [...items, name]);
+  const toggleBag = (name: string) => setBag((items) => items.includes(name) ? items.filter((item) => item !== name) : [...items, name]);
+  const productControl = (kind: "wishlist" | "bag", name: string) => {
+    const active = (kind === "wishlist" ? wishlist : bag).includes(name);
+    const activate = () => kind === "wishlist" ? toggleWishlist(name) : toggleBag(name);
+    const destination = kind === "wishlist" ? "wishlist" : "bag";
+    return {
+      "aria-label": `${active ? "Remove" : "Add"} ${name} ${active ? `from ${destination}` : `to ${destination}`}`,
+      "aria-pressed": active,
+      onClick: activate,
+      onKeyDown: (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activate();
+        }
+      },
+      role: "button",
+      tabIndex: 0,
+    };
+  };
+  const activePanelItems = headerPanel === "wishlist" ? wishlist : bag;
 
   const categorySlug = window.location.pathname.match(/^\/categories\/([^/]+)\/?$/)?.[1] as CategorySlug | undefined;
-  if (categorySlug && categoryPages[categorySlug]) return <CategoryPage slug={categorySlug} />;
+  if (categorySlug && categoryPages[categorySlug]) return <CategoryPage bag={bag} slug={categorySlug} toggleBag={toggleBag} toggleWishlist={toggleWishlist} wishlist={wishlist} />;
 
   return (
     <div className="bg-white content-stretch flex flex-col items-start relative size-full" data-node-id="2:3" data-name="FORME — Premium technology storefront">
@@ -241,7 +282,7 @@ export default function FormePremiumTechnologyStorefront() {
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgShoppingBag} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[12px] whitespace-nowrap" data-node-id="2:21">
-                Bag (0)
+                Bag ({bag.length})
               </p>
             </button>
           </div>
@@ -516,7 +557,7 @@ export default function FormePremiumTechnologyStorefront() {
                   OUR PICK
                 </p>
               </div>
-              <div className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:139" data-name="Save product">
+              <div {...productControl("wishlist", "iPhone 13 Pro")} className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:139" data-name="Save product">
                 <div className="relative shrink-0 size-[17px]" data-node-id="2:140" data-name="heart">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgHeart1} />
                 </div>
@@ -552,12 +593,12 @@ export default function FormePremiumTechnologyStorefront() {
                 </div>
               </div>
             </div>
-            <div className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:157" data-name="Add to bag">
+            <div {...productControl("bag", "iPhone 13 Pro")} className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:157" data-name="Add to bag">
               <div className="relative shrink-0 size-[15px]" data-node-id="2:158" data-name="plus">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPlus} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:160">
-                Add to bag
+                {bag.includes("iPhone 13 Pro") ? "Remove from bag" : "Add to bag"}
               </p>
             </div>
           </div>
@@ -571,7 +612,7 @@ export default function FormePremiumTechnologyStorefront() {
                   BESTSELLER
                 </p>
               </div>
-              <div className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:166" data-name="Save product">
+              <div {...productControl("wishlist", "MacBook Pro 14″")} className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:166" data-name="Save product">
                 <div className="relative shrink-0 size-[17px]" data-node-id="2:167" data-name="heart">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgHeart1} />
                 </div>
@@ -607,12 +648,12 @@ export default function FormePremiumTechnologyStorefront() {
                 </div>
               </div>
             </div>
-            <div className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:183" data-name="Add to bag">
+            <div {...productControl("bag", "MacBook Pro 14″")} className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:183" data-name="Add to bag">
               <div className="relative shrink-0 size-[15px]" data-node-id="2:184" data-name="plus">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPlus} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:186">
-                Add to bag
+                {bag.includes("MacBook Pro 14″") ? "Remove from bag" : "Add to bag"}
               </p>
             </div>
           </div>
@@ -621,7 +662,7 @@ export default function FormePremiumTechnologyStorefront() {
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:189" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct2} />
               </div>
-              <div className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:190" data-name="Save product">
+              <div {...productControl("wishlist", "Galaxy Tab S8")} className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:190" data-name="Save product">
                 <div className="relative shrink-0 size-[17px]" data-node-id="2:191" data-name="heart">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgHeart1} />
                 </div>
@@ -657,12 +698,12 @@ export default function FormePremiumTechnologyStorefront() {
                 </div>
               </div>
             </div>
-            <div className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:208" data-name="Add to bag">
+            <div {...productControl("bag", "Galaxy Tab S8")} className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:208" data-name="Add to bag">
               <div className="relative shrink-0 size-[15px]" data-node-id="2:209" data-name="plus">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPlus} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:211">
-                Add to bag
+                {bag.includes("Galaxy Tab S8") ? "Remove from bag" : "Add to bag"}
               </p>
             </div>
           </div>
@@ -671,7 +712,7 @@ export default function FormePremiumTechnologyStorefront() {
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:214" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct3} />
               </div>
-              <div className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:215" data-name="Save product">
+              <div {...productControl("wishlist", "Galaxy S23 Ultra")} className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:215" data-name="Save product">
                 <div className="relative shrink-0 size-[17px]" data-node-id="2:216" data-name="heart">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgHeart1} />
                 </div>
@@ -707,12 +748,12 @@ export default function FormePremiumTechnologyStorefront() {
                 </div>
               </div>
             </div>
-            <div className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:233" data-name="Add to bag">
+            <div {...productControl("bag", "Galaxy S23 Ultra")} className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:233" data-name="Add to bag">
               <div className="relative shrink-0 size-[15px]" data-node-id="2:234" data-name="plus">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPlus} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:236">
-                Add to bag
+                {bag.includes("Galaxy S23 Ultra") ? "Remove from bag" : "Add to bag"}
               </p>
             </div>
           </div>
@@ -768,7 +809,7 @@ export default function FormePremiumTechnologyStorefront() {
                   NEW ARRIVAL
                 </p>
               </div>
-              <div className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:259" data-name="Save product">
+              <div {...productControl("wishlist", "AirPods Pro")} className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:259" data-name="Save product">
                 <div className="relative shrink-0 size-[17px]" data-node-id="2:260" data-name="heart">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgHeart1} />
                 </div>
@@ -804,12 +845,12 @@ export default function FormePremiumTechnologyStorefront() {
                 </div>
               </div>
             </div>
-            <div className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:275" data-name="Add to bag">
+            <div {...productControl("bag", "AirPods Pro")} className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:275" data-name="Add to bag">
               <div className="relative shrink-0 size-[15px]" data-node-id="2:276" data-name="plus">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPlus} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:278">
-                Add to bag
+                {bag.includes("AirPods Pro") ? "Remove from bag" : "Add to bag"}
               </p>
             </div>
           </div>
@@ -823,7 +864,7 @@ export default function FormePremiumTechnologyStorefront() {
                   NEW ARRIVAL
                 </p>
               </div>
-              <div className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:284" data-name="Save product">
+              <div {...productControl("wishlist", "BoostCharge Pro 3-in-1")} className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:284" data-name="Save product">
                 <div className="relative shrink-0 size-[17px]" data-node-id="2:285" data-name="heart">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgHeart1} />
                 </div>
@@ -859,12 +900,12 @@ export default function FormePremiumTechnologyStorefront() {
                 </div>
               </div>
             </div>
-            <div className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:301" data-name="Add to bag">
+            <div {...productControl("bag", "BoostCharge Pro 3-in-1")} className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:301" data-name="Add to bag">
               <div className="relative shrink-0 size-[15px]" data-node-id="2:302" data-name="plus">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPlus} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:304">
-                Add to bag
+                {bag.includes("BoostCharge Pro 3-in-1") ? "Remove from bag" : "Add to bag"}
               </p>
             </div>
           </div>
@@ -873,7 +914,7 @@ export default function FormePremiumTechnologyStorefront() {
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:307" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct6} />
               </div>
-              <div className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:308" data-name="Save product">
+              <div {...productControl("wishlist", "MX Keys Mini")} className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:308" data-name="Save product">
                 <div className="relative shrink-0 size-[17px]" data-node-id="2:309" data-name="heart">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgHeart1} />
                 </div>
@@ -909,12 +950,12 @@ export default function FormePremiumTechnologyStorefront() {
                 </div>
               </div>
             </div>
-            <div className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:326" data-name="Add to bag">
+            <div {...productControl("bag", "MX Keys Mini")} className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:326" data-name="Add to bag">
               <div className="relative shrink-0 size-[15px]" data-node-id="2:327" data-name="plus">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPlus} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:329">
-                Add to bag
+                {bag.includes("MX Keys Mini") ? "Remove from bag" : "Add to bag"}
               </p>
             </div>
           </div>
@@ -923,7 +964,7 @@ export default function FormePremiumTechnologyStorefront() {
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:332" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct7} />
               </div>
-              <div className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:333" data-name="Save product">
+              <div {...productControl("wishlist", "Sony WH-1000XM5")} className="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-node-id="2:333" data-name="Save product">
                 <div className="relative shrink-0 size-[17px]" data-node-id="2:334" data-name="heart">
                   <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgHeart1} />
                 </div>
@@ -959,12 +1000,12 @@ export default function FormePremiumTechnologyStorefront() {
                 </div>
               </div>
             </div>
-            <div className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:351" data-name="Add to bag">
+            <div {...productControl("bag", "Sony WH-1000XM5")} className="border border-[#dfe3dc] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-node-id="2:351" data-name="Add to bag">
               <div className="relative shrink-0 size-[15px]" data-node-id="2:352" data-name="plus">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgPlus} />
               </div>
               <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[12px] whitespace-nowrap" data-node-id="2:354">
-                Add to bag
+                {bag.includes("Sony WH-1000XM5") ? "Remove from bag" : "Add to bag"}
               </p>
             </div>
           </div>
@@ -1120,20 +1161,29 @@ export default function FormePremiumTechnologyStorefront() {
                 )}
               </div>
             ) : (
-              <div className="flex flex-1 flex-col items-center justify-center text-center">
-                <div className="bg-[#f4f5f1] flex items-center justify-center rounded-full size-[64px]">
-                  <img alt="" className="size-[24px]" src={headerPanel === "wishlist" ? imgHeart : imgShoppingBag} />
+              activePanelItems.length ? (
+                <div className="flex flex-col gap-[4px] overflow-y-auto pt-[20px]">
+                  {activePanelItems.map((name) => (
+                    <div className="border-[#dfe3dc] border-b flex items-center justify-between py-[16px]" key={name}>
+                      <div>
+                        <p className="font-['Inter:Medium'] text-[#202522] text-[14px]">{name}</p>
+                        <p className="font-['Inter:Regular'] mt-[4px] text-[#717772] text-[11px]">{headerPanel === "wishlist" ? "Saved item" : "Quantity 1"}</p>
+                      </div>
+                      <button className="font-['Inter:Medium'] text-[#245c4d] text-[11px]" onClick={() => headerPanel === "wishlist" ? toggleWishlist(name) : toggleBag(name)} type="button">Remove</button>
+                    </div>
+                  ))}
+                  {headerPanel === "wishlist" && <button className="bg-[#245c4d] font-['Inter:Medium'] h-[44px] mt-[20px] rounded-[4px] text-[12px] text-white" onClick={() => activePanelItems.forEach((name) => { if (!bag.includes(name)) toggleBag(name); })} type="button">Add saved items to bag</button>}
                 </div>
-                <p className="font-['Inter:Medium'] mt-[20px] text-[#202522] text-[18px]">
-                  {headerPanel === "wishlist" ? "Your wishlist is ready" : "Your bag is empty"}
-                </p>
-                <p className="font-['Inter:Regular'] leading-[1.6] mt-[8px] max-w-[280px] text-[#717772] text-[12px]">
-                  {headerPanel === "wishlist" ? "Save products you love and they’ll appear here." : "Explore the collection and add something considered."}
-                </p>
-                <button className="bg-[#245c4d] font-['Inter:Medium'] h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" onClick={() => { setHeaderPanel(null); document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" }); }} type="button">
-                  Browse products
-                </button>
-              </div>
+              ) : (
+                <div className="flex flex-1 flex-col items-center justify-center text-center">
+                  <div className="bg-[#f4f5f1] flex items-center justify-center rounded-full size-[64px]">
+                    <img alt="" className="size-[24px]" src={headerPanel === "wishlist" ? imgHeart : imgShoppingBag} />
+                  </div>
+                  <p className="font-['Inter:Medium'] mt-[20px] text-[#202522] text-[18px]">{headerPanel === "wishlist" ? "Your wishlist is empty" : "Your bag is empty"}</p>
+                  <p className="font-['Inter:Regular'] leading-[1.6] mt-[8px] max-w-[280px] text-[#717772] text-[12px]">Explore the collection and add something considered.</p>
+                  <button className="bg-[#245c4d] font-['Inter:Medium'] h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" onClick={() => { setHeaderPanel(null); document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" }); }} type="button">Browse products</button>
+                </div>
+              )
             )}
           </section>
         </div>

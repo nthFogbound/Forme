@@ -14,6 +14,60 @@ const results = document.querySelector("[data-search-results]")
 const panel = document.querySelector("[data-header-panel]")
 const panelTitle = document.querySelector("[data-panel-title]")
 const panelContent = document.querySelector("[data-panel-content]")
+const readList = (key) => {
+  try {
+    return JSON.parse(localStorage.getItem(key) || "[]")
+  } catch {
+    return []
+  }
+}
+let wishlistItems = readList("forme-wishlist")
+let bagItems = readList("forme-bag")
+const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[character])
+
+function updateProductControls() {
+  localStorage.setItem("forme-wishlist", JSON.stringify(wishlistItems))
+  localStorage.setItem("forme-bag", JSON.stringify(bagItems))
+  document.querySelectorAll("[data-save-product]").forEach((control) => {
+    const active = wishlistItems.includes(control.dataset.saveProduct)
+    control.setAttribute("aria-pressed", String(active))
+    control.setAttribute("aria-label", `${active ? "Remove" : "Add"} ${control.dataset.saveProduct} ${active ? "from" : "to"} wishlist`)
+    control.classList.toggle("bg-[#edefe8]", active)
+    if (control.matches("button")) control.textContent = active ? "Saved" : "Save"
+  })
+  document.querySelectorAll("[data-add-product]").forEach((control) => {
+    const active = bagItems.includes(control.dataset.addProduct)
+    control.setAttribute("aria-pressed", String(active))
+    control.setAttribute("aria-label", `${active ? "Remove" : "Add"} ${control.dataset.addProduct} ${active ? "from" : "to"} bag`)
+    const label = control.matches("button") ? control : control.querySelector("p:last-of-type")
+    if (label) label.textContent = active ? "Remove from bag" : "Add to bag"
+  })
+  document.querySelectorAll("[data-bag-count]").forEach((count) => { count.textContent = `Bag (${bagItems.length})` })
+}
+
+function wireProductControl(control, key, type) {
+  control.setAttribute("role", "button")
+  control.tabIndex = 0
+  const toggle = () => {
+    const list = type === "wishlist" ? wishlistItems : bagItems
+    const name = control.dataset[key]
+    const next = list.includes(name) ? list.filter((item) => item !== name) : [...list, name]
+    if (type === "wishlist") wishlistItems = next
+    else bagItems = next
+    updateProductControls()
+  }
+  control.addEventListener("click", toggle)
+  control.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      toggle()
+    }
+  })
+}
+
+document.querySelectorAll("[data-save-product]").forEach((control) => wireProductControl(control, "saveProduct", "wishlist"))
+document.querySelectorAll("[data-add-product]").forEach((control) => wireProductControl(control, "addProduct", "bag"))
+updateProductControls()
 
 function browseProducts() {
   panel?.classList.add("hidden")
@@ -64,9 +118,20 @@ document.querySelectorAll("[data-open-panel]").forEach((trigger) => {
         panelContent.innerHTML = `<p class="font-['Inter:Medium'] text-[#202522] text-[18px]">Check your inbox</p><p class="font-['Inter:Regular'] leading-[1.6] mt-[8px] text-[#717772] text-[13px]">Your account request is ready for the Laravel authentication endpoint.</p>`
       })
     } else {
-      const wishlist = type === "wishlist"
-      panelContent.innerHTML = `<img alt="" class="bg-[#f4f5f1] p-[20px] rounded-full size-[64px]" src="/assets/${wishlist ? "4ff0c" : "991a5"}.svg"><p class="font-['Inter:Medium'] mt-[20px] text-[#202522] text-[18px]">${wishlist ? "Your wishlist is ready" : "Your bag is empty"}</p><p class="font-['Inter:Regular'] leading-[1.6] mt-[8px] max-w-[280px] text-[#717772] text-[12px]">${wishlist ? "Save products you love and they’ll appear here." : "Explore the collection and add something considered."}</p><button class="bg-[#245c4d] font-['Inter:Medium'] h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" data-browse-products type="button">Browse products</button>`
-      panelContent.querySelector("[data-browse-products]")?.addEventListener("click", browseProducts)
+      const isWishlist = type === "wishlist"
+      const items = isWishlist ? wishlistItems : bagItems
+      if (items.length) {
+        panelContent.innerHTML = `<div class="flex flex-col overflow-y-auto text-left w-full">${items.map((name) => `<div class="border-[#dfe3dc] border-b flex items-center justify-between py-[16px]"><div><p class="font-['Inter:Medium'] text-[#202522] text-[14px]">${escapeHtml(name)}</p><p class="font-['Inter:Regular'] mt-[4px] text-[#717772] text-[11px]">${isWishlist ? "Saved item" : "Quantity 1"}</p></div><button class="font-['Inter:Medium'] text-[#245c4d] text-[11px]" data-remove-item="${escapeHtml(name)}" type="button">Remove</button></div>`).join("")}</div>`
+        panelContent.querySelectorAll("[data-remove-item]").forEach((button) => button.addEventListener("click", () => {
+          if (isWishlist) wishlistItems = wishlistItems.filter((item) => item !== button.dataset.removeItem)
+          else bagItems = bagItems.filter((item) => item !== button.dataset.removeItem)
+          updateProductControls()
+          trigger.click()
+        }))
+      } else {
+        panelContent.innerHTML = `<img alt="" class="bg-[#f4f5f1] p-[20px] rounded-full size-[64px]" src="/assets/${isWishlist ? "4ff0c" : "991a5"}.svg"><p class="font-['Inter:Medium'] mt-[20px] text-[#202522] text-[18px]">${isWishlist ? "Your wishlist is empty" : "Your bag is empty"}</p><p class="font-['Inter:Regular'] leading-[1.6] mt-[8px] max-w-[280px] text-[#717772] text-[12px]">Explore the collection and add something considered.</p><button class="bg-[#245c4d] font-['Inter:Medium'] h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" data-browse-products type="button">Browse products</button>`
+        panelContent.querySelector("[data-browse-products]")?.addEventListener("click", browseProducts)
+      }
     }
     results?.classList.add("hidden")
     panel.classList.remove("hidden")

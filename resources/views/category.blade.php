@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ $category['description'] }}">
     <title>{{ $category['title'] }} — Forme</title>
-    @vite('src/index.css')
+    @vite(['src/index.css', 'resources/js/storefront.js'])
   </head>
   <body>
     <main class="bg-white min-h-screen text-[#202522]">
@@ -39,7 +39,11 @@
               <p class="font-['Inter:Medium'] text-[#717772] text-[10px]">{{ $product['brand'] }}</p>
               <h2 class="font-['Inter:Medium'] text-[20px]">{{ $product['name'] }}</h2>
               <p class="font-['Inter:Regular'] text-[#717772] text-[12px]">{{ $product['detail'] }}</p>
-              <p class="font-['Inter:Semi_Bold'] text-[18px]">{{ $product['price'] }}</p>
+              <div class="flex items-center justify-between">
+                <p class="font-['Inter:Semi_Bold'] text-[18px]">{{ $product['price'] }}</p>
+                <button class="font-['Inter:Medium'] text-[#245c4d] text-[12px]" data-save-product="{{ $product['name'] }}" type="button">Save</button>
+              </div>
+              <button class="border border-[#245c4d] h-[42px] rounded-[4px] text-[#245c4d] text-[12px]" data-add-product="{{ $product['name'] }}" type="button">Add to bag</button>
             </article>
           @endforeach
         </div>

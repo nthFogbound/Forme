@@ -45,7 +45,8 @@ body {
 }
 
 button,
-[role='link'] {
+[role='link'],
+[role='button'] {
   cursor: pointer;
 }
 
@@ -69,11 +70,25 @@ button,
   background: #f4f5f1;
 }
 
+[data-name='Save product'][aria-pressed='true'] {
+  background: #edefe8;
+}
+
+[data-name='Add to bag'][aria-pressed='true'] {
+  border-color: #245c4d;
+  background: #245c4d;
+}
+
+[data-name='Add to bag'][aria-pressed='true'] p {
+  color: #ffffff;
+}
+
 [data-name='Category card']:hover {
   transform: translateY(-3px);
 }
 
-[role='link']:focus-visible {
+[role='link']:focus-visible,
+[role='button']:focus-visible {
   outline: 2px solid #245c4d;
   outline-offset: 3px;
 }
