@@ -315,6 +315,10 @@ function ColorSelector({ colors, selected, onSelect }: { colors: readonly string
   );
 }
 
+function NoReviewsLabel() {
+  return <p className="font-['Inter:Regular'] text-[#717772] text-[11px]">No reviews yet</p>;
+}
+
 function ProductPage({ slug, wishlist, bag, toggleWishlist, toggleBag, selectedColor, selectColor }: {
   slug: ProductSlug; wishlist: string[]; bag: string[]; toggleWishlist: (name: string) => void; toggleBag: (name: string) => void; selectedColor: string; selectColor: (color: string) => void;
 }) {
@@ -331,6 +335,7 @@ function ProductPage({ slug, wishlist, bag, toggleWishlist, toggleBag, selectedC
           <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">{product.brand} · {product.category}</p>
           <h1 className="font-['Inter:Medium'] leading-[1.1] mt-[14px] text-[44px]">{product.name}</h1>
           <p className="font-['Inter:Regular'] mt-[14px] text-[#717772] text-[14px]">{product.detail}</p>
+          <div className="mt-[16px]"><NoReviewsLabel /></div>
           <p className="font-['Inter:Semi_Bold'] mt-[28px] text-[24px]">{product.price}</p>
           <p className="font-['Inter:Medium'] mt-[28px] text-[11px]">COLOR · {selectedColor}</p>
           <div className="mt-[12px]"><ColorSelector colors={product.colors} onSelect={selectColor} selected={selectedColor} /></div>
@@ -339,6 +344,10 @@ function ProductPage({ slug, wishlist, bag, toggleWishlist, toggleBag, selectedC
             <button aria-pressed={wishlist.includes(product.name)} className="border border-[#245c4d] h-[48px] px-[20px] rounded-[4px] text-[#245c4d] text-[13px]" onClick={() => toggleWishlist(product.name)} type="button">{wishlist.includes(product.name) ? "Saved" : "Save"}</button>
           </div>
         </div>
+      </section>
+      <section className="border-[#dfe3dc] border-t px-[64px] py-[56px] max-md:px-[24px] max-md:py-[40px]">
+        <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">CUSTOMER REVIEWS</p>
+        <p className="font-['Inter:Regular'] mt-[12px] text-[#717772] text-[13px]">No reviews yet. Be the first to share your feedback.</p>
       </section>
     </main>
   );
@@ -391,6 +400,7 @@ function CategoryPage({
               <p className="font-['Inter:Medium'] text-[#717772] text-[10px]">{product.brand}</p>
               <h2 className="font-['Inter:Medium'] text-[20px]">{product.name}</h2>
               <p className="font-['Inter:Regular'] text-[#717772] text-[12px]">{product.detail}</p>
+              <NoReviewsLabel />
               <div className="flex items-center justify-between">
                 <p className="font-['Inter:Semi_Bold'] text-[18px]">{product.price}</p>
                 <button aria-pressed={wishlist.includes(product.name)} className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => toggleWishlist(product.name)} type="button">{wishlist.includes(product.name) ? "Saved" : "Save"}</button>
@@ -464,6 +474,7 @@ function CollectionPage({ slug }: { slug: CollectionSlug }) {
                 <span className="bg-[#f4f5f1] block h-[260px] p-[28px] rounded-[4px]"><img alt={product.name} className="object-cover size-full" src={product.image} /></span>
                 <span className="font-['Inter:Medium'] text-[#717772] text-[10px]">{product.brand}</span>
                 <span className="font-['Inter:Medium'] text-[18px]">{product.name}</span>
+                <NoReviewsLabel />
                 <span className="font-['Inter:Semi_Bold'] text-[16px]">{product.price}</span>
               </button>
             );
@@ -955,6 +966,7 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:145">
                 128GB · Unlocked · Graphite
               </p>
+              <NoReviewsLabel />
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:151" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:152">
                   $999.00
@@ -999,6 +1011,7 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:172">
                 M1 Pro · 16GB RAM · 512GB SSD
               </p>
+              <NoReviewsLabel />
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:178" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:179">
                   $1,999.00
@@ -1038,6 +1051,7 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:196">
                 11″ display · 128GB · Wi-Fi
               </p>
+              <NoReviewsLabel />
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:202" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:203">
                   $699.00
@@ -1077,6 +1091,7 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:221">
                 256GB · Unlocked · Phantom black
               </p>
+              <NoReviewsLabel />
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:227" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:228">
                   $1,199.00
@@ -1163,6 +1178,7 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:265">
                 Active noise cancellation · USB-C
               </p>
+              <NoReviewsLabel />
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:271" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:272">
                   $249.00
@@ -1207,6 +1223,7 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:290">
                 15W wireless charging · MagSafe
               </p>
+              <NoReviewsLabel />
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:296" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:297">
                   $149.00
@@ -1246,6 +1263,7 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:314">
                 Wireless keyboard · Graphite
               </p>
+              <NoReviewsLabel />
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:320" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:321">
                   $99.00
@@ -1285,6 +1303,7 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:339">
                 Noise cancelling · 30-hour battery
               </p>
+              <NoReviewsLabel />
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:345" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:346">
                   $399.00

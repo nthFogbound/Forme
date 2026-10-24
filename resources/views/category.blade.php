@@ -39,6 +39,7 @@
               <p class="font-['Inter:Medium'] text-[#717772] text-[10px]">{{ $product['brand'] }}</p>
               <h2 class="font-['Inter:Medium'] text-[20px]">{{ $product['name'] }}</h2>
               <p class="font-['Inter:Regular'] text-[#717772] text-[12px]">{{ $product['detail'] }}</p>
+              <p class="font-['Inter:Regular'] text-[#717772] text-[11px]">No reviews yet</p>
               <div class="flex items-center justify-between">
                 <p class="font-['Inter:Semi_Bold'] text-[18px]">{{ $product['price'] }}</p>
                 <button class="font-['Inter:Medium'] text-[#245c4d] text-[12px]" data-save-product="{{ $product['name'] }}" type="button">Save</button>

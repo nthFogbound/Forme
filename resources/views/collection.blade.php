@@ -30,6 +30,7 @@
               <span class="bg-[#f4f5f1] block h-[260px] p-[28px] rounded-[4px]"><img alt="{{ $product['name'] }}" class="object-cover size-full" src="{{ asset('assets/'.$product['image']) }}"></span>
               <span class="font-['Inter:Medium'] text-[#717772] text-[10px]">{{ $product['brand'] }}</span>
               <span class="font-['Inter:Medium'] text-[18px]">{{ $product['name'] }}</span>
+              <span class="font-['Inter:Regular'] text-[#717772] text-[11px]">No reviews yet</span>
               <span class="font-['Inter:Semi_Bold'] text-[16px]">{{ $product['price'] }}</span>
             </a>
           @endforeach
