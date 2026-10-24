@@ -39,14 +39,14 @@ const imgColorOptions7 = `${assetPathPrefix}/eac21.svg`;
 const imgCamera1 = `${assetPathPrefix}/0eaee.svg`;
 
 const searchableProducts = [
-  { name: "iPhone 13 Pro", brand: "Apple", category: "Smartphones" },
-  { name: "MacBook Pro 14″", brand: "Apple", category: "Laptops" },
-  { name: "Galaxy Tab S8", brand: "Samsung", category: "Tablets" },
-  { name: "Galaxy S23 Ultra", brand: "Samsung", category: "Smartphones" },
-  { name: "AirPods Pro", brand: "Apple", category: "Audio" },
-  { name: "BoostCharge Pro 3-in-1", brand: "Belkin", category: "Accessories" },
-  { name: "MX Keys Mini", brand: "Logitech", category: "Accessories" },
-  { name: "WH-1000XM5", brand: "Sony", category: "Audio" },
+  { slug: "iphone-13-pro", name: "iPhone 13 Pro", brand: "Apple", category: "Smartphones" },
+  { slug: "macbook-pro-14", name: "MacBook Pro 14″", brand: "Apple", category: "Laptops" },
+  { slug: "galaxy-tab-s8", name: "Galaxy Tab S8", brand: "Samsung", category: "Tablets" },
+  { slug: "galaxy-s23-ultra", name: "Galaxy S23 Ultra", brand: "Samsung", category: "Smartphones" },
+  { slug: "airpods-pro", name: "AirPods Pro", brand: "Apple", category: "Audio" },
+  { slug: "boostcharge-pro", name: "BoostCharge Pro 3-in-1", brand: "Belkin", category: "Accessories" },
+  { slug: "mx-keys-mini", name: "MX Keys Mini", brand: "Logitech", category: "Accessories" },
+  { slug: "sony-wh-1000xm5", name: "WH-1000XM5", brand: "Sony", category: "Audio" },
 ];
 
 type HeaderPanel = "account" | "wishlist" | "bag" | null;
@@ -505,9 +505,9 @@ export default function FormePremiumTechnologyStorefront() {
     setHeaderPanel(panel);
   };
 
-  const selectSearchResult = () => {
+  const selectSearchResult = (slug: string) => {
     setSearchOpen(false);
-    document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" });
+    window.location.assign(`/products/${slug}`);
   };
 
   const navigateToCategory = (category: ProductCategory) => {
@@ -613,9 +613,9 @@ export default function FormePremiumTechnologyStorefront() {
           </p>
         </div>
         <div className="bg-white content-stretch flex h-[80px] items-center justify-between overflow-visible px-[64px] relative shrink-0 w-full" data-node-id="2:7" data-name="Main navigation">
-          <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[30px] whitespace-nowrap" data-node-id="2:8">
+          <button aria-label="Forme home" className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[30px] whitespace-nowrap" data-node-id="2:8" onClick={() => window.location.assign("/")} type="button">
             FORME
-          </p>
+          </button>
           <div className="bg-[#f4f5f1] content-stretch flex gap-[12px] h-[40px] items-center px-[16px] relative shrink-0 w-[360px]" data-node-id="2:9" data-name="Product search">
             <div className="relative shrink-0 size-[17px]" data-node-id="2:10" data-name="search">
               <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgSearch} />
@@ -639,7 +639,7 @@ export default function FormePremiumTechnologyStorefront() {
                   <button
                     className="flex items-center justify-between px-[10px] py-[10px] text-left transition-colors hover:bg-[#f4f5f1] w-full"
                     key={product.name}
-                    onClick={selectSearchResult}
+                    onClick={() => selectSearchResult(product.slug)}
                     role="option"
                     type="button"
                   >
@@ -1421,28 +1421,9 @@ export default function FormePremiumTechnologyStorefront() {
             </div>
             {headerPanel === "account" ? (
               <div className="flex flex-col gap-[18px] pt-[28px]">
-                {accountSubmitted ? (
-                  <>
-                    <p className="font-['Inter:Medium'] text-[#202522] text-[18px]">Check your inbox</p>
-                    <p className="font-['Inter:Regular'] leading-[1.6] text-[#717772] text-[13px]">We’ve prepared the next step for your account. Authentication can now be connected to your Laravel endpoint.</p>
-                    <button className="bg-[#245c4d] font-['Inter:Medium'] h-[46px] rounded-[4px] text-[13px] text-white" onClick={() => setHeaderPanel(null)} type="button">Done</button>
-                  </>
-                ) : accountMode ? (
-                  <form className="flex flex-col gap-[16px]" onSubmit={(event) => { event.preventDefault(); setAccountSubmitted(true); }}>
-                    <button className="font-['Inter:Medium'] self-start text-[#245c4d] text-[12px]" onClick={() => setAccountMode(null)} type="button">← Back</button>
-                    <p className="font-['Inter:Regular'] leading-[1.6] text-[#717772] text-[13px]">{accountMode === "signin" ? "Enter your email to continue to your account." : "Start with your email and we’ll create your Forme account."}</p>
-                    <label className="font-['Inter:Medium'] text-[#202522] text-[11px]" htmlFor="account-email">Email address</label>
-                    <input className="border border-[#dfe3dc] h-[46px] outline-none px-[14px] rounded-[4px] text-[13px] focus:border-[#245c4d]" id="account-email" required type="email" />
-                    <button className="bg-[#245c4d] font-['Inter:Medium'] h-[46px] rounded-[4px] text-[13px] text-white" type="submit">Continue</button>
-                  </form>
-                ) : (
-                  <>
-                    <p className="font-['Inter:Regular'] leading-[1.6] text-[#717772] text-[13px]">Sign in to view orders, manage saved items and make checkout faster.</p>
-                    <button className="bg-[#245c4d] font-['Inter:Medium'] h-[46px] rounded-[4px] text-[13px] text-white" onClick={() => setAccountMode("signin")} type="button">Sign in</button>
-                    <button className="border border-[#245c4d] font-['Inter:Medium'] h-[46px] rounded-[4px] text-[#245c4d] text-[13px]" onClick={() => setAccountMode("create")} type="button">Create an account</button>
-                    <button className="font-['Inter:Regular'] text-[#717772] text-[12px]" onClick={() => setHeaderPanel(null)} type="button">Continue as guest</button>
-                  </>
-                )}
+                <p className="font-['Inter:Medium'] text-[#202522] text-[18px]">Accounts are not available yet</p>
+                <p className="font-['Inter:Regular'] leading-[1.6] text-[#717772] text-[13px]">You can still browse, save items on this device, and complete the demo checkout as a guest.</p>
+                <button className="bg-[#245c4d] font-['Inter:Medium'] h-[46px] rounded-[4px] text-[13px] text-white" onClick={() => setHeaderPanel(null)} type="button">Continue as guest</button>
               </div>
             ) : (
               activePanelItems.length ? (

@@ -1,12 +1,12 @@
 const products = [
-  ["iPhone 13 Pro", "Smartphones"],
-  ["MacBook Pro 14″", "Laptops"],
-  ["Galaxy Tab S8", "Tablets"],
-  ["Galaxy S23 Ultra", "Smartphones"],
-  ["AirPods Pro", "Audio"],
-  ["BoostCharge Pro 3-in-1", "Accessories"],
-  ["MX Keys Mini", "Accessories"],
-  ["WH-1000XM5", "Audio"],
+  ["iPhone 13 Pro", "Smartphones", "iphone-13-pro"],
+  ["MacBook Pro 14″", "Laptops", "macbook-pro-14"],
+  ["Galaxy Tab S8", "Tablets", "galaxy-tab-s8"],
+  ["Galaxy S23 Ultra", "Smartphones", "galaxy-s23-ultra"],
+  ["AirPods Pro", "Audio", "airpods-pro"],
+  ["BoostCharge Pro 3-in-1", "Accessories", "boostcharge-pro"],
+  ["MX Keys Mini", "Accessories", "mx-keys-mini"],
+  ["WH-1000XM5", "Audio", "sony-wh-1000xm5"],
 ]
 
 const search = document.querySelector("[data-product-search]")
@@ -153,14 +153,13 @@ function renderResults() {
     empty.textContent = "No products found."
     results.append(empty)
   }
-  matches.forEach(([name, category]) => {
+  matches.forEach(([name, category, slug]) => {
     const option = document.createElement("button")
     option.className = "flex items-center justify-between px-[10px] py-[10px] text-left hover:bg-[#f4f5f1] w-full"
     option.type = "button"
     option.innerHTML = `<span class="font-['Inter:Medium'] text-[#202522] text-[12px]">${name}</span><span class="font-['Inter:Regular'] text-[#717772] text-[10px]">${category}</span>`
     option.addEventListener("click", () => {
-      results.classList.add("hidden")
-      document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" })
+      window.location.assign(`/products/${slug}`)
     })
     results.append(option)
   })
@@ -176,11 +175,8 @@ document.querySelectorAll("[data-open-panel]").forEach((trigger) => {
     if (!panel || !panelTitle || !panelContent) return
     panelTitle.textContent = type === "account" ? "Your account" : type === "wishlist" ? "Your wishlist" : "Your bag"
     if (type === "account") {
-      panelContent.innerHTML = `<form class="flex flex-col gap-[16px] text-left w-full" data-account-form><p class="font-['Inter:Regular'] leading-[1.6] text-[#717772] text-[13px]">Sign in or create an account to manage orders and saved items.</p><label class="font-['Inter:Medium'] text-[#202522] text-[11px]" for="blade-account-email">Email address</label><input class="border border-[#dfe3dc] h-[46px] outline-none px-[14px] rounded-[4px] text-[13px]" id="blade-account-email" required type="email"><button class="bg-[#245c4d] font-['Inter:Medium'] h-[46px] rounded-[4px] text-[13px] text-white" type="submit">Continue</button></form>`
-      panelContent.querySelector("[data-account-form]")?.addEventListener("submit", (event) => {
-        event.preventDefault()
-        panelContent.innerHTML = `<p class="font-['Inter:Medium'] text-[#202522] text-[18px]">Check your inbox</p><p class="font-['Inter:Regular'] leading-[1.6] mt-[8px] text-[#717772] text-[13px]">Your account request is ready for the Laravel authentication endpoint.</p>`
-      })
+      panelContent.innerHTML = `<div class="flex flex-col gap-[16px] text-left w-full"><p class="font-['Inter:Medium'] text-[#202522] text-[18px]">Accounts are not available yet</p><p class="font-['Inter:Regular'] leading-[1.6] text-[#717772] text-[13px]">You can still browse and save items on this device.</p><button class="bg-[#245c4d] font-['Inter:Medium'] h-[46px] rounded-[4px] text-[13px] text-white" data-close-account type="button">Continue as guest</button></div>`
+      panelContent.querySelector("[data-close-account]")?.addEventListener("click", () => panel.classList.add("hidden"))
     } else {
       const isWishlist = type === "wishlist"
       const items = isWishlist ? wishlistItems : bagItems

@@ -16,9 +16,9 @@
           </p>
         </div>
         <div class="bg-white content-stretch flex h-[80px] items-center justify-between overflow-visible px-[64px] relative shrink-0 w-full" data-node-id="2:7" data-name="Main navigation">
-          <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[30px] whitespace-nowrap" data-node-id="2:8">
+          <a aria-label="Forme home" class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[30px] whitespace-nowrap" data-node-id="2:8" href="{{ route('storefront') }}">
             FORME
-          </p>
+          </a>
           <div class="bg-[#f4f5f1] content-stretch flex gap-[12px] h-[40px] items-center px-[16px] relative shrink-0 w-[360px]" data-node-id="2:9" data-name="Product search">
             <div class="relative shrink-0 size-[17px]" data-node-id="2:10" data-name="search">
               <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/e30e9.svg') }}" />
