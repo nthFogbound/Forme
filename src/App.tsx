@@ -26,7 +26,6 @@ const imgBadgeCheck = `${assetPathPrefix}/a7052.svg`;
 const imgMessagesSquare = `${assetPathPrefix}/aea8c.svg`;
 const imgArrowUpRight = `${assetPathPrefix}/8d0f0.svg`;
 const imgHeart1 = `${assetPathPrefix}/036e3.svg`;
-const imgStar = `${assetPathPrefix}/976b9.svg`;
 const imgColorOptions = `${assetPathPrefix}/f48d4.svg`;
 const imgPlus = `${assetPathPrefix}/1010f.svg`;
 const imgColorOptions1 = `${assetPathPrefix}/8cea2.svg`;
@@ -109,14 +108,14 @@ const categoryPages = {
 type CategorySlug = keyof typeof categoryPages;
 
 const productPages = {
-  "iphone-13-pro": { brand: "APPLE", name: "iPhone 13 Pro", category: "Smartphones", detail: "128GB · Unlocked", price: "$999.00", image: imgProduct, rating: "4.8", reviewCount: 124, colors: ["Graphite", "Silver", "Sierra Blue"] },
-  "macbook-pro-14": { brand: "APPLE", name: "MacBook Pro 14″", category: "Laptops", detail: "M1 Pro · 16GB RAM · 512GB SSD", price: "$1,999.00", image: imgProduct1, rating: "4.9", reviewCount: 86, colors: ["Space Gray", "Silver"] },
-  "galaxy-tab-s8": { brand: "SAMSUNG", name: "Galaxy Tab S8", category: "Tablets", detail: "11″ display · 128GB · Wi-Fi", price: "$699.00", image: imgProduct2, rating: "4.7", reviewCount: 58, colors: ["Graphite", "Silver", "Pink Gold"] },
-  "galaxy-s23-ultra": { brand: "SAMSUNG", name: "Galaxy S23 Ultra", category: "Smartphones", detail: "256GB · Unlocked", price: "$1,199.00", image: imgProduct3, rating: "4.8", reviewCount: 92, colors: ["Phantom Black", "Cream", "Green"] },
-  "airpods-pro": { brand: "APPLE", name: "AirPods Pro", category: "Audio", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4, rating: "4.8", reviewCount: 108, colors: ["White"] },
-  "boostcharge-pro": { brand: "BELKIN", name: "BoostCharge Pro 3-in-1", category: "Accessories", detail: "15W wireless charging · MagSafe", price: "$149.00", image: imgProduct5, rating: "4.7", reviewCount: 42, colors: ["White", "Black"] },
-  "mx-keys-mini": { brand: "LOGITECH", name: "MX Keys Mini", category: "Accessories", detail: "Wireless keyboard", price: "$99.00", image: imgProduct6, rating: "4.9", reviewCount: 67, colors: ["Graphite", "Pale Gray", "Rose"] },
-  "sony-wh-1000xm5": { brand: "SONY", name: "Sony WH-1000XM5", category: "Audio", detail: "Noise cancelling · 30-hour battery", price: "$399.00", image: imgProduct7, rating: "4.8", reviewCount: 96, colors: ["Black", "Silver", "Midnight Blue"] },
+  "iphone-13-pro": { brand: "APPLE", name: "iPhone 13 Pro", category: "Smartphones", detail: "128GB · Unlocked", price: "$999.00", image: imgProduct, colors: ["Graphite", "Silver", "Sierra Blue"] },
+  "macbook-pro-14": { brand: "APPLE", name: "MacBook Pro 14″", category: "Laptops", detail: "M1 Pro · 16GB RAM · 512GB SSD", price: "$1,999.00", image: imgProduct1, colors: ["Space Gray", "Silver"] },
+  "galaxy-tab-s8": { brand: "SAMSUNG", name: "Galaxy Tab S8", category: "Tablets", detail: "11″ display · 128GB · Wi-Fi", price: "$699.00", image: imgProduct2, colors: ["Graphite", "Silver", "Pink Gold"] },
+  "galaxy-s23-ultra": { brand: "SAMSUNG", name: "Galaxy S23 Ultra", category: "Smartphones", detail: "256GB · Unlocked", price: "$1,199.00", image: imgProduct3, colors: ["Phantom Black", "Cream", "Green"] },
+  "airpods-pro": { brand: "APPLE", name: "AirPods Pro", category: "Audio", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4, colors: ["White"] },
+  "boostcharge-pro": { brand: "BELKIN", name: "BoostCharge Pro 3-in-1", category: "Accessories", detail: "15W wireless charging · MagSafe", price: "$149.00", image: imgProduct5, colors: ["White", "Black"] },
+  "mx-keys-mini": { brand: "LOGITECH", name: "MX Keys Mini", category: "Accessories", detail: "Wireless keyboard", price: "$99.00", image: imgProduct6, colors: ["Graphite", "Pale Gray", "Rose"] },
+  "sony-wh-1000xm5": { brand: "SONY", name: "Sony WH-1000XM5", category: "Audio", detail: "Noise cancelling · 30-hour battery", price: "$399.00", image: imgProduct7, colors: ["Black", "Silver", "Midnight Blue"] },
 } as const;
 
 type ProductSlug = keyof typeof productPages;
@@ -153,7 +152,6 @@ function ProductPage({ slug, wishlist, bag, toggleWishlist, toggleBag, selectedC
           <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">{product.brand} · {product.category}</p>
           <h1 className="font-['Inter:Medium'] leading-[1.1] mt-[14px] text-[44px]">{product.name}</h1>
           <p className="font-['Inter:Regular'] mt-[14px] text-[#717772] text-[14px]">{product.detail}</p>
-          <a className="font-['Inter:Regular'] mt-[16px] text-[#245c4d] text-[12px]" href="#reviews">★ {product.rating} · {product.reviewCount} reviews</a>
           <p className="font-['Inter:Semi_Bold'] mt-[28px] text-[24px]">{product.price}</p>
           <p className="font-['Inter:Medium'] mt-[28px] text-[11px]">COLOR · {selectedColor}</p>
           <div className="mt-[12px]"><ColorSelector colors={product.colors} onSelect={selectColor} selected={selectedColor} /></div>
@@ -162,11 +160,6 @@ function ProductPage({ slug, wishlist, bag, toggleWishlist, toggleBag, selectedC
             <button aria-pressed={wishlist.includes(product.name)} className="border border-[#245c4d] h-[48px] px-[20px] rounded-[4px] text-[#245c4d] text-[13px]" onClick={() => toggleWishlist(product.name)} type="button">{wishlist.includes(product.name) ? "Saved" : "Save"}</button>
           </div>
         </div>
-      </section>
-      <section className="border-[#dfe3dc] border-t px-[64px] py-[72px] max-md:px-[24px]" id="reviews">
-        <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">CUSTOMER REVIEWS</p>
-        <h2 className="font-['Inter:Medium'] mt-[10px] text-[32px]">{product.rating} out of 5</h2>
-        <p className="font-['Inter:Regular'] leading-[1.7] mt-[16px] max-w-[580px] text-[#717772] text-[13px]">Based on {product.reviewCount} verified reviews. Customers highlight the considered design, dependable performance and ease of use.</p>
       </section>
     </main>
   );
@@ -348,10 +341,6 @@ export default function FormePremiumTechnologyStorefront() {
   const selectColor = (slug: ProductSlug, color: string) => setSelectedColors((colors) => ({ ...colors, [slug]: color }));
   const productCardInteraction = (slug: ProductSlug) => ({
     onClick: (event: MouseEvent) => {
-      if ((event.target as Element).closest("[data-name='Reviews']")) {
-        window.location.assign(`/products/${slug}#reviews`);
-        return;
-      }
       if (!(event.target as Element).closest("button,[role='button'],a")) window.location.assign(`/products/${slug}`);
     },
     onKeyDown: (event: KeyboardEvent) => {
@@ -760,17 +749,6 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:145">
                 128GB · Unlocked · Graphite
               </p>
-              <div className="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:146" data-name="Reviews">
-                <div className="relative shrink-0 size-[12px]" data-node-id="2:147" data-name="star">
-                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgStar} />
-                </div>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:149">
-                  4.8
-                </p>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:150">
-                  (124 reviews)
-                </p>
-              </div>
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:151" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:152">
                   $999.00
@@ -815,17 +793,6 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:172">
                 M1 Pro · 16GB RAM · 512GB SSD
               </p>
-              <div className="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:173" data-name="Reviews">
-                <div className="relative shrink-0 size-[12px]" data-node-id="2:174" data-name="star">
-                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgStar} />
-                </div>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:176">
-                  4.9
-                </p>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:177">
-                  (86 reviews)
-                </p>
-              </div>
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:178" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:179">
                   $1,999.00
@@ -865,17 +832,6 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:196">
                 11″ display · 128GB · Wi-Fi
               </p>
-              <div className="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:197" data-name="Reviews">
-                <div className="relative shrink-0 size-[12px]" data-node-id="2:198" data-name="star">
-                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgStar} />
-                </div>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:200">
-                  4.7
-                </p>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:201">
-                  (58 reviews)
-                </p>
-              </div>
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:202" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:203">
                   $699.00
@@ -915,17 +871,6 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:221">
                 256GB · Unlocked · Phantom black
               </p>
-              <div className="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:222" data-name="Reviews">
-                <div className="relative shrink-0 size-[12px]" data-node-id="2:223" data-name="star">
-                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgStar} />
-                </div>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:225">
-                  4.8
-                </p>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:226">
-                  (92 reviews)
-                </p>
-              </div>
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:227" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:228">
                   $1,199.00
@@ -1012,17 +957,6 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:265">
                 Active noise cancellation · USB-C
               </p>
-              <div className="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:266" data-name="Reviews">
-                <div className="relative shrink-0 size-[12px]" data-node-id="2:267" data-name="star">
-                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgStar} />
-                </div>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:269">
-                  4.8
-                </p>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:270">
-                  (108 reviews)
-                </p>
-              </div>
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:271" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:272">
                   $249.00
@@ -1067,17 +1001,6 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:290">
                 15W wireless charging · MagSafe
               </p>
-              <div className="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:291" data-name="Reviews">
-                <div className="relative shrink-0 size-[12px]" data-node-id="2:292" data-name="star">
-                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgStar} />
-                </div>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:294">
-                  4.7
-                </p>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:295">
-                  (42 reviews)
-                </p>
-              </div>
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:296" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:297">
                   $149.00
@@ -1117,17 +1040,6 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:314">
                 Wireless keyboard · Graphite
               </p>
-              <div className="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:315" data-name="Reviews">
-                <div className="relative shrink-0 size-[12px]" data-node-id="2:316" data-name="star">
-                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgStar} />
-                </div>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:318">
-                  4.9
-                </p>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:319">
-                  (67 reviews)
-                </p>
-              </div>
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:320" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:321">
                   $99.00
@@ -1167,17 +1079,6 @@ export default function FormePremiumTechnologyStorefront() {
               <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:339">
                 Noise cancelling · 30-hour battery
               </p>
-              <div className="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:340" data-name="Reviews">
-                <div className="relative shrink-0 size-[12px]" data-node-id="2:341" data-name="star">
-                  <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgStar} />
-                </div>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:343">
-                  4.8
-                </p>
-                <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:344">
-                  (96 reviews)
-                </p>
-              </div>
               <div className="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:345" data-name="Price and finishes">
                 <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:346">
                   $399.00

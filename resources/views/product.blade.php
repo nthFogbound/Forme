@@ -21,7 +21,6 @@
           <p class="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">{{ $product['brand'] }} · {{ $product['category'] }}</p>
           <h1 class="font-['Inter:Medium'] leading-[1.1] mt-[14px] text-[44px]">{{ $product['name'] }}</h1>
           <p class="font-['Inter:Regular'] mt-[14px] text-[#717772] text-[14px]">{{ $product['detail'] }}</p>
-          <a class="font-['Inter:Regular'] mt-[16px] text-[#245c4d] text-[12px]" href="#reviews">★ {{ $product['rating'] }} · {{ $product['reviews'] }} reviews</a>
           <p class="font-['Inter:Semi_Bold'] mt-[28px] text-[24px]">{{ $product['price'] }}</p>
           <p class="font-['Inter:Medium'] mt-[28px] text-[11px]">CHOOSE A COLOR</p>
           <div class="flex flex-wrap gap-[8px] mt-[12px]" data-colors="{{ implode('|', $product['colors']) }}" data-product-color="{{ $slug }}">
@@ -34,11 +33,6 @@
             <button class="border border-[#245c4d] h-[48px] px-[20px] rounded-[4px] text-[#245c4d] text-[13px]" data-save-product="{{ $product['name'] }}" type="button">Save</button>
           </div>
         </div>
-      </section>
-      <section class="border-[#dfe3dc] border-t px-[64px] py-[72px] max-md:px-[24px]" id="reviews">
-        <p class="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">CUSTOMER REVIEWS</p>
-        <h2 class="font-['Inter:Medium'] mt-[10px] text-[32px]">{{ $product['rating'] }} out of 5</h2>
-        <p class="font-['Inter:Regular'] leading-[1.7] mt-[16px] max-w-[580px] text-[#717772] text-[13px]">Based on {{ $product['reviews'] }} verified reviews. Customers highlight the considered design, dependable performance and ease of use.</p>
       </section>
     </main>
   </body>

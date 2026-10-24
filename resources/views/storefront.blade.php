@@ -329,17 +329,6 @@
               <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:145">
                 128GB · Unlocked · Graphite
               </p>
-              <div class="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:146" data-name="Reviews">
-                <div class="relative shrink-0 size-[12px]" data-node-id="2:147" data-name="star">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/976b9.svg') }}" />
-                </div>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:149">
-                  4.8
-                </p>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:150">
-                  (124 reviews)
-                </p>
-              </div>
               <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:151" data-name="Price and finishes">
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:152">
                   $999.00
@@ -384,17 +373,6 @@
               <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:172">
                 M1 Pro · 16GB RAM · 512GB SSD
               </p>
-              <div class="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:173" data-name="Reviews">
-                <div class="relative shrink-0 size-[12px]" data-node-id="2:174" data-name="star">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/976b9.svg') }}" />
-                </div>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:176">
-                  4.9
-                </p>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:177">
-                  (86 reviews)
-                </p>
-              </div>
               <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:178" data-name="Price and finishes">
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:179">
                   $1,999.00
@@ -434,17 +412,6 @@
               <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:196">
                 11″ display · 128GB · Wi-Fi
               </p>
-              <div class="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:197" data-name="Reviews">
-                <div class="relative shrink-0 size-[12px]" data-node-id="2:198" data-name="star">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/976b9.svg') }}" />
-                </div>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:200">
-                  4.7
-                </p>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:201">
-                  (58 reviews)
-                </p>
-              </div>
               <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:202" data-name="Price and finishes">
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:203">
                   $699.00
@@ -484,17 +451,6 @@
               <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:221">
                 256GB · Unlocked · Phantom black
               </p>
-              <div class="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:222" data-name="Reviews">
-                <div class="relative shrink-0 size-[12px]" data-node-id="2:223" data-name="star">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/976b9.svg') }}" />
-                </div>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:225">
-                  4.8
-                </p>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:226">
-                  (92 reviews)
-                </p>
-              </div>
               <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:227" data-name="Price and finishes">
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:228">
                   $1,199.00
@@ -581,17 +537,6 @@
               <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:265">
                 Active noise cancellation · USB-C
               </p>
-              <div class="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:266" data-name="Reviews">
-                <div class="relative shrink-0 size-[12px]" data-node-id="2:267" data-name="star">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/976b9.svg') }}" />
-                </div>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:269">
-                  4.8
-                </p>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:270">
-                  (108 reviews)
-                </p>
-              </div>
               <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:271" data-name="Price and finishes">
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:272">
                   $249.00
@@ -636,17 +581,6 @@
               <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:290">
                 15W wireless charging · MagSafe
               </p>
-              <div class="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:291" data-name="Reviews">
-                <div class="relative shrink-0 size-[12px]" data-node-id="2:292" data-name="star">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/976b9.svg') }}" />
-                </div>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:294">
-                  4.7
-                </p>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:295">
-                  (42 reviews)
-                </p>
-              </div>
               <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:296" data-name="Price and finishes">
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:297">
                   $149.00
@@ -686,17 +620,6 @@
               <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:314">
                 Wireless keyboard · Graphite
               </p>
-              <div class="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:315" data-name="Reviews">
-                <div class="relative shrink-0 size-[12px]" data-node-id="2:316" data-name="star">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/976b9.svg') }}" />
-                </div>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:318">
-                  4.9
-                </p>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:319">
-                  (67 reviews)
-                </p>
-              </div>
               <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:320" data-name="Price and finishes">
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:321">
                   $99.00
@@ -736,17 +659,6 @@
               <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#717772] text-[12px] w-[min-content]" data-node-id="2:339">
                 Noise cancelling · 30-hour battery
               </p>
-              <div class="content-stretch flex gap-[6px] items-center overflow-clip relative shrink-0" data-node-id="2:340" data-name="Reviews">
-                <div class="relative shrink-0 size-[12px]" data-node-id="2:341" data-name="star">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/976b9.svg') }}" />
-                </div>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[11px] whitespace-nowrap" data-node-id="2:343">
-                  4.8
-                </p>
-                <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[11px] whitespace-nowrap" data-node-id="2:344">
-                  (96 reviews)
-                </p>
-              </div>
               <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:345" data-name="Price and finishes">
                 <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[18px] whitespace-nowrap" data-node-id="2:346">
                   $399.00

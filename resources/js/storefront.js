@@ -126,8 +126,7 @@ document.querySelectorAll("[data-product-url]").forEach((card) => {
   card.tabIndex = 0
   card.addEventListener("click", (event) => {
     if (event.target.closest("button,[role='button']")) return
-    const reviews = event.target.closest("[data-name='Reviews']")
-    window.location.assign(`${card.dataset.productUrl}${reviews ? "#reviews" : ""}`)
+    window.location.assign(card.dataset.productUrl)
   })
   card.addEventListener("keydown", (event) => {
     if (event.key === "Enter" && !event.target.closest("button,[role='button']")) window.location.assign(card.dataset.productUrl)
