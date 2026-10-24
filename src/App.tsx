@@ -55,6 +55,93 @@ type ProductCategory = "all" | "smartphones" | "laptops" | "tablets" | "mobile-a
 
 const productCardClass = "content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative";
 
+const categoryPages = {
+  smartphones: {
+    eyebrow: "CONNECTED, BEAUTIFULLY",
+    title: "Smartphones",
+    description: "Powerful cameras, thoughtful design and all-day performance—selected for the way you communicate, create and move.",
+    hero: imgCategoryProduct,
+    products: [
+      { brand: "APPLE", name: "iPhone 13 Pro", detail: "128GB · Unlocked · Graphite", price: "$999.00", image: imgProduct },
+      { brand: "SAMSUNG", name: "Galaxy S23 Ultra", detail: "256GB · Unlocked · Phantom black", price: "$1,199.00", image: imgProduct3 },
+    ],
+  },
+  laptops: {
+    eyebrow: "FOR YOUR NEXT BIG IDEA",
+    title: "Laptops",
+    description: "Portable performance and beautifully considered hardware for deep work, creative projects and everything between.",
+    hero: imgCategoryProduct1,
+    products: [
+      { brand: "APPLE", name: "MacBook Pro 14″", detail: "M1 Pro · 16GB RAM · 512GB SSD", price: "$1,999.00", image: imgProduct1 },
+    ],
+  },
+  tablets: {
+    eyebrow: "POSSIBILITY, IN YOUR HANDS",
+    title: "Tablets",
+    description: "Flexible screens for sketching, streaming, focused work and lighter days away from your desk.",
+    hero: imgCategoryProduct2,
+    products: [
+      { brand: "SAMSUNG", name: "Galaxy Tab S8", detail: "11″ display · 128GB · Wi-Fi", price: "$699.00", image: imgProduct2 },
+    ],
+  },
+  "mobile-accessories": {
+    eyebrow: "THE DETAILS MAKE THE DIFFERENCE",
+    title: "Mobile accessories",
+    description: "Charging, audio and everyday additions chosen to make your devices more useful wherever the day takes you.",
+    hero: imgCategoryProduct3,
+    products: [
+      { brand: "BELKIN", name: "BoostCharge Pro 3-in-1", detail: "15W wireless charging · MagSafe", price: "$149.00", image: imgProduct5 },
+      { brand: "APPLE", name: "AirPods Pro", detail: "Active noise cancellation · USB-C", price: "$249.00", image: imgProduct4 },
+    ],
+  },
+} as const;
+
+type CategorySlug = keyof typeof categoryPages;
+
+function CategoryPage({ slug }: { slug: CategorySlug }) {
+  const category = categoryPages[slug];
+
+  return (
+    <main className="bg-white min-h-screen text-[#202522]">
+      <header className="border-[#dfe3dc] border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
+        <button className="font-['Inter:Semi_Bold'] text-[30px]" onClick={() => window.location.assign("/")} type="button">FORME</button>
+        <button className="font-['Inter:Medium'] text-[#245c4d] text-[12px]" onClick={() => window.location.assign("/#categories")} type="button">← All categories</button>
+      </header>
+      <section className="bg-[#edefe8] grid grid-cols-2 min-h-[480px] max-md:grid-cols-1">
+        <div className="flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
+          <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">{category.eyebrow}</p>
+          <h1 className="font-['Inter:Medium'] leading-[1.08] mt-[18px] text-[52px] max-md:text-[40px]">{category.title}</h1>
+          <p className="font-['Inter:Regular'] leading-[1.7] mt-[22px] max-w-[480px] text-[#717772] text-[15px]">{category.description}</p>
+          <button className="bg-[#245c4d] font-['Inter:Medium'] h-[46px] mt-[30px] rounded-[4px] text-[13px] text-white w-[170px]" onClick={() => document.querySelector("#category-products")?.scrollIntoView({ behavior: "smooth" })} type="button">View the selection</button>
+        </div>
+        <div className="min-h-[360px] relative">
+          <img alt={`${category.title} collection`} className="absolute inset-0 object-cover size-full" src={category.hero} />
+        </div>
+      </section>
+      <section className="px-[64px] py-[72px] max-md:px-[24px] max-md:py-[52px]" id="category-products">
+        <p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[11px]">CURATED BY FORME</p>
+        <div className="flex items-end justify-between mt-[10px]">
+          <h2 className="font-['Inter:Medium'] text-[36px]">Explore {category.title.toLowerCase()}.</h2>
+          <p className="font-['Inter:Regular'] text-[#717772] text-[12px]">{category.products.length} {category.products.length === 1 ? "product" : "products"}</p>
+        </div>
+        <div className="grid gap-[24px] grid-cols-2 mt-[32px] max-w-[900px] max-md:grid-cols-1">
+          {category.products.map((product) => (
+            <article className="flex flex-col gap-[16px]" key={product.name}>
+              <div className="bg-[#f4f5f1] h-[300px] p-[32px] relative rounded-[4px]">
+                <img alt={product.name} className="object-cover size-full" src={product.image} />
+              </div>
+              <p className="font-['Inter:Medium'] text-[#717772] text-[10px]">{product.brand}</p>
+              <h2 className="font-['Inter:Medium'] text-[20px]">{product.name}</h2>
+              <p className="font-['Inter:Regular'] text-[#717772] text-[12px]">{product.detail}</p>
+              <p className="font-['Inter:Semi_Bold'] text-[18px]">{product.price}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}
+
 export default function FormePremiumTechnologyStorefront() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -90,6 +177,9 @@ export default function FormePremiumTechnologyStorefront() {
 
   const productIsVisible = (category: ProductCategory, isNew = false) =>
     activeCategory === "all" || activeCategory === category || (activeCategory === "new-arrivals" && isNew);
+
+  const categorySlug = window.location.pathname.match(/^\/categories\/([^/]+)\/?$/)?.[1] as CategorySlug | undefined;
+  if (categorySlug && categoryPages[categorySlug]) return <CategoryPage slug={categorySlug} />;
 
   return (
     <div className="bg-white content-stretch flex flex-col items-start relative size-full" data-node-id="2:3" data-name="FORME — Premium technology storefront">
@@ -306,7 +396,7 @@ export default function FormePremiumTechnologyStorefront() {
           </div>
         </div>
         <div className="content-stretch flex gap-[20px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:85" data-name="Category grid">
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:86" data-name="Category card">
+          <button className="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative text-left" data-node-id="2:86" data-name="Category card" onClick={() => window.location.assign("/categories/smartphones")} type="button">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[188px] items-start overflow-clip p-[20px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:87" data-name="Category photography">
               <div className="flex-[1_0_0] min-h-px relative w-full" data-node-id="2:88" data-name="Category product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgCategoryProduct} />
@@ -323,8 +413,8 @@ export default function FormePremiumTechnologyStorefront() {
             <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:93">
               Stay connected, beautifully.
             </p>
-          </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:94" data-name="Category card">
+          </button>
+          <button className="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative text-left" data-node-id="2:94" data-name="Category card" onClick={() => window.location.assign("/categories/laptops")} type="button">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[188px] items-start overflow-clip p-[20px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:95" data-name="Category photography">
               <div className="flex-[1_0_0] min-h-px relative w-full" data-node-id="2:96" data-name="Category product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgCategoryProduct1} />
@@ -341,8 +431,8 @@ export default function FormePremiumTechnologyStorefront() {
             <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:101">
               For your next big idea.
             </p>
-          </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:102" data-name="Category card">
+          </button>
+          <button className="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative text-left" data-node-id="2:102" data-name="Category card" onClick={() => window.location.assign("/categories/tablets")} type="button">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[188px] items-start overflow-clip p-[20px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:103" data-name="Category photography">
               <div className="flex-[1_0_0] min-h-px relative w-full" data-node-id="2:104" data-name="Category product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgCategoryProduct2} />
@@ -359,8 +449,8 @@ export default function FormePremiumTechnologyStorefront() {
             <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:109">
               Possibility, in your hands.
             </p>
-          </div>
-          <div className="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:110" data-name="Category card">
+          </button>
+          <button className="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative text-left" data-node-id="2:110" data-name="Category card" onClick={() => window.location.assign("/categories/mobile-accessories")} type="button">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[188px] items-start overflow-clip p-[20px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:111" data-name="Category photography">
               <div className="flex-[1_0_0] min-h-px relative w-full" data-node-id="2:112" data-name="Category product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgCategoryProduct3} />
@@ -377,7 +467,7 @@ export default function FormePremiumTechnologyStorefront() {
             <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:117">
               The details make the difference.
             </p>
-          </div>
+          </button>
         </div>
       </div>
       <div className="content-stretch flex flex-col gap-[28px] items-start overflow-clip pb-[72px] pt-[16px] px-[64px] relative shrink-0 w-full" id="featured" data-node-id="2:118" data-name="Featured products">

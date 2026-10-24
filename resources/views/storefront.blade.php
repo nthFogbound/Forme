@@ -193,7 +193,7 @@
           </button>
         </div>
         <div class="content-stretch flex gap-[20px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:85" data-name="Category grid">
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:86" data-name="Category card">
+          <a class="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:86" data-name="Category card" href="{{ route('categories.show', 'smartphones') }}">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[188px] items-start overflow-clip p-[20px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:87" data-name="Category photography">
               <div class="flex-[1_0_0] min-h-px relative w-full" data-node-id="2:88" data-name="Category product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/1a9ca.png') }}" />
@@ -210,8 +210,8 @@
             <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:93">
               Stay connected, beautifully.
             </p>
-          </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:94" data-name="Category card">
+          </a>
+          <a class="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:94" data-name="Category card" href="{{ route('categories.show', 'laptops') }}">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[188px] items-start overflow-clip p-[20px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:95" data-name="Category photography">
               <div class="flex-[1_0_0] min-h-px relative w-full" data-node-id="2:96" data-name="Category product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/ce84b.png') }}" />
@@ -228,8 +228,8 @@
             <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:101">
               For your next big idea.
             </p>
-          </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:102" data-name="Category card">
+          </a>
+          <a class="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:102" data-name="Category card" href="{{ route('categories.show', 'tablets') }}">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[188px] items-start overflow-clip p-[20px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:103" data-name="Category photography">
               <div class="flex-[1_0_0] min-h-px relative w-full" data-node-id="2:104" data-name="Category product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/0aacd.png') }}" />
@@ -246,8 +246,8 @@
             <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:109">
               Possibility, in your hands.
             </p>
-          </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:110" data-name="Category card">
+          </a>
+          <a class="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:110" data-name="Category card" href="{{ route('categories.show', 'mobile-accessories') }}">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[188px] items-start overflow-clip p-[20px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:111" data-name="Category photography">
               <div class="flex-[1_0_0] min-h-px relative w-full" data-node-id="2:112" data-name="Category product">
                 <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/745a4.png') }}" />
@@ -264,7 +264,7 @@
             <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:117">
               The details make the difference.
             </p>
-          </div>
+          </a>
         </div>
       </div>
       <div class="content-stretch flex flex-col gap-[28px] items-start overflow-clip pb-[72px] pt-[16px] px-[64px] relative shrink-0 w-full" id="featured" data-node-id="2:118" data-name="Featured products">
