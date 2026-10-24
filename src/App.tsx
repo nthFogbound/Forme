@@ -37,6 +37,7 @@ const imgColorOptions5 = `${assetPathPrefix}/6bf7d.svg`;
 const imgColorOptions6 = `${assetPathPrefix}/c4251.svg`;
 const imgColorOptions7 = `${assetPathPrefix}/eac21.svg`;
 const imgCamera1 = `${assetPathPrefix}/0eaee.svg`;
+const searchResultsId = "product-search-results";
 
 const searchableProducts = [
   { slug: "iphone-13-pro", name: "iPhone 13 Pro", brand: "Apple", category: "Smartphones", collection: "Everyday elevated", keywords: "phone mobile ios camera unlocked" },
@@ -480,7 +481,7 @@ function ShoppingHeader({
             <input
               aria-activedescendant={activeSearchIndex >= 0 ? `search-option-${activeSearchIndex}` : undefined}
               aria-autocomplete="list"
-              aria-controls="product-search-results"
+              aria-controls={searchResultsId}
               aria-expanded={searchOpen}
               aria-label="Search products"
               className="bg-transparent flex-1 font-['Inter:Regular'] min-w-0 outline-none text-[#202522] text-[12px] placeholder:text-[#717772]"
@@ -510,7 +511,7 @@ function ShoppingHeader({
             />
             {searchQuery && <button aria-label="Clear search" className="text-[#245c4d] text-[11px]" onClick={() => { onSearchQuery(""); onSearchOpen(true); }} type="button">Clear</button>}
             {searchOpen && (
-              <div className="absolute bg-white border border-[#dfe3dc] left-0 max-h-[min(420px,60vh)] overflow-y-auto p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" id="product-search-results" role="listbox">
+              <div className="absolute bg-white border border-[#dfe3dc] left-0 max-h-[min(420px,60vh)] overflow-y-auto p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" id={searchResultsId} role="listbox">
                 <p className="font-['Inter:Semi_Bold'] px-[10px] py-[8px] text-[#717772] text-[10px]">PRODUCTS</p>
                 {searchResults.length ? searchResults.map((product, index) => (
                   <button aria-selected={activeSearchIndex === index} className="flex min-h-[44px] items-center justify-between px-[10px] py-[10px] text-left hover:bg-[#f4f5f1] aria-selected:bg-[#edefe8] w-full" id={`search-option-${index}`} key={product.slug} onClick={() => onSelectSearchResult(product.slug as ProductSlug)} onMouseEnter={() => setActiveSearchIndex(index)} role="option" type="button">
