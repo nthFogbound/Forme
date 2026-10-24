@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 
 const assetPathPrefix = "/assets";
 const imgEverydayTechnologyStillLife = `${assetPathPrefix}/7c3c6.png`;
@@ -410,7 +410,50 @@ function ShoppingHeader({
   onToggleBag: (name: string) => void;
   onToggleWishlist: (name: string) => void;
 }) {
+  const [activeSearchIndex, setActiveSearchIndex] = useState(-1);
+  const dialogRef = useRef<HTMLElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
   const panelItems = headerPanel === "wishlist" ? wishlist : bag;
+  const openPanel = (panel: Exclude<HeaderPanel, null>) => {
+    returnFocusRef.current = document.activeElement as HTMLElement;
+    onOpenPanel(panel);
+  };
+  useEffect(() => {
+    if (!searchOpen) setActiveSearchIndex(-1);
+    else if (activeSearchIndex >= searchResults.length) setActiveSearchIndex(searchResults.length ? 0 : -1);
+  }, [activeSearchIndex, searchOpen, searchResults.length]);
+  useEffect(() => {
+    if (!headerPanel) return;
+    const dialog = dialogRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    dialog?.querySelector<HTMLElement>("button, a, input, select, textarea, [tabindex]:not([tabindex='-1'])")?.focus();
+    const onKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClosePanel();
+        return;
+      }
+      if (event.key !== "Tab" || !dialog) return;
+      const focusable = [...dialog.querySelectorAll<HTMLElement>("button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex='-1'])")];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      returnFocusRef.current?.focus();
+    };
+  }, [headerPanel, onClosePanel]);
   const navigate = (category: ProductCategory) => {
     if (onCategory) return onCategory(category);
     if (category === "all") return window.location.assign("/");
@@ -435,20 +478,42 @@ function ShoppingHeader({
           >
             <img alt="" className="size-[17px]" src={imgSearch} />
             <input
+              aria-activedescendant={activeSearchIndex >= 0 ? `search-option-${activeSearchIndex}` : undefined}
+              aria-autocomplete="list"
+              aria-controls="product-search-results"
+              aria-expanded={searchOpen}
               aria-label="Search products"
               className="bg-transparent flex-1 font-['Inter:Regular'] min-w-0 outline-none text-[#202522] text-[12px] placeholder:text-[#717772]"
               onChange={(event) => { onSearchQuery(event.target.value); onSearchOpen(true); }}
               onFocus={() => onSearchOpen(true)}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowDown") {
+                  event.preventDefault();
+                  onSearchOpen(true);
+                  setActiveSearchIndex((index) => Math.min(index + 1, searchResults.length - 1));
+                } else if (event.key === "ArrowUp") {
+                  event.preventDefault();
+                  setActiveSearchIndex((index) => Math.max(index - 1, 0));
+                } else if (event.key === "Enter" && activeSearchIndex >= 0) {
+                  event.preventDefault();
+                  const result = searchResults[activeSearchIndex];
+                  if (result) onSelectSearchResult(result.slug as ProductSlug);
+                } else if (event.key === "Escape") {
+                  event.preventDefault();
+                  onSearchOpen(false);
+                }
+              }}
               placeholder="Search devices, brands and essentials"
+              role="combobox"
               type="search"
               value={searchQuery}
             />
             {searchQuery && <button aria-label="Clear search" className="text-[#245c4d] text-[11px]" onClick={() => { onSearchQuery(""); onSearchOpen(true); }} type="button">Clear</button>}
             {searchOpen && (
-              <div className="absolute bg-white border border-[#dfe3dc] left-0 max-h-[min(420px,60vh)] overflow-y-auto p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" role="listbox">
+              <div className="absolute bg-white border border-[#dfe3dc] left-0 max-h-[min(420px,60vh)] overflow-y-auto p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" id="product-search-results" role="listbox">
                 <p className="font-['Inter:Semi_Bold'] px-[10px] py-[8px] text-[#717772] text-[10px]">PRODUCTS</p>
-                {searchResults.length ? searchResults.map((product) => (
-                  <button className="flex min-h-[44px] items-center justify-between px-[10px] py-[10px] text-left hover:bg-[#f4f5f1] w-full" key={product.slug} onClick={() => onSelectSearchResult(product.slug as ProductSlug)} role="option" type="button">
+                {searchResults.length ? searchResults.map((product, index) => (
+                  <button aria-selected={activeSearchIndex === index} className="flex min-h-[44px] items-center justify-between px-[10px] py-[10px] text-left hover:bg-[#f4f5f1] aria-selected:bg-[#edefe8] w-full" id={`search-option-${index}`} key={product.slug} onClick={() => onSelectSearchResult(product.slug as ProductSlug)} onMouseEnter={() => setActiveSearchIndex(index)} role="option" type="button">
                     <span className="font-['Inter:Medium'] text-[#202522] text-[12px]">{product.name}</span>
                     <span className="font-['Inter:Regular'] text-[#717772] text-[10px]">{product.category}</span>
                   </button>
@@ -457,12 +522,12 @@ function ShoppingHeader({
             )}
           </form>
           <div className="content-stretch flex gap-[24px] items-center relative shrink-0" data-name="Account actions">
-            <button aria-label="Open account menu" className="relative shrink-0 size-[20px]" onClick={() => onOpenPanel("account")} type="button"><img alt="" className="size-full" src={imgUserRound} /></button>
-            <button aria-label={`Open wishlist, ${wishlist.length} saved items`} className="relative shrink-0 size-[20px]" onClick={() => onOpenPanel("wishlist")} type="button">
-              <img alt="" className="size-full" src={imgHeart} />
+            <button aria-haspopup="dialog" aria-label="Open account menu" className="flex items-center justify-center relative shrink-0 size-[44px]" onClick={() => openPanel("account")} type="button"><img alt="" className="size-[20px]" src={imgUserRound} /></button>
+            <button aria-haspopup="dialog" aria-label={`Open wishlist, ${wishlist.length} saved items`} className="flex items-center justify-center relative shrink-0 size-[44px]" onClick={() => openPanel("wishlist")} type="button">
+              <img alt="" className="size-[20px]" src={imgHeart} />
               {wishlist.length > 0 && <span className="absolute bg-[#245c4d] flex items-center justify-center -right-[8px] rounded-full text-[8px] text-white -top-[8px] size-[15px]">{wishlist.length}</span>}
             </button>
-            <button aria-label={`Open shopping bag, ${bagCount} items`} className="content-stretch flex gap-[8px] items-center shrink-0" onClick={() => onOpenPanel("bag")} type="button">
+            <button aria-haspopup="dialog" aria-label={`Open shopping bag, ${bagCount} items`} className="content-stretch flex gap-[8px] items-center min-h-[44px] shrink-0" onClick={() => openPanel("bag")} type="button">
               <img alt="" className="size-[20px]" src={imgShoppingBag} />
               <span className="font-['Inter:Regular'] text-[#202522] text-[12px] whitespace-nowrap">Bag ({bagCount})</span>
             </button>
@@ -487,10 +552,10 @@ function ShoppingHeader({
       {headerPanel && (
         <div className="fixed inset-0 z-[100]" role="presentation">
           <button aria-label="Close panel" className="absolute bg-[rgba(32,37,34,0.38)] inset-0 w-full" onClick={onClosePanel} type="button" />
-          <section aria-labelledby="header-panel-title" aria-modal="true" className="absolute bg-white flex flex-col h-full p-[32px] right-0 shadow-[-16px_0_48px_rgba(32,37,34,0.16)] top-0 w-[min(420px,100vw)]" role="dialog">
+          <section aria-labelledby="header-panel-title" aria-modal="true" className="absolute bg-white flex flex-col h-full p-[32px] right-0 shadow-[-16px_0_48px_rgba(32,37,34,0.16)] top-0 w-[min(420px,100vw)]" ref={dialogRef} role="dialog">
             <div className="border-[#dfe3dc] border-b flex items-center justify-between pb-[22px]">
               <div><p className="font-['Inter:Semi_Bold'] text-[#245c4d] text-[10px]">FORME</p><p className="font-['Inter:Medium'] mt-[6px] text-[#202522] text-[26px]" id="header-panel-title">{headerPanel === "account" ? "Your account" : headerPanel === "wishlist" ? "Your wishlist" : "Your bag"}</p></div>
-              <button aria-label="Close panel" className="border border-[#dfe3dc] flex items-center justify-center rounded-full size-[36px] text-[22px]" onClick={onClosePanel} type="button">×</button>
+              <button aria-label="Close panel" className="border border-[#dfe3dc] flex items-center justify-center rounded-full size-[44px] text-[22px]" onClick={onClosePanel} type="button">×</button>
             </div>
             {headerPanel === "account" ? (
               <div className="flex flex-col gap-[18px] pt-[28px]"><p className="font-['Inter:Medium'] text-[18px]">Accounts are not available yet</p><p className="leading-[1.6] text-[#717772] text-[13px]">You can still browse, save items on this device, and complete checkout as a guest.</p><button className="bg-[#245c4d] h-[46px] rounded-[4px] text-[13px] text-white" onClick={onClosePanel} type="button">Continue as guest</button></div>
@@ -856,7 +921,7 @@ export default function FormePremiumTechnologyStorefront() {
   if (pathname !== "/") return <NotFoundPage header={shoppingHeader} />;
 
   return (
-    <div className="bg-white content-stretch flex flex-col items-start relative size-full" data-node-id="2:3" data-name="FORME — Premium technology storefront">
+    <main className="bg-white content-stretch flex flex-col items-start relative size-full" data-node-id="2:3" data-name="FORME — Premium technology storefront">
       {shoppingHeader}
       <div className="bg-[#edefe8] content-stretch flex h-[600px] items-start relative shrink-0 w-full" data-node-id="2:32" data-name="Hero collection">
         <div className="content-stretch flex flex-col gap-[24px] h-full items-start overflow-clip pb-[32px] pl-[64px] pr-[48px] pt-[72px] relative shrink-0 w-[608px]" data-node-id="2:33" data-name="Collection introduction">
@@ -866,23 +931,23 @@ export default function FormePremiumTechnologyStorefront() {
               THE EVERYDAY, ELEVATED
             </p>
           </div>
-          <div className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[0] min-w-full not-italic relative shrink-0 text-[#202522] text-[54px] w-[min-content]" data-node-id="2:37">
+          <h1 className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[0] min-w-full not-italic relative shrink-0 text-[#202522] text-[54px] w-[min-content]" data-node-id="2:37">
             <p className="leading-[1.1] mb-0">Good design.</p>
             <p className="leading-[1.1] mb-0">Great technology.</p>
             <p className="leading-[1.1]">Better everyday.</p>
-          </div>
+          </h1>
           <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[1.65] not-italic relative shrink-0 text-[#717772] text-[15px] w-[408px]" data-node-id="2:38">
             Discover thoughtfully selected devices and essentials. Less noise. More of what matters.
           </p>
           <div className="content-stretch flex items-start overflow-clip pt-[6px] relative shrink-0" data-node-id="2:39" data-name="Hero actions">
-            <div className="bg-[#245c4d] border border-[#245c4d] border-solid content-stretch flex gap-[16px] h-[48px] items-center overflow-clip px-[22px] relative rounded-[4px] shrink-0" data-node-id="2:40" data-name="Shopping action" role="link" tabIndex={0} onClick={() => document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" })} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" }); }}>
+            <a className="bg-[#245c4d] border border-[#245c4d] border-solid content-stretch flex gap-[16px] h-[48px] items-center overflow-clip px-[22px] relative rounded-[4px] shrink-0" data-node-id="2:40" data-name="Shopping action" href="#featured">
               <p className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[14px] text-white whitespace-nowrap" data-node-id="2:41">
                 Explore the collection
               </p>
               <div className="relative shrink-0 size-[16px]" data-node-id="2:42" data-name="arrow-right">
                 <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgArrowRight} />
               </div>
-            </div>
+            </a>
           </div>
           <div className="[word-break:break-word] content-stretch flex font-['Inter:Regular'] font-normal items-center justify-between leading-[normal] not-italic overflow-clip pt-[10px] relative shrink-0 text-[#717772] text-[10px] w-full whitespace-nowrap" data-node-id="2:44" data-name="Collection edition">
             <p className="relative shrink-0" data-node-id="2:45">
@@ -973,11 +1038,11 @@ export default function FormePremiumTechnologyStorefront() {
               Technology, in its element.
             </p>
           </div>
-          <div className="content-stretch flex items-center overflow-clip pb-[5px] relative shrink-0" data-node-id="2:83" data-name="Browse link" role="link" tabIndex={0} onClick={() => document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" })} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" }); }}>
+          <a className="content-stretch flex items-center overflow-clip pb-[5px] relative shrink-0" data-node-id="2:83" data-name="Browse link" href="#featured">
             <p className="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[14px] whitespace-nowrap" data-node-id="2:84">
               Browse all categories
             </p>
-          </div>
+          </a>
         </div>
         <div className="content-stretch flex gap-[20px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:85" data-name="Category grid">
           <button className="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative text-left" data-node-id="2:86" data-name="Category card" onClick={() => window.location.assign("/categories/smartphones")} type="button">
@@ -1579,6 +1644,6 @@ export default function FormePremiumTechnologyStorefront() {
         </div>
       </div>
 
-    </div>
+    </main>
   );
 }

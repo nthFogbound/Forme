@@ -22,7 +22,7 @@
 }
 
 @font-face {
-  font-family: 'Inter:Semi Bold';
+  font-family: 'Inter:Semi_Bold';
   src: url('https://static.figma.com/font/Inter_1') format('woff2');
   font-style: normal;
   font-weight: 600;
@@ -37,17 +37,34 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
   min-width: 320px;
+  overflow-x: hidden;
 }
 
 button,
+a,
 [role='link'],
 [role='button'] {
   cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #245c4d;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 [data-name='Shopping action'],
@@ -202,6 +219,10 @@ button,
     overflow-x: auto !important;
     padding-left: 20px !important;
     padding-right: 20px !important;
+    background:
+      linear-gradient(to right, white 0, transparent 18px),
+      linear-gradient(to left, white 0, transparent 28px);
+    scrollbar-width: thin;
   }
 
   [data-name='Shop destinations'] {
