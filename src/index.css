@@ -171,8 +171,8 @@ button,
     gap: 16px !important;
   }
 
-  [data-name='Account actions'] > div:first-child,
-  [data-name='Account actions'] > div:nth-child(2) {
+  [data-name='Account actions'] > button:first-child,
+  [data-name='Account actions'] > button:nth-child(2) {
     display: none !important;
   }
 

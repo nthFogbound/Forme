@@ -5,43 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Curated technology for a better everyday.">
     <title>Forme — Premium Technology Storefront</title>
-    @vite('src/index.css')
+    @vite(['src/index.css', 'resources/js/storefront.js'])
   </head>
   <body>
     <div class="bg-white content-stretch flex flex-col items-start relative size-full" data-node-id="2:3" data-name="FORME — Premium technology storefront">
-      <div class="content-stretch flex flex-col items-start overflow-clip relative shrink-0 w-full" data-node-id="2:4" data-name="Retail navigation">
+      <div class="content-stretch flex flex-col items-start overflow-visible relative shrink-0 w-full z-40" data-node-id="2:4" data-name="Retail navigation">
         <div class="bg-[#202d27] content-stretch flex h-[32px] items-center justify-center overflow-clip relative shrink-0 w-full" data-node-id="2:5" data-name="Store announcement">
           <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[11px] text-white whitespace-nowrap" data-node-id="2:6">
             Curated devices, thoughtful essentials and everyday accessories.
           </p>
         </div>
-        <div class="content-stretch flex h-[80px] items-center justify-between overflow-clip px-[64px] relative shrink-0 w-full" data-node-id="2:7" data-name="Main navigation">
+        <div class="bg-white content-stretch flex h-[80px] items-center justify-between overflow-visible px-[64px] relative shrink-0 w-full" data-node-id="2:7" data-name="Main navigation">
           <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[30px] whitespace-nowrap" data-node-id="2:8">
             FORME
           </p>
-          <div class="bg-[#f4f5f1] content-stretch flex gap-[12px] h-[40px] items-center overflow-clip px-[16px] relative shrink-0 w-[360px]" data-node-id="2:9" data-name="Product search">
+          <div class="bg-[#f4f5f1] content-stretch flex gap-[12px] h-[40px] items-center px-[16px] relative shrink-0 w-[360px]" data-node-id="2:9" data-name="Product search">
             <div class="relative shrink-0 size-[17px]" data-node-id="2:10" data-name="search">
               <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/e30e9.svg') }}" />
             </div>
-            <p class="[word-break:break-word] flex-[1_0_0] font-['Inter:Regular'] font-normal leading-[normal] min-w-px not-italic relative text-[#717772] text-[12px]" data-node-id="2:12">
-              Search devices, brands and essentials
-            </p>
+            <input aria-label="Search products" class="bg-transparent flex-1 font-['Inter:Regular'] outline-none text-[#202522] text-[12px] placeholder:text-[#717772]" data-product-search placeholder="Search devices, brands and essentials" type="search">
+            <div class="absolute bg-white border border-[#dfe3dc] hidden left-0 p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" data-search-results role="listbox"></div>
           </div>
-          <div class="content-stretch flex gap-[24px] items-center overflow-clip relative shrink-0" data-node-id="2:13" data-name="Account actions">
-            <div class="relative shrink-0 size-[20px]" data-node-id="2:14" data-name="user-round">
+          <div class="content-stretch flex gap-[24px] items-center relative shrink-0" data-node-id="2:13" data-name="Account actions">
+            <button aria-label="Open account menu" class="relative shrink-0 size-[20px]" data-open-panel="account" data-node-id="2:14" data-name="user-round" type="button">
               <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/b4eb0.svg') }}" />
-            </div>
-            <div class="relative shrink-0 size-[20px]" data-node-id="2:16" data-name="heart">
+            </button>
+            <button aria-label="Open wishlist" class="relative shrink-0 size-[20px]" data-open-panel="wishlist" data-node-id="2:16" data-name="heart" type="button">
               <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/4ff0c.svg') }}" />
-            </div>
-            <div class="content-stretch flex gap-[8px] items-center overflow-clip relative shrink-0" data-node-id="2:18" data-name="Shopping bag">
+            </button>
+            <button aria-label="Open shopping bag" class="content-stretch flex gap-[8px] items-center relative shrink-0" data-open-panel="bag" data-node-id="2:18" data-name="Shopping bag" type="button">
               <div class="relative shrink-0 size-[20px]" data-node-id="2:19" data-name="shopping-bag">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/991a5.svg') }}" />
               </div>
               <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#202522] text-[12px] whitespace-nowrap" data-node-id="2:21">
                 Bag (0)
               </p>
-            </div>
+            </button>
           </div>
         </div>
         <div class="border-[#dfe3dc] border-b border-solid border-t content-stretch flex h-[44px] items-center justify-between overflow-clip px-[64px] relative shrink-0 w-full" data-node-id="2:22" data-name="Category navigation">
@@ -89,14 +88,14 @@
             Discover thoughtfully selected devices and essentials. Less noise. More of what matters.
           </p>
           <div class="content-stretch flex items-start overflow-clip pt-[6px] relative shrink-0" data-node-id="2:39" data-name="Hero actions">
-            <div class="bg-[#245c4d] border border-[#245c4d] border-solid content-stretch flex gap-[16px] h-[48px] items-center overflow-clip px-[22px] relative rounded-[4px] shrink-0" data-node-id="2:40" data-name="Shopping action" role="link" tabIndex={0} onClick={() => document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" })} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" }); }}>
+            <button class="bg-[#245c4d] border border-[#245c4d] border-solid content-stretch flex gap-[16px] h-[48px] items-center overflow-clip px-[22px] relative rounded-[4px] shrink-0" data-scroll-target="#featured" data-node-id="2:40" data-name="Shopping action" type="button">
               <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[14px] text-white whitespace-nowrap" data-node-id="2:41">
                 Explore the collection
               </p>
               <div class="relative shrink-0 size-[16px]" data-node-id="2:42" data-name="arrow-right">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/c4615.svg') }}" />
               </div>
-            </div>
+            </button>
           </div>
           <div class="[word-break:break-word] content-stretch flex font-['Inter:Regular'] font-normal items-center justify-between leading-[normal] not-italic overflow-clip pt-[10px] relative shrink-0 text-[#717772] text-[10px] w-full whitespace-nowrap" data-node-id="2:44" data-name="Collection edition">
             <p class="relative shrink-0" data-node-id="2:45">
@@ -187,11 +186,11 @@
               Technology, in its element.
             </p>
           </div>
-          <div class="content-stretch flex items-center overflow-clip pb-[5px] relative shrink-0" data-node-id="2:83" data-name="Browse link" role="link" tabIndex={0} onClick={() => document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" })} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") document.querySelector("#featured")?.scrollIntoView({ behavior: "smooth" }); }}>
+          <button class="content-stretch flex items-center overflow-clip pb-[5px] relative shrink-0" data-scroll-target="#featured" data-node-id="2:83" data-name="Browse link" type="button">
             <p class="[word-break:break-word] font-['Inter:Medium'] font-medium leading-[normal] not-italic relative shrink-0 text-[#245c4d] text-[14px] whitespace-nowrap" data-node-id="2:84">
               Browse all categories
             </p>
-          </div>
+          </button>
         </div>
         <div class="content-stretch flex gap-[20px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:85" data-name="Category grid">
           <div class="content-stretch flex flex-[1_0_0] flex-col gap-[15px] items-start min-w-px overflow-clip relative" data-node-id="2:86" data-name="Category card">
@@ -531,14 +530,14 @@
           <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[1.7] min-w-full not-italic relative shrink-0 text-[#bcc8bf] text-[14px] w-[min-content]" data-node-id="2:242">
             Create a space that works as beautifully as it looks. Explore devices and small essentials for a more focused day.
           </p>
-          <div class="bg-white border border-[#dfe3dc] border-solid content-stretch flex gap-[16px] h-[48px] items-center overflow-clip px-[22px] relative rounded-[4px] shrink-0" data-node-id="2:243" data-name="Shopping action" role="link" tabIndex={0} onClick={() => document.querySelector("#accessories")?.scrollIntoView({ behavior: "smooth" })} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") document.querySelector("#accessories")?.scrollIntoView({ behavior: "smooth" }); }}>
+          <button class="bg-white border border-[#dfe3dc] border-solid content-stretch flex gap-[16px] h-[48px] items-center overflow-clip px-[22px] relative rounded-[4px] shrink-0" data-scroll-target="#accessories" data-node-id="2:243" data-name="Shopping action" type="button">
             <p class="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[14px] whitespace-nowrap" data-node-id="2:244">
               Build your workspace
             </p>
             <div class="relative shrink-0 size-[16px]" data-node-id="2:245" data-name="arrow-right">
               <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/0775e.svg') }}" />
             </div>
-          </div>
+          </button>
           <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#bcc8bf] text-[11px] whitespace-nowrap" data-node-id="2:247">
             Laptops · Keyboards · Everyday accessories
           </p>
@@ -879,6 +878,19 @@
           </p>
         </div>
       </div>
+    </div>
+    <div class="fixed hidden inset-0 z-[100]" data-header-panel>
+      <button aria-label="Close panel" class="absolute bg-[rgba(32,37,34,0.38)] inset-0 w-full" data-close-panel type="button"></button>
+      <section aria-labelledby="header-panel-title" aria-modal="true" class="absolute bg-white flex flex-col h-full p-[32px] right-0 shadow-[-16px_0_48px_rgba(32,37,34,0.16)] top-0 w-[min(420px,100vw)]" role="dialog">
+        <div class="border-[#dfe3dc] border-b flex items-center justify-between pb-[22px]">
+          <div>
+            <p class="font-['Inter:Semi_Bold'] text-[#245c4d] text-[10px]">FORME</p>
+            <p class="font-['Inter:Medium'] mt-[6px] text-[#202522] text-[26px]" data-panel-title id="header-panel-title"></p>
+          </div>
+          <button aria-label="Close panel" class="border border-[#dfe3dc] flex items-center justify-center rounded-full size-[36px] text-[#202522] text-[22px]" data-close-panel type="button">×</button>
+        </div>
+        <div class="flex flex-1 flex-col items-center justify-center text-center" data-panel-content></div>
+      </section>
     </div>
   </body>
 </html>
