@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState, type KeyboardEvent, type MouseEvent } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router";
 
 const assetPathPrefix = "/assets";
 const imgEverydayTechnologyStillLife = `${assetPathPrefix}/7c3c6.png`;
@@ -475,7 +474,7 @@ function CollectionPage({ slug }: { slug: CollectionSlug }) {
   );
 }
 
-function FormePremiumTechnologyStorefront() {
+export default function FormePremiumTechnologyStorefront() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [headerPanel, setHeaderPanel] = useState<HeaderPanel>(null);
@@ -1479,10 +1478,4 @@ function FormePremiumTechnologyStorefront() {
       )}
     </div>
   );
-}
-
-const router = createBrowserRouter([{ path: "*", Component: FormePremiumTechnologyStorefront }]);
-
-export default function App() {
-  return <RouterProvider router={router} />;
 }
