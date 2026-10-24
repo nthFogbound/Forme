@@ -169,9 +169,13 @@ button,
   }
 
   [data-name='Main navigation'] {
-    height: 68px !important;
+    flex-wrap: wrap;
+    gap: 12px;
+    height: auto !important;
     padding-left: 20px !important;
     padding-right: 20px !important;
+    padding-bottom: 14px !important;
+    padding-top: 14px !important;
   }
 
   [data-name='Main navigation'] > p {
@@ -179,11 +183,18 @@ button,
   }
 
   [data-name='Product search'] {
-    display: none !important;
+    order: 3;
+    width: 100% !important;
   }
 
   [data-name='Account actions'] {
     gap: 16px !important;
+  }
+
+  [data-name='Product filters'] {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 12px;
   }
 
   [data-name='Category navigation'] {

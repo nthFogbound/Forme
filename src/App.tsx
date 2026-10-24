@@ -39,14 +39,14 @@ const imgColorOptions7 = `${assetPathPrefix}/eac21.svg`;
 const imgCamera1 = `${assetPathPrefix}/0eaee.svg`;
 
 const searchableProducts = [
-  { slug: "iphone-13-pro", name: "iPhone 13 Pro", brand: "Apple", category: "Smartphones" },
-  { slug: "macbook-pro-14", name: "MacBook Pro 14″", brand: "Apple", category: "Laptops" },
-  { slug: "galaxy-tab-s8", name: "Galaxy Tab S8", brand: "Samsung", category: "Tablets" },
-  { slug: "galaxy-s23-ultra", name: "Galaxy S23 Ultra", brand: "Samsung", category: "Smartphones" },
-  { slug: "airpods-pro", name: "AirPods Pro", brand: "Apple", category: "Audio" },
-  { slug: "boostcharge-pro", name: "BoostCharge Pro 3-in-1", brand: "Belkin", category: "Accessories" },
-  { slug: "mx-keys-mini", name: "MX Keys Mini", brand: "Logitech", category: "Accessories" },
-  { slug: "sony-wh-1000xm5", name: "WH-1000XM5", brand: "Sony", category: "Audio" },
+  { slug: "iphone-13-pro", name: "iPhone 13 Pro", brand: "Apple", category: "Smartphones", collection: "Everyday elevated", keywords: "phone mobile ios camera unlocked" },
+  { slug: "macbook-pro-14", name: "MacBook Pro 14″", brand: "Apple", category: "Laptops", collection: "Workspace edit", keywords: "notebook computer mac m1 pro" },
+  { slug: "galaxy-tab-s8", name: "Galaxy Tab S8", brand: "Samsung", category: "Tablets", collection: "Everyday elevated", keywords: "tablet android wifi display" },
+  { slug: "galaxy-s23-ultra", name: "Galaxy S23 Ultra", brand: "Samsung", category: "Smartphones", collection: "Everyday elevated", keywords: "phone mobile android camera unlocked" },
+  { slug: "airpods-pro", name: "AirPods Pro", brand: "Apple", category: "Audio", collection: "Everyday essentials", keywords: "earbuds headphones wireless noise cancellation" },
+  { slug: "boostcharge-pro", name: "BoostCharge Pro 3-in-1", brand: "Belkin", category: "Accessories", collection: "Everyday essentials", keywords: "charger charging wireless magsafe mobile accessory" },
+  { slug: "mx-keys-mini", name: "MX Keys Mini", brand: "Logitech", category: "Accessories", collection: "Workspace edit", keywords: "keyboard wireless computer laptop accessory" },
+  { slug: "sony-wh-1000xm5", name: "Sony WH-1000XM5", brand: "Sony", category: "Audio", collection: "Workspace edit", keywords: "headphones wireless noise cancelling battery" },
 ];
 
 type HeaderPanel = "account" | "wishlist" | "bag" | null;
@@ -503,11 +503,17 @@ export default function FormePremiumTechnologyStorefront() {
   useEffect(() => localStorage.setItem("forme-colors", JSON.stringify(selectedColors)), [selectedColors]);
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
-    if (!query) return searchableProducts.slice(0, 4);
-    return searchableProducts.filter((product) =>
-      `${product.name} ${product.brand} ${product.category}`.toLowerCase().includes(query),
+    const category = activeCategory === "all" || activeCategory === "new-arrivals"
+      ? null
+      : activeCategory === "mobile-accessories" ? "accessories" : activeCategory;
+    const categoryProducts = category
+      ? searchableProducts.filter((product) => product.category.toLowerCase() === category)
+      : searchableProducts;
+    if (!query) return categoryProducts.slice(0, 4);
+    return categoryProducts.filter((product) =>
+      `${product.name} ${product.brand} ${product.category} ${product.collection} ${product.keywords}`.toLowerCase().includes(query),
     );
-  }, [searchQuery]);
+  }, [activeCategory, searchQuery]);
 
   const openPanel = (panel: Exclude<HeaderPanel, null>) => {
     setSearchOpen(false);
@@ -516,8 +522,7 @@ export default function FormePremiumTechnologyStorefront() {
     setHeaderPanel(panel);
   };
 
-  const selectSearchResult = (slug: string) => {
-    setSearchOpen(false);
+  const selectSearchResult = (slug: ProductSlug) => {
     window.location.assign(`/products/${slug}`);
   };
 
@@ -527,8 +532,19 @@ export default function FormePremiumTechnologyStorefront() {
     requestAnimationFrame(() => document.querySelector(accessories ? "#accessories" : "#featured")?.scrollIntoView({ behavior: "smooth" }));
   };
 
-  const productIsVisible = (category: ProductCategory, isNew = false) =>
-    activeCategory === "all" || activeCategory === category || (activeCategory === "new-arrivals" && isNew);
+  const productMatchesQuery = (slug: ProductSlug) => {
+    const query = searchQuery.trim().toLowerCase();
+    const product = searchableProducts.find((item) => item.slug === slug);
+    return !query || Boolean(product && `${product.name} ${product.brand} ${product.category} ${product.collection} ${product.keywords}`.toLowerCase().includes(query));
+  };
+  const productIsVisible = (category: ProductCategory, isNew = false, slug?: ProductSlug) =>
+    (activeCategory === "all" || activeCategory === category || (activeCategory === "new-arrivals" && isNew))
+    && (!slug || productMatchesQuery(slug));
+  const featuredProducts = searchableProducts.slice(0, 4);
+  const visibleFeaturedCount = featuredProducts.filter((product) => {
+    const category = product.category.toLowerCase() as ProductCategory;
+    return productIsVisible(category, false, product.slug as ProductSlug);
+  }).length;
   const toggleWishlist = (name: string) => setWishlist((items) => items.includes(name) ? items.filter((item) => item !== name) : [...items, name]);
   const toggleBag = (name: string) => setBag((items) => {
     if (items.includes(name)) {
@@ -627,7 +643,19 @@ export default function FormePremiumTechnologyStorefront() {
           <button aria-label="Forme home" className="[word-break:break-word] font-['Inter:Semi_Bold'] font-semibold leading-[normal] not-italic relative shrink-0 text-[#202522] text-[30px] whitespace-nowrap" data-node-id="2:8" onClick={() => window.location.assign("/")} type="button">
             FORME
           </button>
-          <div className="bg-[#f4f5f1] content-stretch flex gap-[12px] h-[40px] items-center px-[16px] relative shrink-0 w-[360px]" data-node-id="2:9" data-name="Product search">
+          <form
+            className="bg-[#f4f5f1] content-stretch flex gap-[12px] h-[40px] items-center px-[16px] relative shrink-0 w-[360px]"
+            data-node-id="2:9"
+            data-name="Product search"
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node)) setSearchOpen(false);
+            }}
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (searchResults[0]) selectSearchResult(searchResults[0].slug as ProductSlug);
+            }}
+            role="search"
+          >
             <div className="relative shrink-0 size-[17px]" data-node-id="2:10" data-name="search">
               <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgSearch} />
             </div>
@@ -643,14 +671,27 @@ export default function FormePremiumTechnologyStorefront() {
               type="search"
               value={searchQuery}
             />
+            {searchQuery && (
+              <button
+                aria-label="Clear search"
+                className="flex h-[36px] items-center justify-center -mr-[10px] text-[#245c4d] text-[11px] w-[48px]"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSearchOpen(true);
+                }}
+                type="button"
+              >
+                Clear
+              </button>
+            )}
             {searchOpen && (
-              <div className="absolute bg-white border border-[#dfe3dc] left-0 p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" role="listbox">
+              <div className="absolute bg-white border border-[#dfe3dc] left-0 max-h-[min(420px,60vh)] overflow-y-auto p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" role="listbox">
                 <p className="font-['Inter:Semi_Bold'] px-[10px] py-[8px] text-[#717772] text-[10px]">PRODUCTS</p>
                 {searchResults.length ? searchResults.map((product) => (
                   <button
-                    className="flex items-center justify-between px-[10px] py-[10px] text-left transition-colors hover:bg-[#f4f5f1] w-full"
-                    key={product.name}
-                    onClick={() => selectSearchResult(product.slug)}
+                    className="flex min-h-[44px] items-center justify-between px-[10px] py-[10px] text-left transition-colors hover:bg-[#f4f5f1] focus:bg-[#f4f5f1] w-full"
+                    key={product.slug}
+                    onClick={() => selectSearchResult(product.slug as ProductSlug)}
                     role="option"
                     type="button"
                   >
@@ -658,11 +699,15 @@ export default function FormePremiumTechnologyStorefront() {
                     <span className="font-['Inter:Regular'] text-[#717772] text-[10px]">{product.category}</span>
                   </button>
                 )) : (
-                  <p className="font-['Inter:Regular'] px-[10px] py-[16px] text-[#717772] text-[12px]">No products found.</p>
+                  <div className="px-[10px] py-[16px]">
+                    <p className="font-['Inter:Medium'] text-[#202522] text-[12px]">No products found</p>
+                    <p className="font-['Inter:Regular'] mt-[4px] text-[#717772] text-[11px]">Try another term or clear your search.</p>
+                    <button className="font-['Inter:Medium'] mt-[12px] min-h-[36px] text-[#245c4d] text-[11px] underline underline-offset-4" onClick={() => setSearchQuery("")} type="button">Clear search</button>
+                  </div>
                 )}
               </div>
             )}
-          </div>
+          </form>
           <div className="content-stretch flex gap-[24px] items-center relative shrink-0" data-node-id="2:13" data-name="Account actions">
             <button aria-label="Open account menu" className="relative shrink-0 size-[20px]" data-node-id="2:14" data-name="user-round" onClick={() => openPanel("account")} type="button">
               <img alt="" className="absolute block inset-0 max-w-none size-full" src={imgUserRound} />
@@ -915,32 +960,35 @@ export default function FormePremiumTechnologyStorefront() {
             </p>
           </div>
         </div>
-        <div className="content-stretch flex items-center justify-between overflow-clip relative shrink-0 w-full" data-node-id="2:123" data-name="Product filters">
-          <div className="content-stretch flex gap-[8px] items-start overflow-clip relative shrink-0" data-node-id="2:124" data-name="Category tabs">
-            <div className="bg-[#245c4d] border border-[#245c4d] border-solid content-stretch flex items-start overflow-clip px-[18px] py-[10px] relative rounded-[100px] shrink-0" data-node-id="2:125" data-name="Category filter">
-              <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[12px] text-white whitespace-nowrap" data-node-id="2:126">
-                All devices
-              </p>
-            </div>
-            <div className="bg-white border border-[#dfe3dc] border-solid content-stretch flex items-start overflow-clip px-[18px] py-[10px] relative rounded-[100px] shrink-0" data-node-id="2:127" data-name="Category filter">
-              <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:128">
-                Smartphones
-              </p>
-            </div>
-            <div className="bg-white border border-[#dfe3dc] border-solid content-stretch flex items-start overflow-clip px-[18px] py-[10px] relative rounded-[100px] shrink-0" data-node-id="2:129" data-name="Category filter">
-              <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:130">
-                Laptops
-              </p>
-            </div>
-            <div className="bg-white border border-[#dfe3dc] border-solid content-stretch flex items-start overflow-clip px-[18px] py-[10px] relative rounded-[100px] shrink-0" data-node-id="2:131" data-name="Category filter">
-              <p className="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:132">
-                Tablets
-              </p>
-            </div>
+        <div className="content-stretch flex items-center justify-between overflow-visible relative shrink-0 w-full" data-node-id="2:123" data-name="Product filters">
+          <div aria-label="Filter products by category" className="content-stretch flex flex-wrap gap-[8px] items-start relative shrink-0" data-node-id="2:124" data-name="Category tabs">
+            {([["all", "All devices"], ["smartphones", "Smartphones"], ["laptops", "Laptops"], ["tablets", "Tablets"]] as const).map(([category, label]) => {
+              const active = activeCategory === category;
+              return (
+                <button
+                  aria-pressed={active}
+                  className={`border border-solid min-h-[38px] px-[18px] py-[10px] relative rounded-[100px] shrink-0 text-[12px] whitespace-nowrap ${active ? "bg-[#245c4d] border-[#245c4d] text-white" : "bg-white border-[#dfe3dc] text-[#717772]"}`}
+                  data-name="Category filter"
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  type="button"
+                >
+                  {label}
+                </button>
+              );
+            })}
           </div>
+          <p aria-live="polite" className="font-['Inter:Regular'] text-[#717772] text-[12px] whitespace-nowrap">{visibleFeaturedCount} {visibleFeaturedCount === 1 ? "product" : "products"}</p>
         </div>
         <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:133" data-name="Product grid">
-          <div {...productCardInteraction("iphone-13-pro")} className={`${productIsVisible("smartphones") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:134" data-name="Product card">
+          {visibleFeaturedCount === 0 && (
+            <div className="bg-[#f4f5f1] flex flex-col items-center justify-center min-h-[240px] px-[24px] text-center w-full">
+              <p className="font-['Inter:Medium'] text-[18px]">No products match your selection</p>
+              <p className="mt-[8px] text-[#717772] text-[12px]">Clear the search or return to all devices.</p>
+              <button className="font-['Inter:Medium'] mt-[18px] min-h-[44px] px-[18px] text-[#245c4d] text-[12px] underline underline-offset-4" onClick={() => { setSearchQuery(""); setActiveCategory("all"); }} type="button">Clear filters</button>
+            </div>
+          )}
+          <div {...productCardInteraction("iphone-13-pro")} className={`${productIsVisible("smartphones", false, "iphone-13-pro") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:134" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:135" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:136" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct} />
@@ -985,7 +1033,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div {...productCardInteraction("macbook-pro-14")} className={`${productIsVisible("laptops") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:161" data-name="Product card">
+          <div {...productCardInteraction("macbook-pro-14")} className={`${productIsVisible("laptops", false, "macbook-pro-14") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:161" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:162" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:163" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct1} />
@@ -1030,7 +1078,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div {...productCardInteraction("galaxy-tab-s8")} className={`${productIsVisible("tablets") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:187" data-name="Product card">
+          <div {...productCardInteraction("galaxy-tab-s8")} className={`${productIsVisible("tablets", false, "galaxy-tab-s8") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:187" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:188" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:189" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct2} />
@@ -1070,7 +1118,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div {...productCardInteraction("galaxy-s23-ultra")} className={`${productIsVisible("smartphones") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:212" data-name="Product card">
+          <div {...productCardInteraction("galaxy-s23-ultra")} className={`${productIsVisible("smartphones", false, "galaxy-s23-ultra") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:212" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:213" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:214" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct3} />
@@ -1152,7 +1200,7 @@ export default function FormePremiumTechnologyStorefront() {
           </div>
         </div>
         <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:253" data-name="Accessories grid">
-          <div {...productCardInteraction("airpods-pro")} className={`${productIsVisible("audio", true) ? "" : "hidden "} ${productCardClass}`} data-node-id="2:254" data-name="Product card">
+          <div {...productCardInteraction("airpods-pro")} className={`${productIsVisible("audio", true, "airpods-pro") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:254" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:255" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:256" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct4} />
@@ -1197,7 +1245,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div {...productCardInteraction("boostcharge-pro")} className={`${productIsVisible("mobile-accessories", true) ? "" : "hidden "} ${productCardClass}`} data-node-id="2:279" data-name="Product card">
+          <div {...productCardInteraction("boostcharge-pro")} className={`${productIsVisible("mobile-accessories", true, "boostcharge-pro") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:279" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:280" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:281" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct5} />
@@ -1242,7 +1290,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div {...productCardInteraction("mx-keys-mini")} className={`${productIsVisible("mobile-accessories") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:305" data-name="Product card">
+          <div {...productCardInteraction("mx-keys-mini")} className={`${productIsVisible("mobile-accessories", false, "mx-keys-mini") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:305" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:306" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:307" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct6} />
@@ -1282,7 +1330,7 @@ export default function FormePremiumTechnologyStorefront() {
               </p>
             </div>
           </div>
-          <div {...productCardInteraction("sony-wh-1000xm5")} className={`${productIsVisible("audio") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:330" data-name="Product card">
+          <div {...productCardInteraction("sony-wh-1000xm5")} className={`${productIsVisible("audio", false, "sony-wh-1000xm5") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:330" data-name="Product card">
             <div className="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:331" data-name="Product photography">
               <div className="h-[202px] relative shrink-0 w-full" data-node-id="2:332" data-name="Product">
                 <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgProduct7} />
