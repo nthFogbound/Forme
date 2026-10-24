@@ -489,13 +489,13 @@ function ShoppingHeader({
               </div>
             )}
           </form>
-          <div className="content-stretch flex gap-[24px] items-center relative shrink-0" data-name="Account actions">
-            <button aria-haspopup="dialog" aria-label="Open account menu" className="flex items-center justify-center relative shrink-0 size-[44px]" onClick={() => openPanel("account")} type="button"><img alt="" className="size-[20px]" src={imgUserRound} /></button>
-            <button aria-haspopup="dialog" aria-label={`Open wishlist, ${wishlist.length} saved items`} className="flex items-center justify-center relative shrink-0 size-[44px]" onClick={() => openPanel("wishlist")} type="button">
+          <div className="content-stretch flex gap-[8px] items-center relative shrink-0" data-name="Account actions">
+            <button aria-haspopup="dialog" aria-label="Open account menu" className="flex items-center justify-center relative shrink-0 size-[40px]" onClick={() => openPanel("account")} type="button"><img alt="" className="size-[20px]" src={imgUserRound} /></button>
+            <button aria-haspopup="dialog" aria-label={`Open wishlist, ${wishlist.length} saved items`} className="flex items-center justify-center relative shrink-0 size-[40px]" onClick={() => openPanel("wishlist")} type="button">
               <img alt="" className="size-[20px]" src={imgHeart} />
               {wishlist.length > 0 && <span className="absolute bg-[#245c4d] flex items-center justify-center -right-[8px] rounded-full text-[8px] text-white -top-[8px] size-[15px]">{wishlist.length}</span>}
             </button>
-            <button aria-haspopup="dialog" aria-label={`Open shopping bag, ${bagCount} items`} className="content-stretch flex gap-[8px] items-center min-h-[44px] shrink-0" onClick={() => openPanel("bag")} type="button">
+            <button aria-haspopup="dialog" aria-label={`Open shopping bag, ${bagCount} items`} className="content-stretch flex gap-[6px] items-center min-h-[40px] px-[6px] shrink-0" onClick={() => openPanel("bag")} type="button">
               <img alt="" className="size-[20px]" src={imgShoppingBag} />
               <span className="font-['Inter:Regular'] text-[#202522] text-[12px] whitespace-nowrap">Bag ({bagCount})</span>
             </button>
@@ -633,7 +633,7 @@ function CategoryPage({
           {category.products.map((product) => (
             <article className="flex flex-col gap-[16px]" key={product.name} onClick={(event) => { if (!(event.target as Element).closest("button")) window.location.assign(`/products/${product.slug}`); }} onKeyDown={(event) => { if (event.key === "Enter") window.location.assign(`/products/${product.slug}`); }} role="link" tabIndex={0}>
               <div className="bg-[#f4f5f1] h-[300px] p-[32px] relative rounded-[4px]">
-                <img alt={product.name} className="object-cover size-full" src={product.image} />
+                <img alt={product.name} className="object-contain size-full" src={product.image} />
               </div>
               <p className="font-['Inter:Medium'] text-[#717772] text-[10px]">{product.brand}</p>
               <h2 className="font-['Inter:Medium'] text-[20px]">{product.name}</h2>
@@ -706,7 +706,7 @@ function CollectionPage({ header, slug }: { header: ReactNode; slug: CollectionS
             const product = productPages[productSlug];
             return (
               <button className="flex flex-col gap-[12px] text-left" key={productSlug} onClick={() => window.location.assign(`/products/${productSlug}`)} type="button">
-                <span className="bg-[#f4f5f1] block h-[260px] p-[28px] rounded-[4px]"><img alt={product.name} className="object-cover size-full" src={product.image} /></span>
+                <span className="bg-[#f4f5f1] block h-[260px] p-[28px] rounded-[4px]"><img alt={product.name} className="object-contain size-full" src={product.image} /></span>
                 <span className="font-['Inter:Medium'] text-[#717772] text-[10px]">{product.brand}</span>
                 <span className="font-['Inter:Medium'] text-[18px]">{product.name}</span>
                 <NoReviewsLabel />
@@ -776,6 +776,10 @@ export default function FormePremiumTechnologyStorefront() {
     const category = product.category.toLowerCase() as ProductCategory;
     return productIsVisible(category, false, product.slug as ProductSlug);
   }).length;
+  const selectedLandingProducts = activeCategory in categoryPages
+    ? categoryPages[activeCategory as CategorySlug].products.filter((product) => productMatchesQuery(product.slug))
+    : [];
+  const landingProductCount = selectedLandingProducts.length || visibleFeaturedCount;
   const toggleWishlist = (name: string) => setWishlist((items) => items.includes(name) ? items.filter((item) => item !== name) : [...items, name]);
   const toggleBag = (name: string) => setBag((items) => {
     if (items.includes(name)) {
@@ -917,12 +921,9 @@ export default function FormePremiumTechnologyStorefront() {
               </div>
             </a>
           </div>
-          <div className="[word-break:break-word] content-stretch flex font-['Inter:Regular'] font-normal items-center justify-between leading-[normal] not-italic overflow-clip pt-[10px] relative shrink-0 text-[#717772] text-[10px] w-full whitespace-nowrap" data-node-id="2:44" data-name="Collection edition">
+          <div className="[word-break:break-word] content-stretch flex font-['Inter:Regular'] font-normal items-center leading-[normal] not-italic overflow-clip pt-[10px] relative shrink-0 text-[#717772] text-[10px] w-full whitespace-nowrap" data-node-id="2:44" data-name="Collection edition">
             <p className="relative shrink-0" data-node-id="2:45">
               CURATED FOR HOW YOU LIVE
-            </p>
-            <p className="relative shrink-0" data-node-id="2:46">
-              01 / 03
             </p>
           </div>
         </div>
@@ -1100,7 +1101,7 @@ export default function FormePremiumTechnologyStorefront() {
         </div>
         <div className="content-stretch flex items-center justify-between overflow-visible relative shrink-0 w-full" data-node-id="2:123" data-name="Product filters">
           <div aria-label="Filter products by category" className="content-stretch flex flex-wrap gap-[8px] items-start relative shrink-0" data-node-id="2:124" data-name="Category tabs">
-            {([["all", "All devices"], ["smartphones", "Smartphones"], ["laptops", "Laptops"], ["tablets", "Tablets"]] as const).map(([category, label]) => {
+            {([["all", "All devices"], ["smartphones", "Smartphones"], ["laptops", "Laptops"], ["tablets", "Tablets"], ["mobile-accessories", "Accessories"], ["audio", "Audio"]] as const).map(([category, label]) => {
               const active = activeCategory === category;
               return (
                 <button
@@ -1116,14 +1117,32 @@ export default function FormePremiumTechnologyStorefront() {
               );
             })}
           </div>
-          <p aria-live="polite" className="font-['Inter:Regular'] text-[#717772] text-[12px] whitespace-nowrap">{visibleFeaturedCount} {visibleFeaturedCount === 1 ? "product" : "products"}</p>
+          <p aria-live="polite" className="font-['Inter:Regular'] text-[#717772] text-[12px] whitespace-nowrap">{landingProductCount} {landingProductCount === 1 ? "product" : "products"}</p>
         </div>
-        <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:133" data-name="Product grid">
-          {visibleFeaturedCount === 0 && (
+        <div className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-category-selection={selectedLandingProducts.length ? "true" : undefined} data-node-id="2:133" data-name="Product grid">
+          {landingProductCount === 0 && (
             <div className="bg-[#f4f5f1] flex flex-col items-center justify-center min-h-[240px] px-[24px] text-center w-full">
               <p className="font-['Inter:Medium'] text-[18px]">No products match your selection</p>
               <p className="mt-[8px] text-[#717772] text-[12px]">Clear the search or return to all devices.</p>
               <button className="font-['Inter:Medium'] mt-[18px] min-h-[44px] px-[18px] text-[#245c4d] text-[12px] underline underline-offset-4" onClick={() => { setSearchQuery(""); setActiveCategory("all"); }} type="button">Clear filters</button>
+            </div>
+          )}
+          {selectedLandingProducts.length > 0 && (
+            <div className="grid gap-[24px] grid-cols-4 w-full max-xl:grid-cols-2 max-sm:grid-cols-1" data-name="Category product grid">
+              {selectedLandingProducts.map((product) => (
+                <article className="flex flex-col gap-[12px] min-w-0" key={product.slug}>
+                  <div className="bg-[#f4f5f1] flex h-[266px] items-center justify-center p-[28px] relative rounded-[4px]">
+                    <img alt={product.name} className="max-h-full object-contain w-full" src={product.image} />
+                    <button aria-label={`${wishlist.includes(product.name) ? "Remove" : "Add"} ${product.name} ${wishlist.includes(product.name) ? "from" : "to"} wishlist`} aria-pressed={wishlist.includes(product.name)} className="absolute bg-white flex items-center justify-center right-[14px] rounded-full size-[32px] top-[14px]" data-name="Save product" onClick={() => toggleWishlist(product.name)} type="button"><img alt="" className="size-[17px]" src={imgHeart1} /></button>
+                  </div>
+                  <p className="font-['Inter:Medium'] text-[#717772] text-[10px]">{product.brand}</p>
+                  <button className="font-['Inter:Medium'] text-[18px] text-left" onClick={() => window.location.assign(`/products/${product.slug}`)} type="button">{product.name}</button>
+                  <p className="font-['Inter:Regular'] text-[#717772] text-[12px]">{product.detail}</p>
+                  <NoReviewsLabel />
+                  <p className="font-['Inter:Semi_Bold'] text-[18px]">{product.price}</p>
+                  <button className={`border h-[42px] rounded-[4px] text-[12px] ${bag.includes(product.name) ? "bg-[#245c4d] border-[#245c4d] text-white" : "border-[#245c4d] text-[#245c4d]"}`} onClick={() => toggleBag(product.name)} type="button">{bag.includes(product.name) ? "Remove from bag" : "Add to bag"}</button>
+                </article>
+              ))}
             </div>
           )}
           <div {...productCardInteraction("iphone-13-pro")} className={`${productIsVisible("smartphones", false, "iphone-13-pro") ? "" : "hidden "} ${productCardClass}`} data-node-id="2:134" data-name="Product card">

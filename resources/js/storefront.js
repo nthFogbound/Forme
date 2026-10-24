@@ -253,6 +253,28 @@ document.querySelectorAll("[data-nav-category]").forEach((button) => {
     document.querySelector(accessories ? "#accessories" : "#featured")?.scrollIntoView({ behavior: "smooth" })
   })
 })
+document.querySelectorAll("[data-selection-category]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const category = button.dataset.selectionCategory
+    document.querySelectorAll("[data-selection-category]").forEach((item) => {
+      const active = item === button
+      item.setAttribute("aria-pressed", String(active))
+      item.classList.toggle("bg-[#245c4d]", active)
+      item.classList.toggle("border-[#245c4d]", active)
+      item.classList.toggle("text-white", active)
+      item.classList.toggle("bg-white", !active)
+      item.classList.toggle("border-[#dfe3dc]", !active)
+      item.classList.toggle("text-[#717772]", !active)
+    })
+    const productGrid = document.querySelector("[data-name='Product grid']")
+    productGrid?.querySelectorAll(":scope > [data-name='Product card']").forEach((card) => card.classList.toggle("hidden", category !== "all"))
+    document.querySelectorAll("[data-selection-grid]").forEach((grid) => {
+      const visible = grid.dataset.selectionGrid === category
+      grid.classList.toggle("hidden", !visible)
+      grid.classList.toggle("grid", visible)
+    })
+  })
+})
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     results?.classList.add("hidden")

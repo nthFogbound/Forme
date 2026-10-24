@@ -26,14 +26,14 @@
             <input aria-label="Search products" class="bg-transparent flex-1 font-['Inter:Regular'] outline-none text-[#202522] text-[12px] placeholder:text-[#717772]" data-product-search placeholder="Search devices, brands and essentials" type="search">
             <div class="absolute bg-white border border-[#dfe3dc] hidden left-0 p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(32,37,34,0.14)] top-[48px] w-full z-50" data-search-results role="listbox"></div>
           </div>
-          <div class="content-stretch flex gap-[24px] items-center relative shrink-0" data-node-id="2:13" data-name="Account actions">
-            <button aria-label="Open account menu" class="relative shrink-0 size-[20px]" data-open-panel="account" data-node-id="2:14" data-name="user-round" type="button">
-              <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/b4eb0.svg') }}" />
+          <div class="content-stretch flex gap-[8px] items-center relative shrink-0" data-node-id="2:13" data-name="Account actions">
+            <button aria-label="Open account menu" class="flex items-center justify-center relative shrink-0 size-[40px]" data-open-panel="account" data-node-id="2:14" data-name="user-round" type="button">
+              <img alt="" class="block size-[20px]" src="{{ asset('assets/b4eb0.svg') }}" />
             </button>
-            <button aria-label="Open wishlist" class="relative shrink-0 size-[20px]" data-open-panel="wishlist" data-node-id="2:16" data-name="heart" type="button">
-              <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/4ff0c.svg') }}" />
+            <button aria-label="Open wishlist" class="flex items-center justify-center relative shrink-0 size-[40px]" data-open-panel="wishlist" data-node-id="2:16" data-name="heart" type="button">
+              <img alt="" class="block size-[20px]" src="{{ asset('assets/4ff0c.svg') }}" />
             </button>
-            <button aria-label="Open shopping bag" class="content-stretch flex gap-[8px] items-center relative shrink-0" data-open-panel="bag" data-node-id="2:18" data-name="Shopping bag" type="button">
+            <button aria-label="Open shopping bag" class="content-stretch flex gap-[6px] items-center min-h-[40px] px-[6px] relative shrink-0" data-open-panel="bag" data-node-id="2:18" data-name="Shopping bag" type="button">
               <div class="relative shrink-0 size-[20px]" data-node-id="2:19" data-name="shopping-bag">
                 <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/991a5.svg') }}" />
               </div>
@@ -97,12 +97,9 @@
               </div>
             </button>
           </div>
-          <div class="[word-break:break-word] content-stretch flex font-['Inter:Regular'] font-normal items-center justify-between leading-[normal] not-italic overflow-clip pt-[10px] relative shrink-0 text-[#717772] text-[10px] w-full whitespace-nowrap" data-node-id="2:44" data-name="Collection edition">
+          <div class="[word-break:break-word] content-stretch flex font-['Inter:Regular'] font-normal items-center leading-[normal] not-italic overflow-clip pt-[10px] relative shrink-0 text-[#717772] text-[10px] w-full whitespace-nowrap" data-node-id="2:44" data-name="Collection edition">
             <p class="relative shrink-0" data-node-id="2:45">
               CURATED FOR HOW YOU LIVE
-            </p>
-            <p class="relative shrink-0" data-node-id="2:46">
-              01 / 03
             </p>
           </div>
         </div>
@@ -279,30 +276,20 @@
           </div>
         </div>
         <div class="content-stretch flex items-center justify-between overflow-clip relative shrink-0 w-full" data-node-id="2:123" data-name="Product filters">
-          <div class="content-stretch flex gap-[8px] items-start overflow-clip relative shrink-0" data-node-id="2:124" data-name="Category tabs">
-            <div class="bg-[#245c4d] border border-[#245c4d] border-solid content-stretch flex items-start overflow-clip px-[18px] py-[10px] relative rounded-[100px] shrink-0" data-node-id="2:125" data-name="Category filter">
-              <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[12px] text-white whitespace-nowrap" data-node-id="2:126">
-                All devices
-              </p>
-            </div>
-            <div class="bg-white border border-[#dfe3dc] border-solid content-stretch flex items-start overflow-clip px-[18px] py-[10px] relative rounded-[100px] shrink-0" data-node-id="2:127" data-name="Category filter">
-              <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:128">
-                Smartphones
-              </p>
-            </div>
-            <div class="bg-white border border-[#dfe3dc] border-solid content-stretch flex items-start overflow-clip px-[18px] py-[10px] relative rounded-[100px] shrink-0" data-node-id="2:129" data-name="Category filter">
-              <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:130">
-                Laptops
-              </p>
-            </div>
-            <div class="bg-white border border-[#dfe3dc] border-solid content-stretch flex items-start overflow-clip px-[18px] py-[10px] relative rounded-[100px] shrink-0" data-node-id="2:131" data-name="Category filter">
-              <p class="[word-break:break-word] font-['Inter:Regular'] font-normal leading-[normal] not-italic relative shrink-0 text-[#717772] text-[12px] whitespace-nowrap" data-node-id="2:132">
-                Tablets
-              </p>
-            </div>
+          <div class="content-stretch flex flex-wrap gap-[8px] items-start relative shrink-0" data-node-id="2:124" data-name="Category tabs">
+            @foreach (['all' => 'All devices', 'smartphones' => 'Smartphones', 'laptops' => 'Laptops', 'tablets' => 'Tablets', 'mobile-accessories' => 'Accessories', 'audio' => 'Audio'] as $slug => $label)
+              <button aria-pressed="{{ $slug === 'all' ? 'true' : 'false' }}" class="border border-solid min-h-[38px] px-[18px] py-[10px] relative rounded-full shrink-0 text-[12px] whitespace-nowrap {{ $slug === 'all' ? 'bg-[#245c4d] border-[#245c4d] text-white' : 'bg-white border-[#dfe3dc] text-[#717772]' }}" data-selection-category="{{ $slug }}" data-name="Category filter" type="button">{{ $label }}</button>
+            @endforeach
           </div>
         </div>
         <div class="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:133" data-name="Product grid">
+          @foreach ($catalog['categories'] as $categorySlug => $category)
+            <div class="hidden gap-[24px] grid-cols-4 w-full max-xl:grid-cols-2 max-sm:grid-cols-1" data-selection-grid="{{ $categorySlug }}">
+              @foreach ($category['products'] as $productSlug)
+                @include('partials.product-card', ['product' => ['slug' => $productSlug, ...$catalog['products'][$productSlug]]])
+              @endforeach
+            </div>
+          @endforeach
           <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="smartphones" data-product-url="{{ url('/products/iphone-13-pro') }}" data-node-id="2:134" data-name="Product card">
             <div class="bg-[#f4f5f1] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:135" data-name="Product photography">
               <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:136" data-name="Product">

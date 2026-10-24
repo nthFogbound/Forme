@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 $catalog = require dirname(__DIR__).'/resources/data/catalog.php';
 
-Route::view('/', 'storefront')->name('storefront');
+Route::get('/', fn () => view('storefront', ['catalog' => $catalog]))->name('storefront');
 
 Route::get('/categories/{category}', function (string $category) use ($catalog) {
     abort_unless(isset($catalog['categories'][$category]), 404);
