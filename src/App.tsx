@@ -1797,7 +1797,7 @@ function CategoryPage({
           price={price}
           sort={sort}
         />
-        <div className="grid gap-[24px] grid-cols-2 mt-[32px] max-w-[900px] max-md:grid-cols-1">
+        <div className="grid gap-x-[24px] gap-y-[48px] grid-cols-4 mt-[32px] w-full max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1">
           {visibleProducts.map((product) => (
             <article
               className="flex flex-col gap-[16px]"
