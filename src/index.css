@@ -1,37 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 
-@font-face {
-  font-family: 'Inter:Bold';
-  src: url('https://static.figma.com/font/Inter_1') format('woff2');
-  font-style: normal;
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: 'Inter:Medium';
-  src: url('https://static.figma.com/font/Inter_1') format('woff2');
-  font-style: normal;
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: 'Inter:Regular';
-  src: url('https://static.figma.com/font/Inter_1') format('woff2');
-  font-style: normal;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: 'Inter:Semi_Bold';
-  src: url('https://static.figma.com/font/Inter_1') format('woff2');
-  font-style: normal;
-  font-weight: 600;
-}
-
 :root {
-  color: #1d2433;
+  color: #1d292f;
   background: #ffffff;
-  font-family: 'Inter:Regular', Inter, Arial, sans-serif;
+  font-family: 'DM Sans', Arial, sans-serif;
   font-synthesis: none;
 }
 
@@ -59,7 +32,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid #2855d9;
+  outline: 2px solid #275d78;
   outline-offset: 3px;
 }
 
@@ -83,12 +56,12 @@ button:disabled {
 }
 
 [data-name='Add to bag']:hover {
-  border-color: #2855d9;
-  background: #f3f6fc;
+  border-color: #275d78;
+  background: #eff5f7;
 }
 
 [data-name='Save product'] {
-  color: #1d2433;
+  color: #1d292f;
   transition:
     background-color 160ms ease,
     color 160ms ease,
@@ -97,12 +70,12 @@ button:disabled {
 }
 
 [data-name='Save product']:hover {
-  box-shadow: 0 0 0 2px #e1b4bf;
+  box-shadow: 0 0 0 2px #dab4bd;
 }
 
 [data-name='Save product'][aria-pressed='true'] {
   animation: wishlist-pop 220ms ease-out;
-  background: #b6405a;
+  background: #a43f54;
   color: #ffffff;
 }
 
@@ -128,13 +101,13 @@ button:disabled {
 }
 
 [data-wishlist-button]:hover {
-  background: #f3f6fc;
+  background: #eff5f7;
 }
 
 [data-wishlist-button][aria-pressed='true'] {
   animation: wishlist-pop 220ms ease-out;
-  background: #b6405a;
-  border-color: #b6405a;
+  background: #a43f54;
+  border-color: #a43f54;
   color: #ffffff;
 }
 
@@ -162,8 +135,8 @@ button:disabled {
 }
 
 [data-name='Add to bag'][aria-pressed='true'] {
-  border-color: #2855d9;
-  background: #2855d9;
+  border-color: #275d78;
+  background: #275d78;
 }
 
 [data-name='Add to bag'][aria-pressed='true'] p {
@@ -184,7 +157,7 @@ button:disabled {
 
 [role='link']:focus-visible,
 [role='button']:focus-visible {
-  outline: 2px solid #2855d9;
+  outline: 2px solid #275d78;
   outline-offset: 3px;
 }
 
