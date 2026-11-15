@@ -2,7 +2,7 @@
   $brands = collect($products)->pluck('brand')->unique()->sort()->values();
 @endphp
 
-<div class="border-[#d5e1e5] border-y flex items-center justify-between gap-[20px] mt-[26px] py-[12px] max-md:items-stretch max-md:flex-col" data-name="Catalog controls">
+<div class="border-[#d5e1e5] border-y flex items-center justify-between gap-[20px] mt-[26px] py-[12px] w-full max-md:items-stretch max-md:flex-col" data-name="Catalog controls">
   <p aria-live="polite" class="font-['DM_Sans'] font-normal text-[#66777f] text-[12px] whitespace-nowrap" data-catalog-count>
     {{ count($products) }} {{ count($products) === 1 ? 'product' : 'products' }}
   </p>

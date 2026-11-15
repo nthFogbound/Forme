@@ -1498,7 +1498,7 @@ function CatalogToolbar({
     "bg-transparent font-['DM_Sans'] font-medium h-[42px] outline-none pl-[34px] pr-[12px] text-[#1d292f] text-[12px]"
   return (
     <div
-      className="border-[#d5e1e5] border-y flex items-center justify-between gap-[20px] mt-[26px] py-[12px] max-md:items-stretch max-md:flex-col"
+      className="border-[#d5e1e5] border-y flex items-center justify-between gap-[20px] mt-[26px] py-[12px] w-full max-md:items-stretch max-md:flex-col"
       data-name="Catalog controls"
     >
       <p
