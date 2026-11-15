@@ -323,7 +323,7 @@ const searchableProducts = (Object.entries(
 type Quantities = Record<string, number>
 type Confirmation = {
   reference: string
-  items: { name: string quantity: number }[]
+  items: { name: string, quantity: number }[]
   total: number
 }
 
@@ -337,7 +337,38 @@ const productEntries = Object.entries(
 const productByName = (name: string) =>
   productEntries.find(([, product]) => product.name === name)
 const priceNumber = (price: string) => Number(price.replace(/[^0-9.]/g, ""))
-const productNames = new Set(productEntries.map(([, product]) => product.name))
+const productNames = new Set<string>(
+  productEntries.map(([, product]) => product.name),
+)
+type SortOption = "featured" | "price-asc" | "price-desc" | "name-asc"
+type PriceFilter = "all" | "under-250" | "250-999" | "1000-plus"
+type FilterableProduct = { name: string, brand: string, price: string }
+
+const filterAndSortProducts = <T extends FilterableProduct,>(
+  products: readonly T[],
+  brand: string,
+  price: PriceFilter,
+  sort: SortOption,
+) => {
+  const filtered = products.filter((product) => {
+    const amount = priceNumber(product.price)
+    const matchesBrand = brand === "all" || product.brand === brand
+    const matchesPrice =
+      price === "all" ||
+      (price === "under-250" && amount < 250) ||
+      (price === "250-999" && amount >= 250 && amount < 1000) ||
+      (price === "1000-plus" && amount >= 1000)
+    return matchesBrand && matchesPrice
+  })
+
+  return [...filtered].sort((a, b) => {
+    if (sort === "price-asc") return priceNumber(a.price) - priceNumber(b.price)
+    if (sort === "price-desc")
+      return priceNumber(b.price) - priceNumber(a.price)
+    if (sort === "name-asc") return a.name.localeCompare(b.name)
+    return 0
+  })
+}
 
 type StorageKind = "local" | "session"
 
@@ -373,7 +404,7 @@ const isProductList = (value: unknown): value is string[] =>
   Array.isArray(value) &&
   value.every((item) => typeof item === "string" && productNames.has(item))
 const isQuantities = (value: unknown): value is Quantities =>
-  Boolean(value) &&
+  value !== null &&
   typeof value === "object" &&
   !Array.isArray(value) &&
   Object.entries(value).every(
@@ -383,7 +414,7 @@ const isQuantities = (value: unknown): value is Quantities =>
       Number(quantity) > 0,
   )
 const isSelectedColors = (value: unknown): value is Record<string, string> =>
-  Boolean(value) &&
+  value !== null &&
   typeof value === "object" &&
   !Array.isArray(value) &&
   Object.entries(value).every(
@@ -817,7 +848,7 @@ function ConfirmationPage({
   total,
 }: {
   reference: string
-  completedItems: { name: string quantity: number }[]
+  completedItems: { name: string, quantity: number }[]
   total: number
 }) {
   if (!reference)
@@ -1444,6 +1475,145 @@ function NoReviewsLabel() {
   )
 }
 
+function CatalogToolbar({
+  brands,
+  brand,
+  price,
+  sort,
+  count,
+  onBrand,
+  onPrice,
+  onSort,
+}: {
+  brands: string[]
+  brand: string
+  price: PriceFilter
+  sort: SortOption
+  count: number
+  onBrand: (brand: string) => void
+  onPrice: (price: PriceFilter) => void
+  onSort: (sort: SortOption) => void
+}) {
+  const selectClass =
+    "bg-transparent font-['DM_Sans'] font-medium h-[42px] outline-none pl-[34px] pr-[12px] text-[#1d292f] text-[12px]"
+  return (
+    <div
+      className="border-[#d5e1e5] border-y flex items-center justify-between gap-[20px] mt-[26px] py-[12px] max-md:items-stretch max-md:flex-col"
+      data-name="Catalog controls"
+    >
+      <p
+        aria-live="polite"
+        className="font-['DM_Sans'] font-normal text-[#66777f] text-[12px] whitespace-nowrap"
+      >
+        {count} {count === 1 ? "product" : "products"}
+      </p>
+      <div className="flex flex-wrap gap-[10px] items-center">
+        <div className="flex items-center gap-[4px] mr-[2px] text-[#66777f]">
+          <svg
+            aria-hidden="true"
+            className="size-[16px]"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M3 4h14l-5.4 6.2v4.4l-3.2 1.6v-6L3 4Z"
+              stroke="currentColor"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+            />
+          </svg>
+          <span className="font-['DM_Sans'] font-medium text-[11px]">
+            Filter
+          </span>
+        </div>
+        <label className="bg-[#eff5f7] relative rounded-[4px]">
+          <span className="sr-only">Filter by brand</span>
+          <svg
+            aria-hidden="true"
+            className="absolute left-[12px] pointer-events-none size-[14px] top-1/2 -translate-y-1/2 text-[#66777f]"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <circle
+              cx="10"
+              cy="10"
+              r="6.5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            <path d="M6 10h8M10 6v8" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+          <select
+            className={selectClass}
+            onChange={(event) => onBrand(event.target.value)}
+            value={brand}
+          >
+            <option value="all">All brands</option>
+            {brands.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="bg-[#eff5f7] relative rounded-[4px]">
+          <span className="sr-only">Filter by price</span>
+          <svg
+            aria-hidden="true"
+            className="absolute left-[12px] pointer-events-none size-[14px] top-1/2 -translate-y-1/2 text-[#66777f]"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M10 3v14M13 6.2c-.8-.7-1.8-1.1-3-1.1-1.7 0-3 1-3 2.3 0 3.6 6 1.3 6 5 0 1.4-1.3 2.5-3.2 2.5-1.3 0-2.5-.5-3.3-1.3"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeWidth="1.5"
+            />
+          </svg>
+          <select
+            className={selectClass}
+            onChange={(event) => onPrice(event.target.value as PriceFilter)}
+            value={price}
+          >
+            <option value="all">Any price</option>
+            <option value="under-250">Under $250</option>
+            <option value="250-999">$250–$999</option>
+            <option value="1000-plus">$1,000+</option>
+          </select>
+        </label>
+        <label className="border border-[#d5e1e5] relative rounded-[4px]">
+          <span className="sr-only">Sort products</span>
+          <svg
+            aria-hidden="true"
+            className="absolute left-[12px] pointer-events-none size-[14px] top-1/2 -translate-y-1/2 text-[#275d78]"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M5 4v12m0 0-2.5-2.5M5 16l2.5-2.5M10 5h7M10 10h5M10 15h3"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+            />
+          </svg>
+          <select
+            className={selectClass}
+            onChange={(event) => onSort(event.target.value as SortOption)}
+            value={sort}
+          >
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="name-asc">Name: A–Z</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  )
+}
+
 function ProductPage({
   header,
   slug,
@@ -1554,6 +1724,18 @@ function CategoryPage({
   toggleBag: (name: string) => void
 }) {
   const category = categoryPages[slug]
+  const [brand, setBrand] = useState("all")
+  const [price, setPrice] = useState<PriceFilter>("all")
+  const [sort, setSort] = useState<SortOption>("featured")
+  const brands = [
+    ...new Set(category.products.map((product) => product.brand)),
+  ].sort()
+  const visibleProducts = filterAndSortProducts(
+    category.products,
+    brand,
+    price,
+    sort,
+  )
 
   return (
     <main className="bg-white min-h-screen text-[#1d292f]">
@@ -1600,13 +1782,19 @@ function CategoryPage({
           <h2 className="font-['DM_Sans'] font-medium text-[36px]">
             Explore {category.title.toLowerCase()}.
           </h2>
-          <p className="font-['DM_Sans'] font-normal text-[#66777f] text-[12px]">
-            {category.products.length}{" "}
-            {category.products.length === 1 ? "product" : "products"}
-          </p>
         </div>
+        <CatalogToolbar
+          brand={brand}
+          brands={brands}
+          count={visibleProducts.length}
+          onBrand={setBrand}
+          onPrice={setPrice}
+          onSort={setSort}
+          price={price}
+          sort={sort}
+        />
         <div className="grid gap-[24px] grid-cols-2 mt-[32px] max-w-[900px] max-md:grid-cols-1">
-          {category.products.map((product) => (
+          {visibleProducts.map((product) => (
             <article
               className="flex flex-col gap-[16px]"
               key={product.name}
@@ -1670,6 +1858,24 @@ function CategoryPage({
               </button>
             </article>
           ))}
+          {!visibleProducts.length && (
+            <div className="bg-[#eff5f7] col-span-full p-[40px] text-center">
+              <p className="font-['DM_Sans'] font-medium text-[18px]">
+                No products match these filters
+              </p>
+              <button
+                className="font-['DM_Sans'] font-medium mt-[14px] text-[#275d78] text-[12px] underline underline-offset-4"
+                onClick={() => {
+                  setBrand("all")
+                  setPrice("all")
+                  setSort("featured")
+                }}
+                type="button"
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </main>
@@ -1727,6 +1933,22 @@ function CollectionPage({
   slug: CollectionSlug
 }) {
   const collection = collectionPages[slug]
+  const collectionProducts = collection.products.map((productSlug) => ({
+    slug: productSlug,
+    ...productPages[productSlug],
+  }))
+  const [brand, setBrand] = useState("all")
+  const [price, setPrice] = useState<PriceFilter>("all")
+  const [sort, setSort] = useState<SortOption>("featured")
+  const brands = [
+    ...new Set(collectionProducts.map((product) => product.brand)),
+  ].sort()
+  const visibleProducts = filterAndSortProducts(
+    collectionProducts,
+    brand,
+    price,
+    sort,
+  )
   return (
     <main className="bg-white min-h-screen text-[#1d292f]">
       {header}
@@ -1757,9 +1979,19 @@ function CollectionPage({
         <h2 className="font-['DM_Sans'] font-medium mt-[10px] text-[36px]">
           Products in this collection.
         </h2>
+        <CatalogToolbar
+          brand={brand}
+          brands={brands}
+          count={visibleProducts.length}
+          onBrand={setBrand}
+          onPrice={setPrice}
+          onSort={setSort}
+          price={price}
+          sort={sort}
+        />
         <div className="grid gap-[24px] grid-cols-3 mt-[32px] max-md:grid-cols-1">
-          {collection.products.map((productSlug) => {
-            const product = productPages[productSlug]
+          {visibleProducts.map((product) => {
+            const productSlug = product.slug
             return (
               <button
                 className="flex flex-col gap-[12px] text-left"
@@ -1789,6 +2021,24 @@ function CollectionPage({
               </button>
             )
           })}
+          {!visibleProducts.length && (
+            <div className="bg-[#eff5f7] col-span-full p-[40px] text-center">
+              <p className="font-['DM_Sans'] font-medium text-[18px]">
+                No products match these filters
+              </p>
+              <button
+                className="font-['DM_Sans'] font-medium mt-[14px] text-[#275d78] text-[12px] underline underline-offset-4"
+                onClick={() => {
+                  setBrand("all")
+                  setPrice("all")
+                  setSort("featured")
+                }}
+                type="button"
+              >
+                Clear filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </main>
@@ -1800,6 +2050,9 @@ export default function FormePremiumTechnologyStorefront() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [headerPanel, setHeaderPanel] = useState<HeaderPanel>(null)
   const [activeCategory, setActiveCategory] = useState<ProductCategory>("all")
+  const [landingBrand, setLandingBrand] = useState("all")
+  const [landingPrice, setLandingPrice] = useState<PriceFilter>("all")
+  const [landingSort, setLandingSort] = useState<SortOption>("featured")
   const [wishlist, setWishlist] = useState<string[]>(() =>
     readStorage("local", "forme-wishlist", [], isProductList),
   )
@@ -1830,6 +2083,7 @@ export default function FormePremiumTechnologyStorefront() {
     () => writeStorage("local", "forme-colors", selectedColors),
     [selectedColors],
   )
+  useEffect(() => setLandingBrand("all"), [activeCategory])
   const searchResults = useMemo(() => {
     const query = searchQuery.trim().toLowerCase()
     const category =
@@ -1896,19 +2150,28 @@ export default function FormePremiumTechnologyStorefront() {
       activeCategory === category ||
       (activeCategory === "new-arrivals" && isNew)) &&
     (!slug || productMatchesQuery(slug))
-  const featuredProducts = searchableProducts.slice(0, 4)
-  const visibleFeaturedCount = featuredProducts.filter((product) => {
-    const category = product.category.toLowerCase() as ProductCategory
-    return productIsVisible(category, false, product.slug as ProductSlug)
-  }).length
-  const selectedLandingProducts =
+  const featuredProducts = [
+    "iphone-13-pro",
+    "macbook-pro-14",
+    "galaxy-tab-s8",
+    "galaxy-s23-ultra",
+  ].map((slug) => productCard(slug as ProductSlug))
+  const landingBaseProducts =
     activeCategory in categoryPages
-      ? categoryPages[(activeCategory as CategorySlug)].products.filter(
-          (product) => productMatchesQuery(product.slug),
-        )
-      : []
-  const landingProductCount =
-    selectedLandingProducts.length || visibleFeaturedCount
+      ? categoryPages[(activeCategory as CategorySlug)].products
+      : activeCategory === "new-arrivals"
+        ? [productCard("airpods-pro"), productCard("boostcharge-pro")]
+        : featuredProducts
+  const landingBrands = [
+    ...new Set(landingBaseProducts.map((product) => product.brand)),
+  ].sort()
+  const selectedLandingProducts = filterAndSortProducts(
+    landingBaseProducts.filter((product) => productMatchesQuery(product.slug)),
+    landingBrand,
+    landingPrice,
+    landingSort,
+  )
+  const landingProductCount = selectedLandingProducts.length
   const toggleWishlist = (name: string) =>
     setWishlist((items) =>
       items.includes(name)
@@ -1951,7 +2214,7 @@ export default function FormePremiumTechnologyStorefront() {
     tabIndex: 0,
   })
   const colorControl = (slug: ProductSlug) => {
-    const colors = productPages[slug].colors
+    const colors = productPages[slug].colors as readonly string[]
     const selected = selectedColors[slug] || colors[0]
     const cycle = () =>
       selectColor(slug, colors[(colors.indexOf(selected) + 1) % colors.length])
@@ -2721,19 +2984,20 @@ export default function FormePremiumTechnologyStorefront() {
               )
             })}
           </div>
-          <p
-            aria-live="polite"
-            className="font-['DM_Sans'] font-normal text-[#66777f] text-[12px] whitespace-nowrap"
-          >
-            {landingProductCount}{" "}
-            {landingProductCount === 1 ? "product" : "products"}
-          </p>
         </div>
+        <CatalogToolbar
+          brand={landingBrand}
+          brands={landingBrands}
+          count={landingProductCount}
+          onBrand={setLandingBrand}
+          onPrice={setLandingPrice}
+          onSort={setLandingSort}
+          price={landingPrice}
+          sort={landingSort}
+        />
         <div
           className="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full"
-          data-category-selection={
-            selectedLandingProducts.length ? "true" : undefined
-          }
+          data-category-selection="true"
           data-node-id="2:133"
           data-name="Product grid"
         >
@@ -2750,6 +3014,9 @@ export default function FormePremiumTechnologyStorefront() {
                 onClick={() => {
                   setSearchQuery("")
                   setActiveCategory("all")
+                  setLandingBrand("all")
+                  setLandingPrice("all")
+                  setLandingSort("featured")
                 }}
                 type="button"
               >
