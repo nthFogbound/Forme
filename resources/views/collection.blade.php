@@ -13,11 +13,11 @@
         <a class="font-['DM_Sans'] font-medium text-[30px]" href="{{ route('storefront') }}">FORME</a>
         <a class="font-['DM_Sans'] font-medium text-[#275d78] text-[12px]" href="{{ route('storefront') }}#footer">← All collections</a>
       </header>
-      <section class="bg-[#e6f0f3] grid grid-cols-2 min-h-[520px] max-md:grid-cols-1">
-        <div class="flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
-          <p class="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]">{{ $collection['eyebrow'] }}</p>
+      <section class="bg-[#eff5f7] grid grid-cols-2 min-h-[520px] max-md:grid-cols-1">
+        <div class="theme-editorial flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
+          <p class="theme-editorial-accent font-['DM_Sans'] font-medium text-[11px]">{{ $collection['eyebrow'] }}</p>
           <h1 class="font-['DM_Sans'] font-medium leading-[1.08] mt-[18px] text-[52px] max-md:text-[40px]">{{ $collection['title'] }}</h1>
-          <p class="font-['DM_Sans'] font-normal leading-[1.7] mt-[22px] max-w-[480px] text-[#66777f] text-[15px]">{{ $collection['description'] }}</p>
+          <p class="theme-editorial-muted font-['DM_Sans'] font-normal leading-[1.7] mt-[22px] max-w-[480px] text-[15px]">{{ $collection['description'] }}</p>
         </div>
         <div class="min-h-[360px] relative"><img alt="{{ $collection['title'] }}" class="absolute inset-0 object-cover size-full" src="{{ asset('assets/'.$collection['hero']) }}"></div>
       </section>

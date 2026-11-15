@@ -11,12 +11,12 @@
     <a class="font-['DM_Sans'] font-medium text-[30px]" href="{{ route('storefront') }}">FORME</a>
     <a class="font-['DM_Sans'] font-medium text-[#275d78] text-[12px]" href="{{ route('storefront') }}">Return home</a>
   </header>
-  <main class="bg-[#eff5f7] flex min-h-[calc(100vh-80px)] items-center px-[64px] py-[72px] max-md:px-[24px]">
+  <main class="theme-editorial flex min-h-[calc(100vh-80px)] items-center px-[64px] py-[72px] max-md:px-[24px]">
     <div class="max-w-[620px]">
-      <p class="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]">404 · PAGE NOT FOUND</p>
+      <p class="theme-editorial-accent font-['DM_Sans'] font-medium text-[11px]">404 · PAGE NOT FOUND</p>
       <h1 class="font-['DM_Sans'] font-medium leading-[1.08] mt-[16px] text-[52px] max-md:text-[40px]">This page isn’t in our collection.</h1>
-      <p class="leading-[1.7] mt-[20px] max-w-[500px] text-[#66777f] text-[14px]">The product, category, or collection may have moved or may no longer be available.</p>
-      <a class="bg-[#275d78] inline-flex h-[46px] items-center justify-center mt-[30px] px-[24px] rounded-[4px] text-[12px] text-white" href="{{ route('storefront') }}">Browse products</a>
+      <p class="theme-editorial-muted leading-[1.7] mt-[20px] max-w-[500px] text-[14px]">The product, category, or collection may have moved or may no longer be available.</p>
+      <a class="theme-editorial-button inline-flex h-[46px] items-center justify-center mt-[30px] px-[24px] rounded-[4px] text-[12px]" href="{{ route('storefront') }}">Browse products</a>
     </div>
   </main>
 </body>

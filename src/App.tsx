@@ -453,16 +453,16 @@ function StoreHeader({
   backTo: string
 }) {
   return (
-    <header className="border-[#d5e1e5] border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
+    <header className="theme-editorial theme-editorial-rule border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
       <button
-        className="font-['DM_Sans'] font-medium text-[30px]"
+        className="font-['DM_Sans'] font-medium text-[30px] text-white"
         onClick={() => window.location.assign("/")}
         type="button"
       >
         FORME
       </button>
       <button
-        className="font-['DM_Sans'] font-medium text-[#275d78] text-[12px]"
+        className="theme-editorial-accent font-['DM_Sans'] font-medium text-[12px]"
         onClick={() => window.location.assign(backTo)}
         type="button"
       >
@@ -919,27 +919,27 @@ function NotFoundPage({ header }: { header: ReactNode }) {
   return (
     <main className="bg-white min-h-screen text-[#1d292f]">
       {header}
-      <section className="bg-[#eff5f7] flex min-h-[520px] items-center px-[64px] py-[72px] max-md:px-[24px]">
+      <section className="theme-editorial flex min-h-[520px] items-center px-[64px] py-[72px] max-md:px-[24px]">
         <div className="max-w-[620px]">
-          <p className="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]">
+          <p className="theme-editorial-accent font-['DM_Sans'] font-medium text-[11px]">
             404 · PAGE NOT FOUND
           </p>
           <h1 className="font-['DM_Sans'] font-medium leading-[1.08] mt-[16px] text-[52px] max-md:text-[40px]">
             This page isn’t in our collection.
           </h1>
-          <p className="leading-[1.7] mt-[20px] max-w-[500px] text-[#66777f] text-[14px]">
+          <p className="theme-editorial-muted leading-[1.7] mt-[20px] max-w-[500px] text-[14px]">
             The product, category, or collection may have moved or may no longer
             be available.
           </p>
           <div className="flex flex-wrap gap-[12px] mt-[30px]">
             <a
-              className="bg-[#275d78] flex h-[46px] items-center justify-center px-[24px] rounded-[4px] text-[12px] text-white"
+              className="theme-editorial-button flex h-[46px] items-center justify-center px-[24px] rounded-[4px] text-[12px]"
               href="/"
             >
               Return home
             </a>
             <a
-              className="border border-[#275d78] flex h-[46px] items-center justify-center px-[24px] rounded-[4px] text-[#275d78] text-[12px]"
+              className="theme-editorial-outline border flex h-[46px] items-center justify-center px-[24px] rounded-[4px] text-[12px]"
               href="/#featured"
             >
               Browse products
@@ -1467,9 +1467,13 @@ function ColorSelector({
   )
 }
 
-function NoReviewsLabel() {
+function NoReviewsLabel({ dark = false }: { dark?: boolean }) {
   return (
-    <p className="font-['DM_Sans'] font-normal text-[#66777f] text-[11px]">
+    <p
+      className={`font-['DM_Sans'] font-normal text-[11px] ${
+        dark ? "theme-editorial-muted" : "text-[#66777f]"
+      }`}
+    >
       No reviews yet
     </p>
   )
@@ -1645,18 +1649,18 @@ function ProductPage({
             src={product.image}
           />
         </div>
-        <div className="flex flex-col justify-center px-[64px] py-[64px] max-md:px-[24px]">
-          <p className="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]">
+        <div className="theme-editorial flex flex-col justify-center px-[64px] py-[64px] max-md:px-[24px]">
+          <p className="theme-editorial-accent font-['DM_Sans'] font-medium text-[11px]">
             {product.brand} · {product.category}
           </p>
           <h1 className="font-['DM_Sans'] font-medium leading-[1.1] mt-[14px] text-[44px]">
             {product.name}
           </h1>
-          <p className="font-['DM_Sans'] font-normal mt-[14px] text-[#66777f] text-[14px]">
+          <p className="theme-editorial-muted font-['DM_Sans'] font-normal mt-[14px] text-[14px]">
             {product.detail}
           </p>
           <div className="mt-[16px]">
-            <NoReviewsLabel />
+            <NoReviewsLabel dark />
           </div>
           <p className="font-['DM_Sans'] font-medium mt-[28px] text-[24px]">
             {product.price}
@@ -1673,7 +1677,7 @@ function ProductPage({
           </div>
           <div className="flex gap-[12px] mt-[30px]">
             <button
-              className="bg-[#275d78] flex-1 h-[48px] rounded-[4px] text-white text-[13px]"
+              className="theme-editorial-button flex-1 h-[48px] rounded-[4px] text-[13px]"
               onClick={() => toggleBag(product.name)}
               type="button"
             >
@@ -1686,7 +1690,7 @@ function ProductPage({
                 wishlist.includes(product.name) ? "from" : "to"
               } wishlist`}
               aria-pressed={wishlist.includes(product.name)}
-              className="border border-[#275d78] h-[48px] px-[20px] rounded-[4px] text-[#275d78] text-[13px]"
+              className="theme-editorial-outline border h-[48px] px-[20px] rounded-[4px] text-[13px]"
               data-wishlist-button
               onClick={() => toggleWishlist(product.name)}
               type="button"
@@ -1740,19 +1744,19 @@ function CategoryPage({
   return (
     <main className="bg-white min-h-screen text-[#1d292f]">
       {header}
-      <section className="bg-[#e6f0f3] grid grid-cols-2 min-h-[480px] max-md:grid-cols-1">
-        <div className="flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
-          <p className="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]">
+      <section className="bg-[#eff5f7] grid grid-cols-2 min-h-[480px] max-md:grid-cols-1">
+        <div className="theme-editorial flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
+          <p className="theme-editorial-accent font-['DM_Sans'] font-medium text-[11px]">
             {category.eyebrow}
           </p>
           <h1 className="font-['DM_Sans'] font-medium leading-[1.08] mt-[18px] text-[52px] max-md:text-[40px]">
             {category.title}
           </h1>
-          <p className="font-['DM_Sans'] font-normal leading-[1.7] mt-[22px] max-w-[480px] text-[#66777f] text-[15px]">
+          <p className="theme-editorial-muted font-['DM_Sans'] font-normal leading-[1.7] mt-[22px] max-w-[480px] text-[15px]">
             {category.description}
           </p>
           <button
-            className="bg-[#275d78] font-['DM_Sans'] font-medium h-[46px] mt-[30px] rounded-[4px] text-[13px] text-white w-[170px]"
+            className="theme-editorial-button font-['DM_Sans'] font-medium h-[46px] mt-[30px] rounded-[4px] text-[13px] w-[170px]"
             onClick={() =>
               document
                 .querySelector("#category-products")
@@ -1952,15 +1956,15 @@ function CollectionPage({
   return (
     <main className="bg-white min-h-screen text-[#1d292f]">
       {header}
-      <section className="bg-[#e6f0f3] grid grid-cols-2 min-h-[480px] max-md:grid-cols-1">
-        <div className="flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
-          <p className="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]">
+      <section className="bg-[#eff5f7] grid grid-cols-2 min-h-[480px] max-md:grid-cols-1">
+        <div className="theme-editorial flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
+          <p className="theme-editorial-accent font-['DM_Sans'] font-medium text-[11px]">
             {collection.eyebrow}
           </p>
           <h1 className="font-['DM_Sans'] font-medium leading-[1.08] mt-[18px] text-[52px] max-md:text-[40px]">
             {collection.title}
           </h1>
-          <p className="font-['DM_Sans'] font-normal leading-[1.7] mt-[22px] max-w-[480px] text-[#66777f] text-[15px]">
+          <p className="theme-editorial-muted font-['DM_Sans'] font-normal leading-[1.7] mt-[22px] max-w-[480px] text-[15px]">
             {collection.description}
           </p>
         </div>
@@ -3619,7 +3623,7 @@ export default function FormePremiumTechnologyStorefront() {
           />
         </div>
         <div
-          className="bg-[#142a36] content-stretch flex flex-[1_0_0] flex-col gap-[24px] h-full items-start min-w-px overflow-clip p-[56px] relative"
+          className="theme-editorial content-stretch flex flex-[1_0_0] flex-col gap-[24px] h-full items-start min-w-px overflow-clip p-[56px] relative"
           data-node-id="2:239"
           data-name="Collection story"
         >

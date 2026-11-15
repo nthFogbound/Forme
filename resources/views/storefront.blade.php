@@ -475,7 +475,7 @@
         <div class="h-full relative shrink-0 w-[816px]" data-node-id="2:238" data-name="Quiet workspace">
           <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/8a59d.png') }}" />
         </div>
-        <div class="bg-[#142a36] content-stretch flex flex-[1_0_0] flex-col gap-[24px] h-full items-start min-w-px overflow-clip p-[56px] relative" data-node-id="2:239" data-name="Collection story">
+        <div class="theme-editorial content-stretch flex flex-[1_0_0] flex-col gap-[24px] h-full items-start min-w-px overflow-clip p-[56px] relative" data-node-id="2:239" data-name="Collection story">
           <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#bdd0d8] text-[11px] whitespace-nowrap" data-node-id="2:240">
             THE WORKSPACE EDIT
           </p>

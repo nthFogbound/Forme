@@ -17,21 +17,21 @@
         <div class="bg-[#eff5f7] flex items-center justify-center min-h-[460px] p-[64px] max-md:min-h-[380px] max-md:p-[32px]">
           <img alt="{{ $product['name'] }}" class="max-h-[430px] object-contain size-full" src="{{ asset('assets/'.$product['image']) }}">
         </div>
-        <div class="flex flex-col justify-center max-w-[640px] px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
-          <p class="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]">{{ $product['brand'] }} · {{ $product['category'] }}</p>
+        <div class="theme-editorial flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
+          <p class="theme-editorial-accent font-['DM_Sans'] font-medium text-[11px]">{{ $product['brand'] }} · {{ $product['category'] }}</p>
           <h1 class="font-['DM_Sans'] font-medium leading-[1.1] mt-[14px] text-[44px]">{{ $product['name'] }}</h1>
-          <p class="font-['DM_Sans'] font-normal mt-[14px] text-[#66777f] text-[14px]">{{ $product['detail'] }}</p>
+          <p class="theme-editorial-muted font-['DM_Sans'] font-normal mt-[14px] text-[14px]">{{ $product['detail'] }}</p>
           <p class="font-['DM_Sans'] font-medium mt-[24px] text-[24px]">{{ $product['price'] }}</p>
-          <div class="border-[#d5e1e5] border-t mt-[28px] pt-[24px]">
+          <div class="theme-editorial-rule border-t mt-[28px] pt-[24px]">
           <p class="font-['DM_Sans'] font-medium text-[11px]">CHOOSE A COLOR</p>
           <div class="flex flex-wrap gap-[8px] mt-[12px]" data-colors="{{ implode('|', $product['colors']) }}" data-product-color="{{ $slug }}">
             @foreach ($product['colors'] as $color)
-              <button class="border border-[#d5e1e5] font-['DM_Sans'] font-normal px-[12px] py-[8px] rounded-[4px] text-[11px]" data-select-color="{{ $color }}" type="button">{{ $color }}</button>
+              <button class="theme-editorial-outline border font-['DM_Sans'] font-normal px-[12px] py-[8px] rounded-[4px] text-[11px]" data-select-color="{{ $color }}" type="button">{{ $color }}</button>
             @endforeach
           </div>
           <div class="flex gap-[12px] mt-[30px]">
-            <button class="bg-[#275d78] flex-1 h-[48px] rounded-[4px] text-[13px] text-white" data-add-product="{{ $product['name'] }}" type="button">Add to bag</button>
-            <button class="border border-[#275d78] h-[48px] px-[20px] rounded-[4px] text-[#275d78] text-[13px]" data-save-product="{{ $product['name'] }}" data-wishlist-button type="button">Save</button>
+            <button class="theme-editorial-button flex-1 h-[48px] rounded-[4px] text-[13px]" data-add-product="{{ $product['name'] }}" type="button">Add to bag</button>
+            <button class="theme-editorial-outline border h-[48px] px-[20px] rounded-[4px] text-[13px]" data-save-product="{{ $product['name'] }}" data-wishlist-button type="button">Save</button>
           </div>
           </div>
         </div>
