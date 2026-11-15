@@ -29,7 +29,7 @@
 }
 
 :root {
-  color: #202522;
+  color: #1d2433;
   background: #ffffff;
   font-family: 'Inter:Regular', Inter, Arial, sans-serif;
   font-synthesis: none;
@@ -59,7 +59,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid #245c4d;
+  outline: 2px solid #2855d9;
   outline-offset: 3px;
 }
 
@@ -83,12 +83,12 @@ button:disabled {
 }
 
 [data-name='Add to bag']:hover {
-  border-color: #245c4d;
-  background: #f4f5f1;
+  border-color: #2855d9;
+  background: #f3f6fc;
 }
 
 [data-name='Save product'] {
-  color: #202522;
+  color: #1d2433;
   transition:
     background-color 160ms ease,
     color 160ms ease,
@@ -97,12 +97,12 @@ button:disabled {
 }
 
 [data-name='Save product']:hover {
-  box-shadow: 0 0 0 2px #d9b9b5;
+  box-shadow: 0 0 0 2px #e1b4bf;
 }
 
 [data-name='Save product'][aria-pressed='true'] {
   animation: wishlist-pop 220ms ease-out;
-  background: #9a3f35;
+  background: #b6405a;
   color: #ffffff;
 }
 
@@ -128,13 +128,13 @@ button:disabled {
 }
 
 [data-wishlist-button]:hover {
-  background: #f4f5f1;
+  background: #f3f6fc;
 }
 
 [data-wishlist-button][aria-pressed='true'] {
   animation: wishlist-pop 220ms ease-out;
-  background: #9a3f35;
-  border-color: #9a3f35;
+  background: #b6405a;
+  border-color: #b6405a;
   color: #ffffff;
 }
 
@@ -162,8 +162,8 @@ button:disabled {
 }
 
 [data-name='Add to bag'][aria-pressed='true'] {
-  border-color: #245c4d;
-  background: #245c4d;
+  border-color: #2855d9;
+  background: #2855d9;
 }
 
 [data-name='Add to bag'][aria-pressed='true'] p {
@@ -184,7 +184,7 @@ button:disabled {
 
 [role='link']:focus-visible,
 [role='button']:focus-visible {
-  outline: 2px solid #245c4d;
+  outline: 2px solid #2855d9;
   outline-offset: 3px;
 }
 
