@@ -264,12 +264,6 @@
           </a>
         </div>
       </div>
-      @php
-        $featuredSlugs = ['iphone-13-pro', 'macbook-pro-14', 'galaxy-tab-s8', 'galaxy-s23-ultra'];
-        $featuredCatalogProducts = collect($featuredSlugs)
-          ->map(fn ($slug) => ['slug' => $slug, ...$catalog['products'][$slug]])
-          ->all();
-      @endphp
       <div class="content-stretch flex flex-col gap-[28px] items-start overflow-clip pb-[72px] pt-[16px] px-[64px] relative shrink-0 w-full" data-catalog id="featured" data-node-id="2:118" data-name="Featured products">
         <div class="content-stretch flex items-end justify-between overflow-clip relative shrink-0 w-full" data-node-id="2:119" data-name="Section heading">
           <div class="[word-break:break-word] content-stretch flex flex-col gap-[12px] items-start leading-[normal] not-italic overflow-clip relative shrink-0 whitespace-nowrap" data-node-id="2:120" data-name="Heading">
@@ -288,186 +282,20 @@
             @endforeach
           </div>
         </div>
-        @include('partials.catalog-toolbar', ['products' => $featuredCatalogProducts])
+        @include('partials.catalog-toolbar', ['products' => $featuredProducts])
         <div class="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:133" data-name="Product grid">
           <div class="gap-[24px] grid grid-cols-4 w-full max-xl:grid-cols-2 max-sm:grid-cols-1" data-catalog-grid data-selection-grid="all">
-            @foreach ($featuredCatalogProducts as $product)
+            @foreach ($featuredProducts as $product)
               @include('partials.product-card', ['product' => $product, 'catalogOrder' => $loop->index])
             @endforeach
           </div>
-          @foreach ($catalog['categories'] as $categorySlug => $category)
-            <div class="hidden gap-[24px] grid-cols-4 w-full max-xl:grid-cols-2 max-sm:grid-cols-1" data-catalog-grid data-selection-grid="{{ $categorySlug }}">
-              @foreach ($category['products'] as $productSlug)
-                @include('partials.product-card', ['product' => ['slug' => $productSlug, ...$catalog['products'][$productSlug]], 'catalogOrder' => $loop->index])
+          @foreach ($categories as $category)
+            <div class="hidden gap-[24px] grid-cols-4 w-full max-xl:grid-cols-2 max-sm:grid-cols-1" data-catalog-grid data-selection-grid="{{ $category->slug }}">
+              @foreach ($category->products as $product)
+                @include('partials.product-card', ['product' => $product, 'catalogOrder' => $loop->index])
               @endforeach
             </div>
           @endforeach
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] hidden items-start min-w-px overflow-clip relative" data-product-category="smartphones" data-product-url="{{ url('/products/iphone-13-pro') }}" data-node-id="2:134" data-name="Product card">
-            <div class="bg-[#eff5f7] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:135" data-name="Product photography">
-              <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:136" data-name="Product">
-                <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/2d2a2.png') }}" />
-              </div>
-              <div class="absolute bg-white content-stretch flex items-start left-[16px] overflow-clip px-[10px] py-[6px] rounded-[4px] top-[16px]" data-node-id="2:137" data-name="Product badge">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[10px] whitespace-nowrap" data-node-id="2:138">
-                  OUR PICK
-                </p>
-              </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="iPhone 13 Pro" data-node-id="2:139" data-name="Save product">
-                <div class="relative shrink-0 size-[17px]" data-node-id="2:140" data-name="heart">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:142" data-name="Product details">
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#66777f] text-[10px] whitespace-nowrap" data-node-id="2:143">
-                APPLE
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] min-w-full not-italic relative shrink-0 text-[#1d292f] text-[18px] w-[min-content]" data-node-id="2:144">
-                iPhone 13 Pro
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#66777f] text-[12px] w-[min-content]" data-node-id="2:145">
-                128GB · Unlocked · Graphite
-              </p>
-              <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:151" data-name="Price and finishes">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#1d292f] text-[18px] whitespace-nowrap" data-node-id="2:152">
-                  $999.00
-                </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Graphite|Silver|Sierra Blue" data-product-color="iphone-13-pro" data-node-id="2:153" data-name="Color options">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/f48d4.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="border border-[#d5e1e5] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="iPhone 13 Pro" data-node-id="2:157" data-name="Add to bag">
-              <div class="relative shrink-0 size-[15px]" data-node-id="2:158" data-name="plus">
-                <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
-              </div>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[12px] whitespace-nowrap" data-node-id="2:160">
-                Add to bag
-              </p>
-            </div>
-          </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] hidden items-start min-w-px overflow-clip relative" data-product-category="laptops" data-product-url="{{ url('/products/macbook-pro-14') }}" data-node-id="2:161" data-name="Product card">
-            <div class="bg-[#eff5f7] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:162" data-name="Product photography">
-              <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:163" data-name="Product">
-                <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/b0999.png') }}" />
-              </div>
-              <div class="absolute bg-white content-stretch flex items-start left-[16px] overflow-clip px-[10px] py-[6px] rounded-[4px] top-[16px]" data-node-id="2:164" data-name="Product badge">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[10px] whitespace-nowrap" data-node-id="2:165">
-                  BESTSELLER
-                </p>
-              </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="MacBook Pro 14″" data-node-id="2:166" data-name="Save product">
-                <div class="relative shrink-0 size-[17px]" data-node-id="2:167" data-name="heart">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:169" data-name="Product details">
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#66777f] text-[10px] whitespace-nowrap" data-node-id="2:170">
-                APPLE
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] min-w-full not-italic relative shrink-0 text-[#1d292f] text-[18px] w-[min-content]" data-node-id="2:171">
-                MacBook Pro 14″
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#66777f] text-[12px] w-[min-content]" data-node-id="2:172">
-                M1 Pro · 16GB RAM · 512GB SSD
-              </p>
-              <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:178" data-name="Price and finishes">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#1d292f] text-[18px] whitespace-nowrap" data-node-id="2:179">
-                  $1,999.00
-                </p>
-                <div class="h-[12px] relative shrink-0 w-[30px]" data-colors="Space Gray|Silver" data-product-color="macbook-pro-14" data-node-id="2:180" data-name="Color options">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/8cea2.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="border border-[#d5e1e5] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="MacBook Pro 14″" data-node-id="2:183" data-name="Add to bag">
-              <div class="relative shrink-0 size-[15px]" data-node-id="2:184" data-name="plus">
-                <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
-              </div>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[12px] whitespace-nowrap" data-node-id="2:186">
-                Add to bag
-              </p>
-            </div>
-          </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] hidden items-start min-w-px overflow-clip relative" data-product-category="tablets" data-product-url="{{ url('/products/galaxy-tab-s8') }}" data-node-id="2:187" data-name="Product card">
-            <div class="bg-[#eff5f7] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:188" data-name="Product photography">
-              <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:189" data-name="Product">
-                <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/a1a1c.png') }}" />
-              </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-save-product="Galaxy Tab S8" data-node-id="2:190" data-name="Save product">
-                <div class="relative shrink-0 size-[17px]" data-node-id="2:191" data-name="heart">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:193" data-name="Product details">
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#66777f] text-[10px] whitespace-nowrap" data-node-id="2:194">
-                SAMSUNG
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] min-w-full not-italic relative shrink-0 text-[#1d292f] text-[18px] w-[min-content]" data-node-id="2:195">
-                Galaxy Tab S8
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#66777f] text-[12px] w-[min-content]" data-node-id="2:196">
-                11″ display · 128GB · Wi-Fi
-              </p>
-              <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:202" data-name="Price and finishes">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#1d292f] text-[18px] whitespace-nowrap" data-node-id="2:203">
-                  $699.00
-                </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Graphite|Silver|Pink Gold" data-product-color="galaxy-tab-s8" data-node-id="2:204" data-name="Color options">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/4c43d.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="border border-[#d5e1e5] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="Galaxy Tab S8" data-node-id="2:208" data-name="Add to bag">
-              <div class="relative shrink-0 size-[15px]" data-node-id="2:209" data-name="plus">
-                <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
-              </div>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[12px] whitespace-nowrap" data-node-id="2:211">
-                Add to bag
-              </p>
-            </div>
-          </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] hidden items-start min-w-px overflow-clip relative" data-product-category="smartphones" data-product-url="{{ url('/products/galaxy-s23-ultra') }}" data-node-id="2:212" data-name="Product card">
-            <div class="bg-[#eff5f7] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:213" data-name="Product photography">
-              <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:214" data-name="Product">
-                <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/46886.png') }}" />
-              </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="Galaxy S23 Ultra" data-node-id="2:215" data-name="Save product">
-                <div class="relative shrink-0 size-[17px]" data-node-id="2:216" data-name="heart">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:218" data-name="Product details">
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#66777f] text-[10px] whitespace-nowrap" data-node-id="2:219">
-                SAMSUNG
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] min-w-full not-italic relative shrink-0 text-[#1d292f] text-[18px] w-[min-content]" data-node-id="2:220">
-                Galaxy S23 Ultra
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#66777f] text-[12px] w-[min-content]" data-node-id="2:221">
-                256GB · Unlocked · Phantom black
-              </p>
-              <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:227" data-name="Price and finishes">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#1d292f] text-[18px] whitespace-nowrap" data-node-id="2:228">
-                  $1,199.00
-                </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Phantom Black|Cream|Green" data-product-color="galaxy-s23-ultra" data-node-id="2:229" data-name="Color options">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/6a280.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="border border-[#d5e1e5] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="Galaxy S23 Ultra" data-node-id="2:233" data-name="Add to bag">
-              <div class="relative shrink-0 size-[15px]" data-node-id="2:234" data-name="plus">
-                <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
-              </div>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[12px] whitespace-nowrap" data-node-id="2:236">
-                Add to bag
-              </p>
-            </div>
-          </div>
         </div>
         @include('partials.catalog-empty')
       </div>
@@ -510,173 +338,10 @@
             </p>
           </div>
         </div>
-        <div class="content-stretch flex gap-[24px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:253" data-name="Accessories grid">
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="audio" data-new-arrival data-product-url="{{ url('/products/airpods-pro') }}" data-node-id="2:254" data-name="Product card">
-            <div class="bg-[#eff5f7] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:255" data-name="Product photography">
-              <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:256" data-name="Product">
-                <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/8f66f.png') }}" />
-              </div>
-              <div class="absolute bg-white content-stretch flex items-start left-[16px] overflow-clip px-[10px] py-[6px] rounded-[4px] top-[16px]" data-node-id="2:257" data-name="Product badge">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[10px] whitespace-nowrap" data-node-id="2:258">
-                  NEW ARRIVAL
-                </p>
-              </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="AirPods Pro" data-node-id="2:259" data-name="Save product">
-                <div class="relative shrink-0 size-[17px]" data-node-id="2:260" data-name="heart">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:262" data-name="Product details">
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#66777f] text-[10px] whitespace-nowrap" data-node-id="2:263">
-                APPLE
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] min-w-full not-italic relative shrink-0 text-[#1d292f] text-[18px] w-[min-content]" data-node-id="2:264">
-                AirPods Pro
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#66777f] text-[12px] w-[min-content]" data-node-id="2:265">
-                Active noise cancellation · USB-C
-              </p>
-              <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:271" data-name="Price and finishes">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#1d292f] text-[18px] whitespace-nowrap" data-node-id="2:272">
-                  $249.00
-                </p>
-                <div class="relative shrink-0 size-[12px]" data-colors="White" data-product-color="airpods-pro" data-node-id="2:273" data-name="Color options">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/ca37d.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="border border-[#d5e1e5] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="AirPods Pro" data-node-id="2:275" data-name="Add to bag">
-              <div class="relative shrink-0 size-[15px]" data-node-id="2:276" data-name="plus">
-                <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
-              </div>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[12px] whitespace-nowrap" data-node-id="2:278">
-                Add to bag
-              </p>
-            </div>
-          </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="mobile-accessories" data-new-arrival data-product-url="{{ url('/products/boostcharge-pro') }}" data-node-id="2:279" data-name="Product card">
-            <div class="bg-[#eff5f7] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:280" data-name="Product photography">
-              <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:281" data-name="Product">
-                <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/25fc8.png') }}" />
-              </div>
-              <div class="absolute bg-white content-stretch flex items-start left-[16px] overflow-clip px-[10px] py-[6px] rounded-[4px] top-[16px]" data-node-id="2:282" data-name="Product badge">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[10px] whitespace-nowrap" data-node-id="2:283">
-                  NEW ARRIVAL
-                </p>
-              </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="BoostCharge Pro 3-in-1" data-node-id="2:284" data-name="Save product">
-                <div class="relative shrink-0 size-[17px]" data-node-id="2:285" data-name="heart">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:287" data-name="Product details">
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#66777f] text-[10px] whitespace-nowrap" data-node-id="2:288">
-                BELKIN
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] min-w-full not-italic relative shrink-0 text-[#1d292f] text-[18px] w-[min-content]" data-node-id="2:289">
-                BoostCharge Pro 3-in-1
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#66777f] text-[12px] w-[min-content]" data-node-id="2:290">
-                15W wireless charging · MagSafe
-              </p>
-              <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:296" data-name="Price and finishes">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#1d292f] text-[18px] whitespace-nowrap" data-node-id="2:297">
-                  $149.00
-                </p>
-                <div class="h-[12px] relative shrink-0 w-[30px]" data-colors="White|Black" data-product-color="boostcharge-pro" data-node-id="2:298" data-name="Color options">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/6bf7d.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="border border-[#d5e1e5] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="BoostCharge Pro 3-in-1" data-node-id="2:301" data-name="Add to bag">
-              <div class="relative shrink-0 size-[15px]" data-node-id="2:302" data-name="plus">
-                <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
-              </div>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[12px] whitespace-nowrap" data-node-id="2:304">
-                Add to bag
-              </p>
-            </div>
-          </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="mobile-accessories" data-product-url="{{ url('/products/mx-keys-mini') }}" data-node-id="2:305" data-name="Product card">
-            <div class="bg-[#eff5f7] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:306" data-name="Product photography">
-              <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:307" data-name="Product">
-                <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/a3684.png') }}" />
-              </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[13.67px] rounded-[100px] size-[32px] top-[14px]" data-save-product="MX Keys Mini" data-node-id="2:308" data-name="Save product">
-                <div class="relative shrink-0 size-[17px]" data-node-id="2:309" data-name="heart">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:311" data-name="Product details">
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#66777f] text-[10px] whitespace-nowrap" data-node-id="2:312">
-                LOGITECH
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] min-w-full not-italic relative shrink-0 text-[#1d292f] text-[18px] w-[min-content]" data-node-id="2:313">
-                MX Keys Mini
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#66777f] text-[12px] w-[min-content]" data-node-id="2:314">
-                Wireless keyboard · Graphite
-              </p>
-              <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:320" data-name="Price and finishes">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#1d292f] text-[18px] whitespace-nowrap" data-node-id="2:321">
-                  $99.00
-                </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Graphite|Pale Gray|Rose" data-product-color="mx-keys-mini" data-node-id="2:322" data-name="Color options">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/c4251.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="border border-[#d5e1e5] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="MX Keys Mini" data-node-id="2:326" data-name="Add to bag">
-              <div class="relative shrink-0 size-[15px]" data-node-id="2:327" data-name="plus">
-                <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
-              </div>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[12px] whitespace-nowrap" data-node-id="2:329">
-                Add to bag
-              </p>
-            </div>
-          </div>
-          <div class="content-stretch flex flex-[1_0_0] flex-col gap-[16px] items-start min-w-px overflow-clip relative" data-product-category="audio" data-product-url="{{ url('/products/sony-wh-1000xm5') }}" data-node-id="2:330" data-name="Product card">
-            <div class="bg-[#eff5f7] content-stretch flex flex-col h-[266px] items-center justify-center overflow-clip p-[32px] relative rounded-[4px] shrink-0 w-full" data-node-id="2:331" data-name="Product photography">
-              <div class="h-[202px] relative shrink-0 w-full" data-node-id="2:332" data-name="Product">
-                <img alt="" class="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="{{ asset('assets/6d140.png') }}" />
-              </div>
-              <div class="absolute bg-white content-stretch flex items-center justify-center overflow-clip right-[14px] rounded-[100px] size-[32px] top-[14px]" data-save-product="Sony WH-1000XM5" data-node-id="2:333" data-name="Save product">
-                <div class="relative shrink-0 size-[17px]" data-node-id="2:334" data-name="heart">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/036e3.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="content-stretch flex flex-col gap-[8px] items-start overflow-clip relative shrink-0 w-full" data-node-id="2:336" data-name="Product details">
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#66777f] text-[10px] whitespace-nowrap" data-node-id="2:337">
-                SONY
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] min-w-full not-italic relative shrink-0 text-[#1d292f] text-[18px] w-[min-content]" data-node-id="2:338">
-                WH-1000XM5
-              </p>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-normal leading-[normal] min-w-full not-italic relative shrink-0 text-[#66777f] text-[12px] w-[min-content]" data-node-id="2:339">
-                Noise cancelling · 30-hour battery
-              </p>
-              <div class="content-stretch flex items-center justify-between overflow-clip pb-[4px] pt-[6px] relative shrink-0 w-full" data-node-id="2:345" data-name="Price and finishes">
-                <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#1d292f] text-[18px] whitespace-nowrap" data-node-id="2:346">
-                  $399.00
-                </p>
-                <div class="h-[12px] relative shrink-0 w-[48px]" data-colors="Black|Silver|Midnight Blue" data-product-color="sony-wh-1000xm5" data-node-id="2:347" data-name="Color options">
-                  <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/eac21.svg') }}" />
-                </div>
-              </div>
-            </div>
-            <div class="border border-[#d5e1e5] border-solid content-stretch flex gap-[10px] h-[42px] items-center justify-center overflow-clip relative rounded-[4px] shrink-0 w-full" data-add-product="Sony WH-1000XM5" data-node-id="2:351" data-name="Add to bag">
-              <div class="relative shrink-0 size-[15px]" data-node-id="2:352" data-name="plus">
-                <img alt="" class="absolute block inset-0 max-w-none size-full" src="{{ asset('assets/1010f.svg') }}" />
-              </div>
-              <p class="[word-break:break-word] font-['DM_Sans'] font-medium leading-[normal] not-italic relative shrink-0 text-[#275d78] text-[12px] whitespace-nowrap" data-node-id="2:354">
-                Add to bag
-              </p>
-            </div>
-          </div>
+        <div class="grid gap-[24px] grid-cols-4 relative w-full max-xl:grid-cols-2 max-sm:grid-cols-1" data-name="Accessories grid">
+          @foreach ($essentialProducts as $product)
+            @include('partials.product-card', ['product' => $product, 'catalogOrder' => $loop->index])
+          @endforeach
         </div>
       </div>
       <div class="[word-break:break-word] bg-[#eff5f7] content-stretch flex flex-col gap-[28px] items-center leading-[normal] not-italic overflow-clip px-[64px] py-[36px] relative shrink-0 w-full whitespace-nowrap" data-node-id="2:355" data-name="Selected brands">

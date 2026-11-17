@@ -4,7 +4,7 @@
   data-catalog-item
   data-catalog-order="{{ $catalogOrder ?? 0 }}"
   data-name="Product card"
-  data-price="{{ (float) preg_replace('/[^0-9.]/', '', $product['price']) }}"
+  data-price="{{ (float) $product['price'] }}"
   data-product-name="{{ $product['name'] }}"
   data-product-url="{{ route('products.show', $product['slug']) }}"
 >
@@ -21,7 +21,7 @@
       <p class="font-['DM_Sans'] font-normal leading-[1.5] text-[#66777f] text-[12px]">{{ $product['detail'] }}</p>
     @endif
     <div class="flex items-end justify-between mt-auto pt-[8px] w-full">
-      <p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[18px]">{{ $product['price'] }}</p>
+      <p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[18px]">{{ $product['formatted_price'] }}</p>
       @if (!empty($product['colors']))
         <p class="font-['DM_Sans'] font-normal text-[#66777f] text-[10px]">{{ count($product['colors']) }} {{ count($product['colors']) === 1 ? 'finish' : 'finishes' }}</p>
       @endif

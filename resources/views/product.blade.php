@@ -18,13 +18,13 @@
           <img alt="{{ $product['name'] }}" class="max-h-[430px] object-contain size-full" src="{{ asset('assets/'.$product['image']) }}">
         </div>
         <div class="theme-editorial flex flex-col justify-center px-[64px] py-[72px] max-md:px-[24px] max-md:py-[48px]">
-          <p class="theme-editorial-accent font-['DM_Sans'] font-medium text-[11px]">{{ $product['brand'] }} · {{ $product['category'] }}</p>
+          <p class="theme-editorial-accent font-['DM_Sans'] font-medium text-[11px]">{{ $product['brand'] }} · {{ $product->primaryCategory->title }}</p>
           <h1 class="font-['DM_Sans'] font-medium leading-[1.1] mt-[14px] text-[44px]">{{ $product['name'] }}</h1>
           <p class="theme-editorial-muted font-['DM_Sans'] font-normal mt-[14px] text-[14px]">{{ $product['detail'] }}</p>
-          <p class="font-['DM_Sans'] font-medium mt-[24px] text-[24px]">{{ $product['price'] }}</p>
+          <p class="font-['DM_Sans'] font-medium mt-[24px] text-[24px]">{{ $product['formatted_price'] }}</p>
           <div class="theme-editorial-rule border-t mt-[28px] pt-[24px]">
           <p class="font-['DM_Sans'] font-medium text-[11px]">CHOOSE A COLOR</p>
-          <div class="flex flex-wrap gap-[8px] mt-[12px]" data-colors="{{ implode('|', $product['colors']) }}" data-product-color="{{ $slug }}">
+          <div class="flex flex-wrap gap-[8px] mt-[12px]" data-colors="{{ implode('|', $product['colors']) }}" data-product-color="{{ $product->slug }}">
             @foreach ($product['colors'] as $color)
               <button class="theme-editorial-outline border font-['DM_Sans'] font-normal px-[12px] py-[8px] rounded-[4px] text-[11px]" data-select-color="{{ $color }}" type="button">{{ $color }}</button>
             @endforeach
@@ -44,7 +44,7 @@
         <dl class="border-[#d5e1e5] border-t">
           <div class="border-[#d5e1e5] border-b flex items-center justify-between gap-[24px] py-[16px]">
             <dt class="font-['DM_Sans'] font-normal text-[#66777f] text-[12px]">Category</dt>
-            <dd class="font-['DM_Sans'] font-medium text-[12px]">{{ $product['category'] }}</dd>
+            <dd class="font-['DM_Sans'] font-medium text-[12px]">{{ $product->primaryCategory->title }}</dd>
           </div>
           <div class="border-[#d5e1e5] border-b flex items-center justify-between gap-[24px] py-[16px]">
             <dt class="font-['DM_Sans'] font-normal text-[#66777f] text-[12px]">Configuration</dt>
