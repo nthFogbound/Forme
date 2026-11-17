@@ -27,9 +27,9 @@
             <div class="absolute bg-white border border-[#d5e1e5] hidden left-0 p-[8px] rounded-[4px] shadow-[0_16px_40px_rgba(29,41,47,0.14)] top-[48px] w-full z-50" data-search-results role="listbox"></div>
           </div>
           <div class="content-stretch flex gap-[8px] items-center relative shrink-0" data-node-id="2:13" data-name="Account actions">
-            <button aria-label="Open account menu" class="flex items-center justify-center relative shrink-0 size-[40px]" data-open-panel="account" data-node-id="2:14" data-name="user-round" type="button">
+            <a aria-label="Open account" class="flex items-center justify-center relative shrink-0 size-[40px]" data-node-id="2:14" data-name="user-round" href="{{ auth()->check() ? route('account') : route('login') }}">
               <img alt="" class="block size-[20px]" src="{{ asset('assets/b4eb0.svg') }}" />
-            </button>
+            </a>
             <button aria-label="Open wishlist" class="flex items-center justify-center relative shrink-0 size-[40px]" data-open-panel="wishlist" data-node-id="2:16" data-name="heart" type="button">
               <img alt="" class="block size-[20px]" src="{{ asset('assets/4ff0c.svg') }}" />
             </button>
