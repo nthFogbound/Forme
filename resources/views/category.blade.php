@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ $category['description'] }}">
     <title>{{ $category['title'] }} — Forme</title>
-    @vite(['src/index.css', 'resources/js/storefront.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
   <body>
     <main class="bg-white min-h-screen text-[#1d292f]">

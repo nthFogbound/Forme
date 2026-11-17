@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Curated technology for a better everyday.">
     <title>Forme — Premium Technology Storefront</title>
-    @vite(['src/index.css', 'resources/js/storefront.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
   <body>
     <div class="bg-white content-stretch flex flex-col items-start relative size-full" data-node-id="2:3" data-name="FORME — Premium technology storefront">

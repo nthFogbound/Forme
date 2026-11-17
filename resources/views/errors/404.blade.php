@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Page not found — Forme</title>
-  @vite(['src/index.css'])
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-white text-[#1d292f]">
   <header class="border-[#d5e1e5] border-b flex h-[80px] items-center justify-between px-[64px] max-md:px-[24px]">
