@@ -59,7 +59,33 @@ const writeLocal = (key, value) => {
   }
 }
 let wishlistItems = readList("forme-wishlist")
-let bagItems = readList("forme-bag")
+const MAX_BAG_QUANTITY = 99
+const readBag = (key) => {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "{}")
+    if (Array.isArray(value)) {
+      return Object.fromEntries(
+        value
+          .filter((name) => typeof name === "string" && productNames.has(name))
+          .map((name) => [name, 1]),
+      )
+    }
+    if (!value || typeof value !== "object") return {}
+    return Object.fromEntries(
+      Object.entries(value).filter(
+        ([name, quantity]) =>
+          typeof name === "string" &&
+          productNames.has(name) &&
+          Number.isInteger(quantity) &&
+          quantity >= 1 &&
+          quantity <= MAX_BAG_QUANTITY,
+      ),
+    )
+  } catch {
+    return {}
+  }
+}
+let bagItems = readBag("forme-bag")
 let selectedColors = (() => {
   try {
     const value = JSON.parse(localStorage.getItem("forme-colors") || "{}")
@@ -103,21 +129,37 @@ function updateProductControls() {
       control.textContent = active ? "Saved" : "Save"
   })
   document.querySelectorAll("[data-add-product]").forEach((control) => {
-    const active = bagItems.includes(control.dataset.addProduct)
+    const quantity = bagItems[control.dataset.addProduct] || 0
+    const active = quantity > 0
+    const quantityControl = control
+      .closest("[data-bag-quantity-controls]")
+      ?.querySelector("[data-bag-quantity-input]")
+    const requestedQuantity = Number(quantityControl?.value) || 1
     control.setAttribute("aria-pressed", String(active))
     control.setAttribute(
       "aria-label",
-      `${active ? "Remove" : "Add"} ${control.dataset.addProduct} ${
-        active ? "from" : "to"
-      } bag`,
+      quantityControl
+        ? `Add ${requestedQuantity} ${control.dataset.addProduct} to bag`
+        : `${active ? "Remove" : "Add"} ${control.dataset.addProduct} ${
+            active ? "from" : "to"
+          } bag`,
     )
     const label = control.matches("button")
       ? control
       : control.querySelector("p:last-of-type")
-    if (label) label.textContent = active ? "Remove from bag" : "Add to bag"
+    if (label)
+      label.textContent = quantityControl
+        ? `Add ${requestedQuantity} to bag`
+        : active
+          ? "Remove from bag"
+          : "Add to bag"
   })
   document.querySelectorAll("[data-bag-count]").forEach((count) => {
-    count.textContent = `Bag (${bagItems.length})`
+    const bagQuantity = Object.values(bagItems).reduce(
+      (total, quantity) => total + quantity,
+      0,
+    )
+    count.textContent = `Bag (${bagQuantity})`
   })
 }
 
@@ -125,13 +167,33 @@ function wireProductControl(control, key, type) {
   control.setAttribute("role", "button")
   control.tabIndex = 0
   const toggle = () => {
-    const list = type === "wishlist" ? wishlistItems : bagItems
     const name = control.dataset[key]
-    const next = list.includes(name)
-      ? list.filter((item) => item !== name)
-      : [...list, name]
-    if (type === "wishlist") wishlistItems = next
-    else bagItems = next
+    if (type === "wishlist") {
+      const next = wishlistItems.includes(name)
+        ? wishlistItems.filter((item) => item !== name)
+        : [...wishlistItems, name]
+      wishlistItems = next
+    } else {
+      const quantityControl = control
+        .closest("[data-bag-quantity-controls]")
+        ?.querySelector("[data-bag-quantity-input]")
+      if (quantityControl) {
+        const requestedQuantity =
+          Math.min(
+            MAX_BAG_QUANTITY,
+            Math.max(1, Number.parseInt(quantityControl.value, 10) || 1),
+          )
+        quantityControl.value = String(requestedQuantity)
+        bagItems[name] = Math.min(
+          MAX_BAG_QUANTITY,
+          (bagItems[name] || 0) + requestedQuantity,
+        )
+      } else if (bagItems[name]) {
+        delete bagItems[name]
+      } else {
+        bagItems[name] = 1
+      }
+    }
     updateProductControls()
   }
   control.addEventListener("click", toggle)
@@ -150,6 +212,31 @@ document
   .querySelectorAll("[data-add-product]")
   .forEach((control) => wireProductControl(control, "addProduct", "bag"))
 updateProductControls()
+
+document
+  .querySelectorAll("[data-bag-quantity-controls]")
+  .forEach((controls) => {
+    const input = controls.querySelector("[data-bag-quantity-input]")
+    if (!input) return
+    const clamp = () =>
+      Math.min(
+        MAX_BAG_QUANTITY,
+        Math.max(1, Number.parseInt(input.value, 10) || 1),
+      )
+    controls.querySelectorAll("[data-bag-quantity-change]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const next = clamp() + Number(button.dataset.bagQuantityChange)
+        input.value = String(
+          Math.min(MAX_BAG_QUANTITY, Math.max(1, next)),
+        )
+        updateProductControls()
+      })
+    })
+    input.addEventListener("change", () => {
+      input.value = String(clamp())
+      updateProductControls()
+    })
+  })
 
 document.querySelectorAll("[data-product-color]").forEach((control) => {
   const colors = control.dataset.colors.split("|")
@@ -273,38 +360,116 @@ document.querySelectorAll("[data-open-panel]").forEach((trigger) => {
           ? "Your wishlist"
           : "Your bag"
     if (type === "account") {
+      panelContent.className =
+        "flex flex-1 flex-col items-center justify-center text-center"
       panelContent.innerHTML = `<div class="flex flex-col gap-[16px] text-left w-full"><p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[18px]">Accounts are not available yet</p><p class="font-['DM_Sans'] font-normal leading-[1.6] text-[#66777f] text-[13px]">You can still browse and save items on this device.</p><button class="bg-[#275d78] font-['DM_Sans'] font-medium h-[46px] rounded-[4px] text-[13px] text-white" data-close-account type="button">Continue as guest</button></div>`
       panelContent
         .querySelector("[data-close-account]")
         ?.addEventListener("click", () => panel.classList.add("hidden"))
     } else {
       const isWishlist = type === "wishlist"
-      const items = isWishlist ? wishlistItems : bagItems
-      if (items.length) {
-        panelContent.innerHTML = `<div class="flex flex-col overflow-y-auto text-left w-full">${items.map((name) => `<div class="border-[#d5e1e5] border-b flex items-center justify-between py-[16px]"><div><p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[14px]">${escapeHtml(name)}</p><p class="font-['DM_Sans'] font-normal mt-[4px] text-[#66777f] text-[11px]">${isWishlist ? "Saved item" : "Quantity 1"}</p></div><button class="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]" data-remove-item="${escapeHtml(name)}" type="button">Remove</button></div>`).join("")}</div>`
-        panelContent.querySelectorAll("[data-remove-item]").forEach((button) =>
-          button.addEventListener("click", () => {
-            if (isWishlist)
+      if (isWishlist) {
+        panelContent.className =
+          "flex flex-1 flex-col items-center justify-center text-center"
+        if (wishlistItems.length) {
+          panelContent.innerHTML = `<div class="flex flex-col overflow-y-auto text-left w-full">${wishlistItems.map((name) => `<div class="border-[#d5e1e5] border-b flex items-center justify-between py-[16px]"><div><p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[14px]">${escapeHtml(name)}</p><p class="font-['DM_Sans'] font-normal mt-[4px] text-[#66777f] text-[11px]">Saved item</p></div><button class="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]" data-remove-item="${escapeHtml(name)}" type="button">Remove</button></div>`).join("")}</div>`
+          panelContent.querySelectorAll("[data-remove-item]").forEach((button) =>
+            button.addEventListener("click", () => {
               wishlistItems = wishlistItems.filter(
                 (item) => item !== button.dataset.removeItem,
               )
-            else
-              bagItems = bagItems.filter(
-                (item) => item !== button.dataset.removeItem,
-              )
-            updateProductControls()
-            trigger.click()
-          }),
-        )
+              updateProductControls()
+              trigger.click()
+            }),
+          )
+        } else {
+          panelContent.innerHTML = `<img alt="" class="bg-[#eff5f7] p-[20px] rounded-full size-[64px]" src="/assets/4ff0c.svg"><p class="font-['DM_Sans'] font-medium mt-[20px] text-[#1d292f] text-[18px]">Your wishlist is empty</p><p class="font-['DM_Sans'] font-normal leading-[1.6] mt-[8px] max-w-[280px] text-[#66777f] text-[12px]">Explore the collection and add something considered.</p><button class="bg-[#275d78] font-['DM_Sans'] font-medium h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" data-browse-products type="button">Browse products</button>`
+          panelContent
+            .querySelector("[data-browse-products]")
+            ?.addEventListener("click", browseProducts)
+        }
       } else {
-        panelContent.innerHTML = `<img alt="" class="bg-[#eff5f7] p-[20px] rounded-full size-[64px]" src="/assets/${
-          isWishlist ? "4ff0c" : "991a5"
-        }.svg"><p class="font-['DM_Sans'] font-medium mt-[20px] text-[#1d292f] text-[18px]">${
-          isWishlist ? "Your wishlist is empty" : "Your bag is empty"
-        }</p><p class="font-['DM_Sans'] font-normal leading-[1.6] mt-[8px] max-w-[280px] text-[#66777f] text-[12px]">Explore the collection and add something considered.</p><button class="bg-[#275d78] font-['DM_Sans'] font-medium h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" data-browse-products type="button">Browse products</button>`
-        panelContent
-          .querySelector("[data-browse-products]")
-          ?.addEventListener("click", browseProducts)
+        panelContent.className =
+          "flex flex-1 flex-col min-h-0 text-left w-full"
+        const entries = Object.entries(bagItems)
+        if (entries.length) {
+          const prices = new Map(
+            [...document.querySelectorAll("[data-catalog-item][data-price]")].map(
+              (item) => [
+                item.dataset.productName,
+                Number(item.dataset.price),
+              ],
+            ),
+          )
+          const bagQuantity = entries.reduce(
+            (total, [, quantity]) => total + quantity,
+            0,
+          )
+          const subtotal = entries.reduce(
+            (total, [name, quantity]) =>
+              total + (prices.get(name) || 0) * quantity,
+            0,
+          )
+          const currency = new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          })
+          panelContent.innerHTML = `<div class="flex flex-1 flex-col min-h-0 w-full"><div class="overflow-y-auto pr-[2px]">${entries.map(([name, quantity]) => `<div class="border-[#d5e1e5] border-b flex items-center justify-between gap-[12px] py-[16px]"><div class="min-w-0"><p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[14px]">${escapeHtml(name)}</p><p class="font-['DM_Sans'] font-normal mt-[4px] text-[#66777f] text-[11px]">${prices.has(name) ? currency.format(prices.get(name) * quantity) : "Quantity"}</p></div><div class="flex shrink-0 items-center gap-[8px]"><div class="border border-[#d5e1e5] flex h-[38px] items-center rounded-[4px]" aria-label="Quantity for ${escapeHtml(name)}"><button class="flex size-[36px] items-center justify-center text-[#275d78]" data-panel-bag-decrease="${escapeHtml(name)}" type="button" aria-label="Decrease ${escapeHtml(name)} quantity">−</button><input class="w-[38px] border-x border-[#d5e1e5] bg-white text-center font-['DM_Sans'] font-medium text-[12px] outline-none" data-panel-bag-quantity="${escapeHtml(name)}" type="number" min="1" max="99" value="${quantity}" aria-label="${escapeHtml(name)} quantity"><button class="flex size-[36px] items-center justify-center text-[#275d78]" data-panel-bag-increase="${escapeHtml(name)}" type="button" aria-label="Increase ${escapeHtml(name)} quantity">+</button></div><button class="font-['DM_Sans'] font-medium text-[#66777f] text-[10px]" data-remove-item="${escapeHtml(name)}" type="button">Remove</button></div></div>`).join("")}</div><div class="border-[#d5e1e5] border-t mt-auto pt-[20px]"><div class="flex items-center justify-between"><p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[14px]">${bagQuantity} ${bagQuantity === 1 ? "item" : "items"}</p><p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[18px]">${subtotal ? currency.format(subtotal) : "Bag total"}</p></div><a class="bg-[#275d78] flex h-[46px] items-center justify-center mt-[16px] rounded-[4px] text-[13px] text-white w-full" href="/checkout">Continue to checkout</a></div></div>`
+
+          panelContent
+            .querySelectorAll("[data-panel-bag-decrease]")
+            .forEach((button) =>
+              button.addEventListener("click", () => {
+                const name = button.dataset.panelBagDecrease
+                const next = (bagItems[name] || 1) - 1
+                if (next < 1) delete bagItems[name]
+                else bagItems[name] = next
+                updateProductControls()
+                trigger.click()
+              }),
+            )
+          panelContent
+            .querySelectorAll("[data-panel-bag-increase]")
+            .forEach((button) =>
+              button.addEventListener("click", () => {
+                const name = button.dataset.panelBagIncrease
+                bagItems[name] = Math.min(
+                  MAX_BAG_QUANTITY,
+                  (bagItems[name] || 1) + 1,
+                )
+                updateProductControls()
+                trigger.click()
+              }),
+            )
+          panelContent
+            .querySelectorAll("[data-panel-bag-quantity]")
+            .forEach((input) =>
+              input.addEventListener("change", () => {
+                const name = input.dataset.panelBagQuantity
+                const next = Math.min(
+                  MAX_BAG_QUANTITY,
+                  Math.max(1, Number.parseInt(input.value, 10) || 1),
+                )
+                bagItems[name] = next
+                updateProductControls()
+                trigger.click()
+              }),
+            )
+          panelContent.querySelectorAll("[data-remove-item]").forEach((button) =>
+            button.addEventListener("click", () => {
+              delete bagItems[button.dataset.removeItem]
+              updateProductControls()
+              trigger.click()
+            }),
+          )
+        } else {
+          panelContent.className =
+            "flex flex-1 flex-col items-center justify-center text-center"
+          panelContent.innerHTML = `<img alt="" class="bg-[#eff5f7] p-[20px] rounded-full size-[64px]" src="/assets/991a5.svg"><p class="font-['DM_Sans'] font-medium mt-[20px] text-[#1d292f] text-[18px]">Your bag is empty</p><p class="font-['DM_Sans'] font-normal leading-[1.6] mt-[8px] max-w-[280px] text-[#66777f] text-[12px]">Explore the collection and add something considered.</p><button class="bg-[#275d78] font-['DM_Sans'] font-medium h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" data-browse-products type="button">Browse products</button>`
+          panelContent
+            .querySelector("[data-browse-products]")
+            ?.addEventListener("click", browseProducts)
+        }
       }
     }
     results?.classList.add("hidden")
@@ -444,6 +609,50 @@ function setupCatalog(section) {
 }
 
 document.querySelectorAll("[data-catalog]").forEach(setupCatalog)
+
+const checkout = document.querySelector("[data-checkout]")
+if (checkout) {
+  const catalogPrices = window.formeCatalogPrices || {}
+  const entries = Object.entries(bagItems)
+  const cartInput = checkout.querySelector("[data-checkout-cart]")
+  const itemsContainer = checkout.querySelector("[data-checkout-items]")
+  const totalElement = checkout.querySelector("[data-checkout-total]")
+  const submitButton = checkout.querySelector("[data-checkout-submit]")
+  const currency = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  })
+
+  if (cartInput) {
+    cartInput.value = JSON.stringify(bagItems)
+  }
+
+  if (itemsContainer) {
+    if (!entries.length) {
+      itemsContainer.innerHTML =
+        '<p class="py-[18px] font-[\'DM_Sans\'] text-[#66777f] text-[12px]">Your bag is empty.</p>'
+      submitButton?.setAttribute("disabled", "")
+    } else {
+      let total = 0
+      itemsContainer.innerHTML = entries
+        .map(([name, quantity]) => {
+          const price = Number(catalogPrices[name] || 0)
+          const lineTotal = price * quantity
+          total += lineTotal
+          return `<div class="border-[#d5e1e5] border-b flex items-center justify-between gap-[16px] py-[14px]"><div class="min-w-0"><p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[13px]">${escapeHtml(name)}</p><p class="mt-[4px] font-['DM_Sans'] text-[#66777f] text-[10px]">Qty ${quantity}</p></div><p class="shrink-0 font-['DM_Sans'] font-medium text-[12px]">${currency.format(lineTotal)}</p></div>`
+        })
+        .join("")
+      if (totalElement) totalElement.textContent = currency.format(total)
+    }
+  }
+}
+
+if (document.querySelector("[data-checkout-success]")) {
+  localStorage.removeItem("forme-bag")
+  bagItems = {}
+  updateProductControls()
+}
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     results?.classList.add("hidden")

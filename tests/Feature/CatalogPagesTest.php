@@ -94,7 +94,9 @@ class CatalogPagesTest extends TestCase
             ->assertSee('Studio Headphones')
             ->assertSee('$349.00')
             ->assertSee('Black')
-            ->assertSee('Audio');
+            ->assertSee('Audio')
+            ->assertSee('data-bag-quantity-input')
+            ->assertSee('Add 1 to bag');
     }
 
     public function test_collection_route_renders_only_active_products_in_pivot_order(): void

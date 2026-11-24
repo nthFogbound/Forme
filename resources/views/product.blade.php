@@ -29,8 +29,13 @@
               <button class="theme-editorial-outline border font-['DM_Sans'] font-normal px-[12px] py-[8px] rounded-[4px] text-[11px]" data-select-color="{{ $color }}" type="button">{{ $color }}</button>
             @endforeach
           </div>
-          <div class="flex gap-[12px] mt-[30px]">
-            <button class="theme-editorial-button flex-1 h-[48px] rounded-[4px] text-[13px]" data-add-product="{{ $product['name'] }}" type="button">Add to bag</button>
+          <div class="flex gap-[12px] mt-[30px]" data-bag-quantity-controls>
+            <div class="border border-[#d5e1e5] flex h-[48px] items-center rounded-[4px] shrink-0">
+              <button aria-label="Decrease quantity" class="flex size-[46px] items-center justify-center text-[18px] text-[#275d78]" data-bag-quantity-change="-1" type="button">−</button>
+              <input aria-label="Quantity" class="h-[46px] w-[44px] border-x border-[#d5e1e5] bg-white text-center font-['DM_Sans'] font-medium text-[#1d292f] text-[13px] outline-none" data-bag-quantity-input max="99" min="1" type="number" value="1">
+              <button aria-label="Increase quantity" class="flex size-[46px] items-center justify-center text-[18px] text-[#275d78]" data-bag-quantity-change="1" type="button">+</button>
+            </div>
+            <button class="theme-editorial-button flex-1 h-[48px] rounded-[4px] text-[13px]" data-add-product="{{ $product['name'] }}" type="button">Add 1 to bag</button>
             <button class="theme-editorial-outline border h-[48px] px-[20px] rounded-[4px] text-[13px]" data-save-product="{{ $product['name'] }}" data-wishlist-button type="button">Save</button>
           </div>
           </div>
