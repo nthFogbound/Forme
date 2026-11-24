@@ -369,10 +369,10 @@ document.querySelectorAll("[data-open-panel]").forEach((trigger) => {
     } else {
       const isWishlist = type === "wishlist"
       if (isWishlist) {
-        panelContent.className =
-          "flex flex-1 flex-col items-center justify-center text-center"
         if (wishlistItems.length) {
-          panelContent.innerHTML = `<div class="flex flex-col overflow-y-auto text-left w-full">${wishlistItems.map((name) => `<div class="border-[#d5e1e5] border-b flex items-center justify-between py-[16px]"><div><p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[14px]">${escapeHtml(name)}</p><p class="font-['DM_Sans'] font-normal mt-[4px] text-[#66777f] text-[11px]">Saved item</p></div><button class="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]" data-remove-item="${escapeHtml(name)}" type="button">Remove</button></div>`).join("")}</div>`
+          panelContent.className =
+            "flex flex-1 flex-col justify-start min-h-0 text-left w-full"
+          panelContent.innerHTML = `<div class="flex flex-1 flex-col min-h-0 w-full"><div class="flex-1 overflow-y-auto text-left w-full">${wishlistItems.map((name) => `<div class="border-[#d5e1e5] border-b flex items-center justify-between gap-[12px] py-[16px]"><div class="min-w-0"><p class="font-['DM_Sans'] font-medium text-[#1d292f] text-[14px]">${escapeHtml(name)}</p><p class="font-['DM_Sans'] font-normal mt-[4px] text-[#66777f] text-[11px]">Saved item</p></div><div class="flex shrink-0 items-center gap-[12px]"><button class="font-['DM_Sans'] font-medium text-[#275d78] text-[11px]" data-move-wishlist-item="${escapeHtml(name)}" type="button">Move to bag</button><button class="font-['DM_Sans'] font-medium text-[#66777f] text-[11px]" data-remove-item="${escapeHtml(name)}" type="button">Remove</button></div></div>`).join("")}</div></div>`
           panelContent.querySelectorAll("[data-remove-item]").forEach((button) =>
             button.addEventListener("click", () => {
               wishlistItems = wishlistItems.filter(
@@ -382,7 +382,23 @@ document.querySelectorAll("[data-open-panel]").forEach((trigger) => {
               trigger.click()
             }),
           )
+          panelContent
+            .querySelectorAll("[data-move-wishlist-item]")
+            .forEach((button) =>
+              button.addEventListener("click", () => {
+                const name = button.dataset.moveWishlistItem
+                bagItems[name] = Math.min(
+                  MAX_BAG_QUANTITY,
+                  (bagItems[name] || 0) + 1,
+                )
+                wishlistItems = wishlistItems.filter((item) => item !== name)
+                updateProductControls()
+                trigger.click()
+              }),
+            )
         } else {
+            panelContent.className =
+              "flex flex-1 flex-col items-center justify-center text-center"
           panelContent.innerHTML = `<img alt="" class="bg-[#eff5f7] p-[20px] rounded-full size-[64px]" src="/assets/4ff0c.svg"><p class="font-['DM_Sans'] font-medium mt-[20px] text-[#1d292f] text-[18px]">Your wishlist is empty</p><p class="font-['DM_Sans'] font-normal leading-[1.6] mt-[8px] max-w-[280px] text-[#66777f] text-[12px]">Explore the collection and add something considered.</p><button class="bg-[#275d78] font-['DM_Sans'] font-medium h-[44px] mt-[24px] px-[24px] rounded-[4px] text-[12px] text-white" data-browse-products type="button">Browse products</button>`
           panelContent
             .querySelector("[data-browse-products]")
